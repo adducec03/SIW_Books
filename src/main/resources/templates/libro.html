@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Libro</title>
+    <link rel="stylesheet" href="/stile.css?version=2" />
+</head>
+
+<body>
+    <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
+
+    <div th:if="${libro}">
+        <h1 th:text="${libro.titolo}">Titolo libro</h1>
+        <div>Anno: <span th:text="'(' + ${libro.anno} + ')'">2000</span></div>
+
+        <!-- IMMAGINI -->
+        <ul>
+            <li th:each="img : ${libro.urlImmagini}">
+                <img th:src="@{${img}}" width="10%" alt="Immagine del libro">
+            </li>
+        </ul>
+
+        <!-- AUTORI -->
+        <div>
+            <h3>Autori:</h3>
+            <ul>
+                <li th:each="autore : ${libro.autori}">
+                    <a th:href="@{'/autore/' + ${autore.id}}" th:text="${autore.nome} + ' ' + ${autore.cognome}">Autore</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div th:unless="${libro}">Non esiste</div>
+</body>
+
+</html>

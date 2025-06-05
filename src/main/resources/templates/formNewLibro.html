@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Nuovo Libro</title>
+    <link rel="stylesheet" href="/stile.css?version=3" />
+</head>
+
+<body>
+    <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
+    <h1>Aggiungi un libro</h1>
+    <form th:action="@{/libro}" method="POST" th:object="${libro}">
+        <div>
+            Titolo: <span><input required type="text" th:field="${libro.titolo}" /></span>
+        </div>
+        <div>
+            Anno: <span><input required type="text" th:field="${libro.anno}" /></span>
+        </div>
+        <div>
+            URL immagini: <span><input type="url" th:field="${libro.urlImmagini}" /></span>
+        </div>
+        <div>
+            <span><button type="submit">Conferma</button></span>
+        </div>
+    </form>
+</body>
+
+</html>

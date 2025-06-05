@@ -2,9 +2,11 @@ package it.uniroma3.siw.model;
 
 import java.util.List;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Libro {
@@ -13,11 +15,14 @@ public class Libro {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     private Long id;
     private String titolo;
-    private int annoPubblicazione;
+    private int anno;
+    @ElementCollection
     private List<String> urlImmagini;
+    @OneToMany
     private List<Autore> autori;
 
 
+//----------------------------METODI-----------------------------//
 
 
     public Long getId() {
@@ -32,11 +37,11 @@ public class Libro {
     public void setTitolo(String titolo) {
         this.titolo = titolo;
     }
-    public int getAnnoPubblicazione() {
-        return annoPubblicazione;
+    public int getAnno() {
+        return anno;
     }
-    public void setAnnoPubblicazione(int annoPubblicazione) {
-        this.annoPubblicazione = annoPubblicazione;
+    public void setAnno(int annoPubblicazione) {
+        this.anno = annoPubblicazione;
     }
     public List<String> getUrlImmagini() {
         return urlImmagini;
@@ -58,7 +63,7 @@ public class Libro {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((titolo == null) ? 0 : titolo.hashCode());
-        result = prime * result + annoPubblicazione;
+        result = prime * result + anno;
         result = prime * result + ((urlImmagini == null) ? 0 : urlImmagini.hashCode());
         result = prime * result + ((autori == null) ? 0 : autori.hashCode());
         return result;
@@ -81,7 +86,7 @@ public class Libro {
                 return false;
         } else if (!titolo.equals(other.titolo))
             return false;
-        if (annoPubblicazione != other.annoPubblicazione)
+        if (anno != other.anno)
             return false;
         if (urlImmagini == null) {
             if (other.urlImmagini != null)

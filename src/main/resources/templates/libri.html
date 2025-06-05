@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Libri</title>
+    <link rel="stylesheet" href="/stile.css?version=2" />
+</head>
+<body>
+    <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
+
+    <h1>Libri</h1>
+
+    <div th:if="${libri.isEmpty()}">Non ci sono libri nel sistema</div>
+
+    <ul>
+        <li th:each="libro : ${libri}">
+            <a th:href="@{'/libro/' + ${libro.id}}">
+                <span th:text="${libro.titolo}">Titolo</span>
+                <span th:text="' (' + ${libro.anno} + ')'">(2000)</span>
+            </a>
+        </li>
+    </ul>
+</body>
+</html>
