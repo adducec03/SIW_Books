@@ -1,12 +1,13 @@
 package it.uniroma3.siw.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Libro {
@@ -18,8 +19,8 @@ public class Libro {
     private int anno;
     @ElementCollection
     private List<String> urlImmagini;
-    @OneToMany
-    private List<Autore> autori;
+    @ManyToMany
+    private List<Autore> autori=new ArrayList<>();
 
 
 //----------------------------METODI-----------------------------//

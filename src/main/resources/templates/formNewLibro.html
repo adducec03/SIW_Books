@@ -9,19 +9,25 @@
 <body>
     <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
     <h1>Aggiungi un libro</h1>
-    <form th:action="@{/libro}" method="POST" th:object="${libro}">
+    <form th:action="@{/libro}" th:object="${libro}" method="post">
         <div>
-            Titolo: <span><input required type="text" th:field="${libro.titolo}" /></span>
+            Titolo: <input type="text" th:field="*{titolo}" required />
         </div>
         <div>
-            Anno: <span><input required type="text" th:field="${libro.anno}" /></span>
+            Anno: <input type="number" th:field="*{anno}" required />
         </div>
         <div>
-            URL immagini: <span><input type="url" th:field="${libro.urlImmagini}" /></span>
+            URL Immagini: <input type="url" th:field="*{urlImmagini}" />
         </div>
         <div>
-            <span><button type="submit">Conferma</button></span>
+            <label for="autori">Autori:</label>
+            <select multiple="multiple" th:field="*{autori}" id="autori">
+                <option th:each="autore : ${autori}" th:value="${autore.id}"
+                    th:text="${autore.nome} + ' ' + ${autore.cognome}">
+                </option>
+            </select>
         </div>
+        <button type="submit">Salva</button>
     </form>
 </body>
 

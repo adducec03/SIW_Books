@@ -1,5 +1,7 @@
 package it.uniroma3.siw.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import it.uniroma3.siw.model.Autore;
@@ -18,4 +20,13 @@ public class AutoreService {
     public Iterable<Autore> getAllAutori() {
         return autoreRepository.findAll();
     }
+
+    public void save(Autore autore) {
+        autoreRepository.save(autore);
+    }
+
+    public Iterable<Autore> findAllById(List<Long> autori) {
+        return autoreRepository.findAllById(autori);
+    }
 }
+    
