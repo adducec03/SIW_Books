@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>New Libro</title>
     <link rel="stylesheet" href="/stile.css?version=3" />
 </head>
+
 <body>
     <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
     <h1>Aggiungi un libro</h1>
@@ -25,18 +27,29 @@
             <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}"></span>
         </div>
 
-        <div>
+        <div id="immagini-container">
             <label>URL immagine:</label>
             <input type="url" name="urlImmagini" />
         </div>
+        <button type="button" onclick="aggiungiCampo()">Aggiungi immagine</button>
+
+        <script>
+            function aggiungiCampo() {
+                const container = document.getElementById('immagini-container');
+                const input = document.createElement('input');
+                input.type = 'url';
+                input.name = 'urlImmagini'; // Spring li mapperà in una lista
+                container.appendChild(document.createElement('br'));
+                container.appendChild(input);
+            }
+        </script>
 
         <!-- Se vuoi visualizzare gli autori -->
         <div th:if="${autori != null}">
             <label>Autori:</label>
             <select th:field="*{autori}" multiple>
-                <option th:each="autore : ${autori}"
-                        th:value="${autore.id}"
-                        th:text="${autore.nome + ' ' + autore.cognome}">
+                <option th:each="autore : ${autori}" th:value="${autore.id}"
+                    th:text="${autore.nome + ' ' + autore.cognome}">
                 </option>
             </select>
         </div>
@@ -46,4 +59,5 @@
         </div>
     </form>
 </body>
+
 </html>
