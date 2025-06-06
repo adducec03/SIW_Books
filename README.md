@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/adducec03/SIW_Books/main/src/main/resources/static/logo.png" alt="SIW Books Logo" width="200"/>
-</p>
+
 
 <h1 align="center">📚 SIW Books</h1>
 <p align="center"><i>Un'applicazione web per la gestione di libri e autori.</i></p>
