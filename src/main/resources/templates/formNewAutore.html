@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>New Autore</title>
+    <link rel="stylesheet" href="/stile.css?version=3" />
+</head>
+
+<body>
+    <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
+    <h1>Aggiungi un autore</h1>
+
+    <form th:action="@{/autore}" method="POST" th:object="${autore}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
+
+        <div>
+            <label>Nome:</label>
+            <input type="text" th:field="*{nome}" />
+            <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+        </div>
+
+        <div>
+            <label>Cognome:</label>
+            <input type="text" th:field="*{cognome}" />
+            <span th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}"></span>
+        </div>
+
+        <div>
+            <label>Data di nascita:</label>
+            <input type="date" th:field="*{dataNascita}" />
+            <span th:if="${#fields.hasErrors('dataNascita')}" th:errors="*{dataNascita}"></span>
+        </div>
+
+        <div>
+            <label><input type="checkbox" id="inVitaCheckbox" onchange="toggleDataMorte()" /> Autore ancora in
+                vita</label>
+        </div>
+
+        <div id="dataMorteContainer">
+            <label>Data di morte:</label>
+            <input type="date" th:field="*{dataMorte}" />
+        </div>
+
+        <script>
+            function toggleDataMorte() {
+                const checkbox = document.getElementById("inVitaCheckbox");
+                const dataMorteContainer = document.getElementById("dataMorteContainer");
+                const input = dataMorteContainer.querySelector("input");
+
+                if (checkbox.checked) {
+                    dataMorteContainer.style.display = "none";
+                    input.value = ""; // cancella eventuale valore
+                } else {
+                    dataMorteContainer.style.display = "block";
+                }
+            }
+        </script>
+
+        <div>
+            <label>Nazionalità:</label>
+            <input type="text" th:field="*{nazionalita}" />
+            <span th:if="${#fields.hasErrors('nazionalita')}" th:errors="*{nazionalita}"></span>
+        </div>
+
+        <div id="immagini-container">
+            <label>URL immagine:</label>
+            <input type="url" name="urlImmagine" />
+        </div>
+
+
+        <div>
+            <button type="submit">Conferma</button>
+        </div>
+    </form>
+</body>
+
+</html>

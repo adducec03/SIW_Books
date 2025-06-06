@@ -67,14 +67,4 @@ public class LibroController {
         model.addAttribute("libri", this.libroService.findByAnno(anno));
         return "foundLibri.html";
     }
-    /*
-    @PostMapping("/libro")
-    public String salvaLibro(@ModelAttribute Libro libro, @RequestParam List<Long> autori) {
-        libro.setId(null);
-        List<Autore> listaAutori = (List<Autore>) autoreService.findAllById(autori);
-        libro.setAutori(listaAutori);
-        libroService.save(libro);
-        return "redirect:/libri";
-    }
-    */
 }

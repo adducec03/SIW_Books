@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Autore {
@@ -12,10 +14,13 @@ public class Autore {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     private Long id;
+    @NotBlank
     private String nome;
     private String cognome;
+    @NotNull
     private LocalDate dataNascita;
     private LocalDate dataMorte;
+    @NotBlank
     private String nazionalita;
     private String urlImmagine;
 
