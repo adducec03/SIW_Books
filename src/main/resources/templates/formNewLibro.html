@@ -1,34 +1,49 @@
 <!DOCTYPE html>
-<html>
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Nuovo Libro</title>
+    <title>New Libro</title>
     <link rel="stylesheet" href="/stile.css?version=3" />
 </head>
-
 <body>
     <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
     <h1>Aggiungi un libro</h1>
-    <form th:action="@{/libro}" th:object="${libro}" method="post">
-        <div>
-            Titolo: <input type="text" th:field="*{titolo}" required />
+
+    <form th:action="@{/libro}" method="POST" th:object="${libro}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
         </div>
+
         <div>
-            Anno: <input type="number" th:field="*{anno}" required />
+            <label>Titolo:</label>
+            <input type="text" th:field="*{titolo}" />
+            <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}"></span>
         </div>
+
         <div>
-            URL Immagini: <input type="url" th:field="*{urlImmagini}" />
+            <label>Anno:</label>
+            <input type="number" th:field="*{anno}" />
+            <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}"></span>
         </div>
+
         <div>
-            <label for="autori">Autori:</label>
-            <select multiple="multiple" th:field="*{autori}" id="autori">
-                <option th:each="autore : ${autori}" th:value="${autore.id}"
-                    th:text="${autore.nome} + ' ' + ${autore.cognome}">
+            <label>URL immagine:</label>
+            <input type="text" name="urlImmagineSingola" />
+        </div>
+
+        <!-- Se vuoi visualizzare gli autori -->
+        <div th:if="${autori != null}">
+            <label>Autori:</label>
+            <select th:field="*{autori}" multiple>
+                <option th:each="autore : ${autori}"
+                        th:value="${autore.id}"
+                        th:text="${autore.nome + ' ' + autore.cognome}">
                 </option>
             </select>
         </div>
-        <button type="submit">Salva</button>
+
+        <div>
+            <button type="submit">Conferma</button>
+        </div>
     </form>
 </body>
-
 </html>

@@ -1,6 +1,5 @@
 package it.uniroma3.siw.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import it.uniroma3.siw.model.Autore;
 import it.uniroma3.siw.model.Libro;
 import it.uniroma3.siw.service.AutoreService;
 import it.uniroma3.siw.service.LibroService;
+import jakarta.validation.Valid;
 
 @Controller
 public class LibroController {
@@ -45,16 +44,16 @@ public class LibroController {
         return "formNewLibro.html";
     }
 
-    @PostMapping("/libri")
-    public String newLibro(@ModelAttribute("libro") Libro libro, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "formNewLibro.html";
-        }
-        // Debug (opzionale): per vedere se autori sono stati associati
-        System.out.println("Autori ricevuti: " + libro.getAutori());
+    @PostMapping("/libro")
+    public String newLibro(@Valid @ModelAttribute("libro") Libro libro, BindingResult bindingResult, Model model) {
 
-        this.libroService.save(libro); // salva anche relazione con autori se correttamente mappata
-        return "redirect:/libro/" + libro.getId();
+        if (bindingResult.hasErrors()) { // sono emersi errori nel binding
+            return "formNewLibro.html";
+        } else {                         // NON sono emersi errori nel binding
+            this.libroService.save(libro);
+            model.addAttribute("libro", libro);
+            return "redirect:libro/" + libro.getId();
+        }
     }
 
     @GetMapping("/formSearchLibri")
@@ -67,7 +66,7 @@ public class LibroController {
         model.addAttribute("libri", this.libroService.findByAnno(anno));
         return "foundLibri.html";
     }
-
+    /*
     @PostMapping("/libro")
     public String salvaLibro(@ModelAttribute Libro libro, @RequestParam List<Long> autori) {
         libro.setId(null);
@@ -76,4 +75,5 @@ public class LibroController {
         libroService.save(libro);
         return "redirect:/libri";
     }
+    */
 }
