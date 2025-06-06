@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="https://www.creativefabrica.com/wp-content/uploads/2020/09/17/Book-Logo-Graphics-5535886-1.jpg" alt="SIW Books Logo" width="200"/>
-</p>
+
 
 <h1 align="center">📚 SIW Books</h1>
 <p align="center"><i>Un'applicazione web per la gestione di libri e autori.</i></p>
