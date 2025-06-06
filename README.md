@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="[https://raw.githubusercontent.com/adducec03/SIW_Books/main/src/main/resources/static/logo.png](https://www.creativefabrica.com/wp-content/uploads/2020/09/17/Book-Logo-Graphics-5535886-1.jpg)" alt="SIW Books Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/adducec03/SIW_Books/main/src/main/resources/static/logo.png](https://www.creativefabrica.com/wp-content/uploads/2020/09/17/Book-Logo-Graphics-5535886-1.jpg" alt="SIW Books Logo" width="200"/>
 </p>
 
 <h1 align="center">📚 SIW Books</h1>
