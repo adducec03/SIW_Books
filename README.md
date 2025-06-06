@@ -7,17 +7,9 @@
 
 ---
 
-## 🖼️ Demo
+## 🖼️ Descrizione
 
-### 📖 Lista Libri
-
-![Lista Libri Screenshot](https://raw.githubusercontent.com/adducec03/SIW_Books/main/screenshots/libri.png)
-
-### 👤 Scheda Autore
-
-![Scheda Autore Screenshot](https://raw.githubusercontent.com/adducec03/SIW_Books/main/screenshots/autore.png)
-
-> *Sostituisci gli URL degli screenshot con immagini vere una volta caricate nella cartella `screenshots/` del tuo repo.*
+SIW Books è un sistema informativo web sviluppato per la gestione e consultazione di libri, autori e recensioni. Progettato come progetto accademico per il corso di Sistemi Iformativi su Web (Università degli Studi Roma Tre)
 
 ---
 
