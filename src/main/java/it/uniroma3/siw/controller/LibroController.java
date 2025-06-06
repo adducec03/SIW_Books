@@ -40,7 +40,7 @@ public class LibroController {
     @GetMapping("/formNewLibro")
     public String formNewLibro(Model model) {
         model.addAttribute("libro", new Libro());
-        model.addAttribute("autori", autoreService.getAllAutori()); // serve questa linea!
+        model.addAttribute("autori", autoreService.getAllAutori());
         return "formNewLibro.html";
     }
 

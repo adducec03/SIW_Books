@@ -21,13 +21,13 @@
 
         <div>
             <label>Anno:</label>
-            <input type="number" th:field="*{anno}" />
+            <input type="text" th:field="*{anno}" />
             <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}"></span>
         </div>
 
         <div>
             <label>URL immagine:</label>
-            <input type="text" name="urlImmagineSingola" />
+            <input type="url" name="urlImmagini" />
         </div>
 
         <!-- Se vuoi visualizzare gli autori -->
