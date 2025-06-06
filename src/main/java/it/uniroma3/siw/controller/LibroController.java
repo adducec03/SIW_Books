@@ -48,6 +48,7 @@ public class LibroController {
     public String newLibro(@Valid @ModelAttribute("libro") Libro libro, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) { // sono emersi errori nel binding
+            model.addAttribute("autori", autoreService.getAllAutori());
             return "formNewLibro.html";
         } else {                         // NON sono emersi errori nel binding
             this.libroService.save(libro);
