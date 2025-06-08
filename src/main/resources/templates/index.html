@@ -12,12 +12,14 @@
 
     <span>
         <!-- Mostra login se utente non autenticato -->
-        <span th:if="${not #authorization.expression('isAuthenticated()')}">
+        <p th:if="${not #authorization.expression('isAuthenticated()')}">
             <a href="/login">Login</a>
-        </span>
+        </p>
         <!-- Mostra username se autenticato -->
         <span th:if="${nomeUtente != null}">
             Benvenuto, <span th:text="${nomeUtente}"></span>!
+            &nbsp;|&nbsp;
+            <a th:href="@{/logout}">Logout</a>
         </span>
     </span>
 

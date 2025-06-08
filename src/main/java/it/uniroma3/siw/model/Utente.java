@@ -19,6 +19,8 @@ public class Utente {
     @Column(nullable = false)
     private String cognome;
     private Integer numeroTelefonico;
+    @Column(nullable = false)
+    private String email;
 
 
 
@@ -47,6 +49,14 @@ public class Utente {
     public void setNumeroTelefonico(Integer numeroTelefonico) {
         this.numeroTelefonico = numeroTelefonico;
     }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -54,6 +64,7 @@ public class Utente {
         result = prime * result + ((nome == null) ? 0 : nome.hashCode());
         result = prime * result + ((cognome == null) ? 0 : cognome.hashCode());
         result = prime * result + ((numeroTelefonico == null) ? 0 : numeroTelefonico.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
         return result;
     }
     @Override
@@ -80,8 +91,12 @@ public class Utente {
                 return false;
         } else if (!numeroTelefonico.equals(other.numeroTelefonico))
             return false;
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
         return true;
     }
-    
 
 }
