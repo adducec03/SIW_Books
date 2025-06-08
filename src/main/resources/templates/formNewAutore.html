@@ -10,6 +10,7 @@
     <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
     <h1>Aggiungi un autore</h1>
 
+
     <form th:action="@{/autore}" method="POST" th:object="${autore}">
         <div th:if="${#fields.hasGlobalErrors()}">
             <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>

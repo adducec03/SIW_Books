@@ -1,5 +1,8 @@
 package it.uniroma3.siw.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import it.uniroma3.siw.model.Libro;
@@ -31,4 +34,29 @@ public class LibroService {
         libroRepository.deleteById(Id);
     }
 
+    public List<Libro> findByFiltri(String titolo, String autore, Integer anno) {
+        if (titolo != null && !titolo.isBlank()) {
+            return libroRepository.findByTitoloContainingIgnoreCase(titolo);
+        }
+
+        if (autore != null && !autore.isBlank() && anno != null) {
+            String[] parts = autore.split(" ");
+            if (parts.length >= 2) {
+                return libroRepository.findByAutoreNomeCognomeEAnno(parts[0], parts[1], anno);
+            }
+        }
+
+        if (autore != null && !autore.isBlank()) {
+            String[] parts = autore.split(" ");
+            if (parts.length >= 2) {
+                return libroRepository.findByAutoreNomeECognome(parts[0], parts[1]);
+            }
+        }
+
+        if (anno != null) {
+            return libroRepository.findByAnno(anno);
+        }
+
+        return new ArrayList<>();
+    }
 }

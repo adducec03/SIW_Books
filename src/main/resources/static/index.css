@@ -1,0 +1,12 @@
+h1 {
+    background-color: aquamarine;
+    text-align: center
+}
+
+#logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 255, 0.374);
+    height: 10vh;
+}

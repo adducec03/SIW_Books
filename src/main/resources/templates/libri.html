@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Libri</title>
     <link rel="stylesheet" href="/stile.css?version=2" />
 </head>
+
 <body>
     <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
 
     <h1>Libri</h1>
+
+    <div th:if="${globalError != null}">
+        <p th:text="${globalError}" class="error-global"></p>
+    </div>
+
+    <div>Cerca un libro</div>
+
+    <form th:action="@{/libri}" method="get" style="margin-bottom: 30px;">
+        <input type="text" name="titolo" placeholder="Titolo" />
+        <input type="text" name="autore" placeholder="Nome e cognome autore" />
+        <input type="text" name="anno" placeholder="Anno" />
+        <button type="submit">Cerca</button>
+    </form>
 
     <div th:if="${libri.isEmpty()}">Non ci sono libri nel sistema</div>
 
@@ -20,4 +35,5 @@
         </li>
     </ul>
 </body>
+
 </html>

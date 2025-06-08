@@ -1,5 +1,6 @@
 package it.uniroma3.siw.controller;
 
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,12 +31,13 @@ public class LibroController {
         model.addAttribute("libro", this.libroService.getLibroById(id));
         return "libro.html";
     }
-
-    @GetMapping("/libri")
-    public String showLibri(Model model) {
-        model.addAttribute("libri", this.libroService.getAllLibri());
-        return "libri.html";
-    }
+    /*
+     * @GetMapping("/libri")
+     * public String showLibri(Model model) {
+     * model.addAttribute("libri", this.libroService.getAllLibri());
+     * return "libri.html";
+     * }
+     */
 
     @GetMapping("/formNewLibro")
     public String formNewLibro(Model model) {
@@ -50,7 +52,7 @@ public class LibroController {
         if (bindingResult.hasErrors()) { // sono emersi errori nel binding
             model.addAttribute("autori", autoreService.getAllAutori());
             return "formNewLibro.html";
-        } else {                         // NON sono emersi errori nel binding
+        } else { // NON sono emersi errori nel binding
             this.libroService.save(libro);
             model.addAttribute("libro", libro);
             return "redirect:libro/" + libro.getId();
@@ -62,9 +64,23 @@ public class LibroController {
         return "formSearchLibri.html";
     }
 
-    @PostMapping("/searchLibri")
-    public String searchLibri(Model model, @RequestParam Integer anno) {
-        model.addAttribute("libri", this.libroService.findByAnno(anno));
-        return "foundLibri.html";
+    @GetMapping("/libri")
+    public String showLibri(@RequestParam(required = false) String titolo,
+            @RequestParam(required = false) String autore,
+            @RequestParam(required = false) Integer anno,
+            Model model) {
+
+        List<Libro> libri;
+
+        if ((titolo != null && !titolo.isBlank()) ||
+                (autore != null && !autore.isBlank()) ||
+                anno != null) {
+            libri = libroService.findByFiltri(titolo, autore, anno);
+        } else {
+            libri = (List<Libro>) libroService.getAllLibri();
+        }
+
+        model.addAttribute("libri", libri);
+        return "libri.html";
     }
 }
