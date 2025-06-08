@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>SIW Books - Home</title>
     <link rel="stylesheet" href="/index.css?version=2" />
 </head>
+
 <body>
     <span id="logo"><img src="/logo.png" width="10%" alt="Logo SIW Books" /></span>
-    <span>  <a href="/login">Login</a></span>
+
+    <span>
+        <!-- Mostra login se utente non autenticato -->
+        <span th:if="${not #authorization.expression('isAuthenticated()')}">
+            <a href="/login">Login</a>
+        </span>
+        <!-- Mostra username se autenticato -->
+        <span th:if="${nomeUtente != null}">
+            Benvenuto, <span th:text="${nomeUtente}"></span>!
+        </span>
+    </span>
 
     <h1>Benvenuto in SIW Books</h1>
 
@@ -18,4 +30,5 @@
         <p><a href="/formNewAutore">Aggiungi nuovo autore</a></p>
     </div>
 </body>
+
 </html>
