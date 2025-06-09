@@ -7,7 +7,7 @@
 
 ## 🖼️ Descrizione
 
-SIW Books è un sistema informativo web sviluppato per la gestione e consultazione di libri, autori e recensioni. Progettato come progetto accademico per il corso di Sistemi Iformativi su Web (Università degli Studi Roma Tre)
+SIW Books è un applicazione web sviluppata per la gestione e consultazione di libri, autori e recensioni. Progettato come progetto accademico per il corso di Sistemi Informativi su Web (Università degli Studi Roma Tre)
 
 ---
 
