@@ -12,14 +12,18 @@ import it.uniroma3.siw.repository.UtenteRepository;
 public class UtenteService {
 
     @Autowired
-    private UtenteRepository userRepository;
+    private UtenteRepository utenteRepository;
 
     public Optional<Utente> getUser(Long id){
-        return userRepository.findById(id);
+        return utenteRepository.findById(id);
     }
 
     public void saveUser(Utente user){
-        userRepository.save(user);
+        utenteRepository.save(user);
+    }
+
+    public boolean emailExists(String email) {
+        return utenteRepository.findByEmail(email).isPresent();
     }
 
 }

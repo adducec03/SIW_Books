@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="/css/login.css" />
 </head>
+
 <body>
     <div>
         <a href="/"><img src="/logo.png" width="10%" /></a>
@@ -26,8 +28,13 @@
         </div>
 
         <button type="submit">Login</button>
+        <div>
+            <a href="/oauth2/authorization/google">Login con Google</a><br>
+            <a href="/oauth2/authorization/github">Login con GitHub</a>
+        </div>
 
         <div> Non hai un account? <a href="/register">Registrati!</a></div>
     </form>
 </body>
+
 </html>

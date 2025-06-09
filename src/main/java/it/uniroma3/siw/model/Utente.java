@@ -19,7 +19,7 @@ public class Utente {
     @Column(nullable = false)
     private String cognome;
     private Integer numeroTelefonico;
-    @Column(nullable = false)
+    @Column(nullable = false, unique=true)
     private String email;
 
 
@@ -61,6 +61,7 @@ public class Utente {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((nome == null) ? 0 : nome.hashCode());
         result = prime * result + ((cognome == null) ? 0 : cognome.hashCode());
         result = prime * result + ((numeroTelefonico == null) ? 0 : numeroTelefonico.hashCode());
@@ -76,6 +77,11 @@ public class Utente {
         if (getClass() != obj.getClass())
             return false;
         Utente other = (Utente) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
         if (nome == null) {
             if (other.nome != null)
                 return false;
@@ -98,5 +104,6 @@ public class Utente {
             return false;
         return true;
     }
+
 
 }
