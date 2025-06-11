@@ -4,32 +4,79 @@
 <head>
     <meta charset="UTF-8">
     <title>SIW Books - Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link rel="stylesheet" href="/index.css?version=2" />
 </head>
 
 <body>
-    <span id="logo"><img src="/logo.png" width="10%" alt="Logo SIW Books" /></span>
 
-    <span>
-        <!-- Mostra login se utente non autenticato -->
-        <p th:if="${not #authorization.expression('isAuthenticated()')}">
-            <a href="/login">Login</a>
-        </p>
-        <!-- Mostra username se autenticato -->
-        <span th:if="${nomeUtente != null}">
-            Benvenuto, <span th:text="${nomeUtente}"></span>!
-            &nbsp;|&nbsp;
-            <a th:href="@{/logout}">Logout</a>
+    <nav class="navbar">
+        <span id="navbar-logo">
+            <a href="/"><img src="/logo.png" alt="SIW Books" /></a>
         </span>
+        <span id="navbar-links">
+            <a href="/libri">Libri</a>
+            <a href="/autori">Autori</a>
+        </span>
+        <span id="navbar-auth">
+            <span class th:if="${not #authorization.expression('isAuthenticated()')}">
+                <a href="/login">Login</a>
+                <a href="/register" class="button-register">Register</a>
+            </span>
+            <span th:if="${nomeUtente != null}">
+                Ciao, <span th:text="${nomeUtente}"></span> | <a th:href="@{/logout}">Logout</a>
+            </span>
+        </span>
+    </nav>
 
-    <h1>Benvenuto in SIW Books</h1>
+    <div id="main-page">
 
-    <div>
-        <p><a href="/libri">Libri</a></p>
-        <p><a href="/autori">Autori</a></p>
-        <p><a href="/formNewLibro">Aggiungi nuovo libro</a></p>
-        <p><a href="/formNewAutore">Aggiungi nuovo autore</a></p>
+        <h1>SIW Books</h1>
+        <h2>La tua biblioteca digitale</h2>
+        <p>SIW Books è la tua biblioteca digitale: scopri libri,
+            conosci gli autori e condividi le tue recensioni
+            con altri lettori.</p>
+        <div>
+            <a href="#libri" class="button-scopri">Scopri di più ↗︎</a>
+        </div>
+
     </div>
-</body>
+
+
+    <div id="libri">
+        <div>Libri</div>
+        <p>Scopri centinaia di libri da leggere, dai grandi classici ai bestseller contemporanei. Esplora trame
+            avvincenti, generi diversi e recensioni autentiche per trovare la tua prossima lettura preferita. Salva i
+            titoli che ami, confronta valutazioni e tieni traccia dei tuoi progressi.</p>
+        <div>
+            <a href="/libri" class="button-libri">Scopri nuovi libri ↗︎</a>
+        </div>
+    </div>
+
+    <div id="autori">
+        <div>Autori</div>
+        <p>Esplora il mondo degli autori che stanno dietro ai tuoi libri preferiti. Scopri biografie, bibliografie,
+            curiosità e approfondimenti sui più grandi scrittori di ieri e di oggi. Segui i tuoi autori preferiti e
+            resta aggiornato sulle loro ultime pubblicazioni.</p>
+        <div>
+            <a href="/autori" class="button-autori">Scopri nuovi autori ↗︎</a>
+        </div>
+    </div>
+
+    <div id="recensioni">
+        <div>Recensioni</div>
+        <p>LLeggi opinioni autentiche e dettagliate sui libri che ami o che stai per scoprire. Confronta valutazioni,
+            scopri nuovi punti di vista e contribuisci con le tue recensioni per aiutare altri lettori a scegliere la
+            loro prossima lettura. Ogni libro ha qualcosa da dire, anche attraverso le parole dei lettori.</p>
+        <div>
+            <a href="/recensioni" class="button-recensioni">Scopri nuove recensioni ↗︎</a>
+        </div>
+    </div>
+
+    <footer id="footer">
+        <span>contatti</span>
+    </footer>
 
 </html>

@@ -1,12 +1,137 @@
-h1 {
-    background-color: aquamarine;
-    text-align: center
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+    background-color: #ffe6a7;
 }
 
-#logo {
+nav {
+    position: fixed;
+    width: 100%;
+    height: 15vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #99582a;
+    padding: 10px 20px;
+    margin:0;
+    box-sizing: border-box;
+}
+
+#navbar-logo {
+    display: flex;
+    align-items: center;
+    max-width: 120px; /* limita la larghezza massima dello span */
+}
+
+#navbar-logo img {
+    width: 100px; /* dimensione fissa e proporzionata */
+    height: auto;
+}
+
+#navbar-links,
+#navbar-auth {
     display: flex;
     justify-content: center;
+    gap: 20px;
     align-items: center;
-    background-color: rgba(0, 0, 255, 0.374);
-    height: 10vh;
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
+#navbar-auth a {
+    color: #ffe6a7;
+    text-decoration: none;
+
+}
+
+#navbar-links a {
+    color: #ffe6a7;
+    text-decoration: none;
+
+}
+
+#navbar-auth a.button-register {
+    background-color: #ffe6a7;
+    color: #99582a;
+    padding: 6px 12px;
+    text-decoration: none;
+}
+
+#navbar-auth a.button-register:hover {
+    background-color: #0056b3;
+}
+
+
+#main-page{
+    background-image: url("wallpaper.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffe6a7;
+    text-align: center;
+    padding-top: 15vh;
+    height: 85vh;
+}
+
+#main-page h1{
+    font-size: 10rem;
+    font-family: "EB Garamond", serif;
+    font-weight: normal;
+    margin: 0rem;
+    padding: 0;
+}
+
+#main-page h2{
+    font-size: 3rem;
+    font-family: "EB Garamond", serif;
+    font-weight: normal;
+    margin: -0.8em 0 0 0;
+    padding:0;
+}
+
+#main-page p{
+    font-size: 1.5em;
+    margin: 2rem 0 0 0;
+    width: 30em;
+}
+
+#main-page div {
+    margin: 5rem 0 0 0;
+}
+
+#main-page a.button-scopri{
+    background-color: #6f1b1d;
+    color: #ffe6a7;
+    padding: 0.8rem 1.6rem;
+    text-decoration: none;
+    font-size: 1.5em;
+    margin: 5px 0 0 0;
+}
+
+#libri {
+    width:100%;
+    height:70vh;
+}
+
+#autori {
+    width:100%;
+    height:70vh;
+}
+
+#recensioni {
+    width:100%;
+    height:70vh;
+}
+
+#footer {
+    background-color: #432818;
+    height: 15vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }

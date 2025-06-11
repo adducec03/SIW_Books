@@ -44,7 +44,7 @@ public class AuthConfiguration {
                         .requestMatchers(HttpMethod.GET,
                                 "/", "/index", "/register", "/login", "/autori", "/autore", "/autore/**", "/libri",
                                 "/libro", "/libro/**", "/oauth2/**",
-                                "/css/**", "/images/**", "/js/**", "/favicon.ico", "/logo.png")
+                                "/**.css", "/images/**", "/js/**", "/favicon.ico", "/logo.png", "/wallpaper.png")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
