@@ -14,10 +14,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
-
 @Entity
 public class Libro {
-    
+
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     private Long id;
@@ -27,47 +26,61 @@ public class Libro {
     @Min(0)
     @Max(2023)
     private Integer anno;
+    private String genere;
     @ElementCollection
     private List<String> urlImmagini;
     @ManyToMany
-    private List<Autore> autori=new ArrayList<>();
+    private List<Autore> autori = new ArrayList<>();
 
+    // ----------------------------METODI-----------------------------//
 
-//----------------------------METODI-----------------------------//
+    public String getGenere() {
+        return genere;
+    }
 
+    public void setGenere(String genere) {
+        this.genere = genere;
+    }
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getTitolo() {
         return titolo;
     }
+
     public void setTitolo(String titolo) {
         this.titolo = titolo;
     }
+
     public Integer getAnno() {
         return anno;
     }
+
     public void setAnno(Integer anno) {
         this.anno = anno;
     }
+
     public List<String> getUrlImmagini() {
         return urlImmagini;
     }
+
     public void setUrlImmagini(List<String> urlImmagini) {
         this.urlImmagini = urlImmagini;
     }
+
     public List<Autore> getAutori() {
         return autori;
     }
+
     public void setAutori(List<Autore> autori) {
         this.autori = autori;
     }
-
-
 
     @Override
     public int hashCode() {
@@ -79,9 +92,6 @@ public class Libro {
         return result;
     }
 
-
-
-    
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

@@ -30,33 +30,69 @@ public class LibroService {
         return libroRepository.findByAnno(anno);
     }
 
+
+
     public void deleteById(Long Id) {
         libroRepository.deleteById(Id);
     }
 
-    public List<Libro> findByFiltri(String titolo, String autore, Integer anno) {
-        if (titolo != null && !titolo.isBlank()) {
-            return libroRepository.findByTitoloContainingIgnoreCase(titolo);
-        }
+    public List<Libro> findByFiltri(String titolo, String autore, Integer anno, String genere) {
+    // Filtro per titolo (prioritario)
+    if (titolo != null && !titolo.isBlank()) {
+        return libroRepository.findByTitoloContainingIgnoreCase(titolo);
+    }
 
-        if (autore != null && !autore.isBlank() && anno != null) {
-            String[] parts = autore.split(" ");
-            if (parts.length >= 2) {
-                return libroRepository.findByAutoreNomeCognomeEAnno(parts[0], parts[1], anno);
-            }
+    // Filtro completo: autore + anno + genere
+    if (autore != null && !autore.isBlank() && anno != null && genere != null && !genere.isBlank()) {
+        String[] parts = autore.split(" ");
+        if (parts.length >= 2) {
+            return libroRepository.findByAutoreNomeCognomeAnnoGenere(parts[0], parts[1], anno, genere);
         }
+    }
 
-        if (autore != null && !autore.isBlank()) {
-            String[] parts = autore.split(" ");
-            if (parts.length >= 2) {
-                return libroRepository.findByAutoreNomeECognome(parts[0], parts[1]);
-            }
+    // Autore + anno
+    if (autore != null && !autore.isBlank() && anno != null) {
+        String[] parts = autore.split(" ");
+        if (parts.length >= 2) {
+            return libroRepository.findByAutoreNomeCognomeEAnno(parts[0], parts[1], anno);
         }
+    }
 
-        if (anno != null) {
-            return libroRepository.findByAnno(anno);
+    // Autore + genere
+    if (autore != null && !autore.isBlank() && genere != null && !genere.isBlank()) {
+        String[] parts = autore.split(" ");
+        if (parts.length >= 2) {
+            return libroRepository.findByAutoreNomeCognomeGenere(parts[0], parts[1], genere);
         }
+    }
 
-        return new ArrayList<>();
+    // Solo autore
+    if (autore != null && !autore.isBlank()) {
+        String[] parts = autore.split(" ");
+        if (parts.length >= 2) {
+            return libroRepository.findByAutoreNomeECognome(parts[0], parts[1]);
+        }
+    }
+
+    // Solo anno + genere
+    if (anno != null && genere != null && !genere.isBlank()) {
+        return libroRepository.findByAnnoAndGenereIgnoreCase(anno, genere);
+    }
+
+    // Solo anno
+    if (anno != null) {
+        return libroRepository.findByAnno(anno);
+    }
+
+    // Solo genere
+    if (genere != null && !genere.isBlank()) {
+        return libroRepository.findByGenereIgnoreCase(genere);
+    }
+
+    return new ArrayList<>();
+}
+
+    public List<String> trovaTuttiIGeneri() {
+        return libroRepository.findDistinctGeneri();
     }
 }

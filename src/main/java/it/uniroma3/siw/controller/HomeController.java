@@ -1,6 +1,7 @@
 package it.uniroma3.siw.controller;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,12 +13,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.service.LibroService;
 
 @Controller
 public class HomeController {
 
     @Autowired
     private CredentialsService credentialsService;
+    @Autowired
+    private LibroService libroService;
+
+
 
     @GetMapping("/")
     public String index(Model model, Principal principal) {
@@ -46,6 +52,9 @@ public class HomeController {
                 model.addAttribute("nomeUtente", username); // fallback
             }
         }
+
+        List<String> generi = libroService.trovaTuttiIGeneri(); // metodo da creare
+        model.addAttribute("generi", generi);
 
         return "index";
     }

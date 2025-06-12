@@ -68,14 +68,15 @@ public class LibroController {
     public String showLibri(@RequestParam(required = false) String titolo,
             @RequestParam(required = false) String autore,
             @RequestParam(required = false) Integer anno,
+            @RequestParam(required = false) String genere,
             Model model) {
 
         List<Libro> libri;
 
         if ((titolo != null && !titolo.isBlank()) ||
                 (autore != null && !autore.isBlank()) ||
-                anno != null) {
-            libri = libroService.findByFiltri(titolo, autore, anno);
+                anno != null || (genere != null && !genere.isBlank())) {
+            libri = libroService.findByFiltri(titolo, autore, anno, genere);
         } else {
             libri = (List<Libro>) libroService.getAllLibri();
         }

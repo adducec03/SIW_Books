@@ -24,52 +24,64 @@ public class Autore {
     private String nazionalita;
     private String urlImmagine;
 
+    // ----------------------------METODI-----------------------------//
 
-//----------------------------METODI-----------------------------//
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
+
     public String getCognome() {
         return cognome;
     }
+
     public void setCognome(String cognome) {
         this.cognome = cognome;
     }
+
     public LocalDate getDataNascita() {
         return dataNascita;
     }
+
     public void setDataNascita(LocalDate dataNascita) {
         this.dataNascita = dataNascita;
     }
+
     public LocalDate getDataMorte() {
         return dataMorte;
     }
+
     public void setDataMorte(LocalDate dataMorte) {
         this.dataMorte = dataMorte;
     }
+
     public String getNazionalita() {
         return nazionalita;
     }
+
     public void setNazionalita(String nazionalita) {
         this.nazionalita = nazionalita;
     }
+
     public String getUrlImmagine() {
         return urlImmagine;
     }
+
     public void setUrlImmagine(String urlImmagine) {
         this.urlImmagine = urlImmagine;
     }
-
 
     @Override
     public int hashCode() {
@@ -84,7 +96,6 @@ public class Autore {
         return result;
     }
 
-    
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -126,6 +137,5 @@ public class Autore {
             return false;
         return true;
     }
-
 
 }

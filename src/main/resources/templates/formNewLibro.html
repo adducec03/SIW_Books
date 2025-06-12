@@ -28,6 +28,12 @@
             <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}"></span>
         </div>
 
+        <div>
+            <label>Anno:</label>
+            <input type="text" th:field="*{genere}" />
+            <span th:if="${#fields.hasErrors('genere')}" th:errors="*{genere}"></span>
+        </div>
+
         <div id="immagini-container">
             <label>URL immagine:</label>
             <input type="url" name="urlImmagini" />

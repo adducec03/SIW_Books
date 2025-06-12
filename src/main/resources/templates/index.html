@@ -18,7 +18,16 @@
             SIW<br>Books
         </span>
         <span id="navbar-links">
-            <a href="/libri">Libri</a>
+            <div class="dropdown">
+                <a href="/libri">Libri</a>
+                <div class="dropdown-content">
+                    <ul>
+                        <li th:each="genere : ${generi}">
+                            <a th:href="@{/libri(genere=${genere})}" th:text="${genere}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <a href="/autori">Autori</a>
         </span>
         <span id="navbar-auth">
