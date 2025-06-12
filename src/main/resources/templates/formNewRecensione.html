@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Nuova Recensione</title>
+</head>
+
+<body>
+
+    <h2>Scrivi una recensione</h2>
+
+    <form th:action="@{/recensioni}" th:object="${recensione}" method="post">
+        <input type="hidden" th:field="*{libro.id}" />
+
+        <label for="titolo">Titolo:</label>
+        <input type="text" id="titolo" th:field="*{titolo}" required /><br />
+
+        <label for="descrizione">Descrizione:</label><br />
+        <textarea id="descrizione" th:field="*{descrizione}" rows="5" required></textarea><br />
+
+        <label for="voto">Voto:</label>
+        <select id="voto" th:field="*{voto}" required>
+            <option value="" disabled selected>Seleziona voto</option>
+            <option th:each="i : ${#numbers.sequence(1,5)}" th:value="${i}" th:text="${i}"></option>
+        </select><br /><br />
+
+        <button type="submit">Conferma</button>
+    </form>
+
+</body>
+
+</html>

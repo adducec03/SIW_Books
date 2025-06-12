@@ -26,10 +26,37 @@
             <h3>Autori:</h3>
             <ul>
                 <li th:each="autore : ${libro.autori}">
-                    <a th:href="@{'/autore/' + ${autore.id}}" th:text="${autore.nome} + ' ' + ${autore.cognome}">Autore</a>
+                    <a th:href="@{'/autore/' + ${autore.id}}"
+                        th:text="${autore.nome} + ' ' + ${autore.cognome}">Autore</a>
                 </li>
             </ul>
         </div>
+    </div>
+
+
+    <h2>Recensioni</h2>
+
+    <div th:if="${#lists.isEmpty(libro.recensioni)}">
+        <p>Nessuna recensione disponibile.</p>
+    </div>
+
+    <section id="recensioni">
+        <h2>Recensioni</h2>
+        <div th:each="recensione : ${recensioni}">
+            <div class="recensione">
+                <h3 th:text="${recensione.titolo}">Titolo</h3>
+                <p th:text="${recensione.descrizione}">Descrizione</p>
+                <p>Voto: <span th:text="${recensione.voto}">0</span></p>
+                <p><i>Scritta il <span
+                            th:text="${#temporals.format(recensione.dataCreazione, 'dd/MM/yyyy HH:mm')}"></span></i></p>
+                <p>Recensione di <span th:text="${recensione.utente.nome} + ' ' + ${recensione.utente.cognome}">Utente</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottone per aggiungere recensione (solo utenti autenticati) -->
+    <div sec:authorize="isAuthenticated()">
+        <a th:href="@{/recensioni/nuova(libroId=${libro.id})}" class="button">Aggiungi recensione</a>
     </div>
 
     <div th:unless="${libro}">Non esiste</div>

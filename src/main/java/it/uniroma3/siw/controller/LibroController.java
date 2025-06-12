@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.model.Libro;
+import it.uniroma3.siw.model.Recensione;
 import it.uniroma3.siw.service.AutoreService;
 import it.uniroma3.siw.service.LibroService;
+import it.uniroma3.siw.service.RecensioneService;
 import jakarta.validation.Valid;
 
 @Controller
@@ -26,9 +28,15 @@ public class LibroController {
     @Autowired
     AutoreService autoreService;
 
+    @Autowired
+    RecensioneService recensioneService;
+
     @GetMapping("/libro/{id}")
     public String getLibro(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("libro", this.libroService.getLibroById(id));
+        Libro libro = this.libroService.getLibroById(id);
+        model.addAttribute("libro", libro);
+        List<Recensione> recensioni = recensioneService.findByLibroOrderByDataCreazioneDesc(libro);
+        model.addAttribute("recensioni", recensioni);
         return "libro.html";
     }
     /*

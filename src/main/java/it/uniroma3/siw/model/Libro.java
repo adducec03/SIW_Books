@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Max;
@@ -31,8 +31,18 @@ public class Libro {
     private List<String> urlImmagini;
     @ManyToMany
     private List<Autore> autori = new ArrayList<>();
+    @OneToMany(mappedBy = "libro")
+    private List<Recensione> recensioni = new ArrayList<>();
 
     // ----------------------------METODI-----------------------------//
+
+    public List<Recensione> getRecensioni() {
+        return recensioni;
+    }
+
+    public void setRecensioni(List<Recensione> recensioni) {
+        this.recensioni = recensioni;
+    }
 
     public String getGenere() {
         return genere;
