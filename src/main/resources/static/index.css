@@ -1,8 +1,12 @@
-body{
+html {
+    scroll-behavior: smooth;
+}
+
+body {
     margin: 0;
     padding: 0;
     font-family: "Roboto", sans-serif;
-    background-color: #ffe6a7;
+    background-color: #432818;
 }
 
 nav {
@@ -14,22 +18,40 @@ nav {
     align-items: center;
     background-color: #99582a;
     padding: 10px 20px;
-    margin:0;
+    margin: 0;
     box-sizing: border-box;
 }
 
 #navbar-logo {
     display: flex;
     align-items: center;
-    max-width: 120px; /* limita la larghezza massima dello span */
+    max-width: 120px;
+    /* limita la larghezza massima dello span */
+    font-family: "EB Garamond", serif;
+    text-align: center;
+    color: #ffe6a7;
+    font-size: 2em;
+    font-weight: light;
+
 }
 
 #navbar-logo img {
-    width: 100px; /* dimensione fissa e proporzionata */
+    width: 100px;
+    /* dimensione fissa e proporzionata */
     height: auto;
 }
 
-#navbar-links,
+#navbar-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
 #navbar-auth {
     display: flex;
     justify-content: center;
@@ -63,7 +85,7 @@ nav {
 }
 
 
-#main-page{
+#main-page {
     background-image: url("wallpaper.png");
     background-size: cover;
     background-repeat: no-repeat;
@@ -76,9 +98,10 @@ nav {
     text-align: center;
     padding-top: 15vh;
     height: 85vh;
+    width: 100vw;
 }
 
-#main-page h1{
+#main-page h1 {
     font-size: 10rem;
     font-family: "EB Garamond", serif;
     font-weight: normal;
@@ -86,25 +109,26 @@ nav {
     padding: 0;
 }
 
-#main-page h2{
+#main-page h2 {
     font-size: 3rem;
     font-family: "EB Garamond", serif;
     font-weight: normal;
     margin: -0.8em 0 0 0;
-    padding:0;
+    padding: 0;
 }
 
-#main-page p{
+#main-page p {
     font-size: 1.5em;
     margin: 2rem 0 0 0;
-    width: 30em;
+    width: 90%;
+    max-width: 30em;
 }
 
 #main-page div {
     margin: 5rem 0 0 0;
 }
 
-#main-page a.button-scopri{
+#main-page a.button-scopri {
     background-color: #6f1b1d;
     color: #ffe6a7;
     padding: 0.8rem 1.6rem;
@@ -112,26 +136,335 @@ nav {
     font-size: 1.5em;
     margin: 5px 0 0 0;
 }
+/*
+@media (max-width: 935px) {
+    
+}*/
+
 
 #libri {
-    width:100%;
-    height:70vh;
+    scroll-margin-top: 15vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+    background-color: #ffe6a7;
+    width: 100%;
+    height: 70vh;
 }
+
+.libri-testo {
+    flex: 1;
+    height: 100%;
+    margin: 0rem 4rem 0rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.libri-testo h2 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+
+}
+
+.libri-testo p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+}
+
+.button-libri {
+    background-color: #6f1b1d;
+    color: #ffe6a7;
+    padding: 0.8rem 1.6rem;
+    text-decoration: none;
+    font-weight: bold;
+    align-self: flex-end;
+}
+
+.button-libri:hover {
+    background-color: #432818;
+}
+
+.libri-immagine {
+    flex: 1;
+    text-align: right;
+}
+
+.libri-immagine img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 935px) {
+    #libri {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: auto;
+        /* meglio se l'altezza si adatta al contenuto */
+        padding: 2rem;
+    }
+
+    .libri-immagine {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .libri-immagine img {
+        max-width: 90%;
+    }
+
+    .libri-testo {
+        align-items: center;
+        margin: 0; 
+    }
+
+    .libri-testo h2 {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+
+    }
+
+    .button-libri {
+        background-color: #6f1b1d;
+        align-self: center;
+        color: #ffe6a7;
+        padding: 0.8rem 1.6rem;
+        text-decoration: none;
+        font-weight: bold;
+    }
+}
+
+
+
 
 #autori {
-    width:100%;
-    height:70vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+    background-color: #ffe6a7;
+    width: 100%;
+    height: 70vh;
 }
 
-#recensioni {
-    width:100%;
-    height:70vh;
+.autori-testo {
+    flex: 1;
+    height: 100%;
+    margin: 0rem 4rem 0rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
+
+.autori-testo h2 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+
+}
+
+.autori-testo p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+}
+
+.button-autori {
+    background-color: #6f1b1d;
+    color: #ffe6a7;
+    padding: 0.8rem 1.6rem;
+    text-decoration: none;
+    font-weight: bold;
+    align-self: flex-end;
+}
+
+.button-autori:hover {
+    background-color: #432818;
+}
+
+.autori-immagine {
+    flex: 1;
+    text-align: right;
+}
+
+.autori-immagine img {
+    max-width: 100%;
+    height: auto;
+    align-self: right;
+}
+
+@media (max-width: 935px) {
+    #autori {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: auto;
+        /* meglio se l'altezza si adatta al contenuto */
+        padding: 2rem;
+    }
+
+    .autori-immagine {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .autori-immagine img {
+        max-width: 90%;
+    }
+
+    .autori-testo {
+        align-items: center;
+        margin: 0; 
+    }
+
+    .autori-testo h2 {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+
+    }
+
+    .button-autori {
+        background-color: #6f1b1d;
+        align-self: center;
+        color: #ffe6a7;
+        padding: 0.8rem 1.6rem;
+        text-decoration: none;
+        font-weight: bold;
+    }
+}
+
+
+#recensioni {
+    scroll-margin-top: 15vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+    background-color: #ffe6a7;
+    width: 100%;
+    height: 70vh;
+}
+
+.recensioni-testo {
+    flex: 1;
+    height: 100%;
+    margin: 0rem 4rem 0rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.recensioni-testo h2 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+
+}
+
+.recensioni-testo p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+}
+
+.button-recensioni {
+    background-color: #6f1b1d;
+    color: #ffe6a7;
+    padding: 0.8rem 1.6rem;
+    text-decoration: none;
+    font-weight: bold;
+    align-self: flex-end;
+}
+
+.button-recensioni:hover {
+    background-color: #432818;
+}
+
+.recensioni-immagine {
+    flex: 1;
+    text-align: right;
+}
+
+.recensioni-immagine img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 935px) {
+    #recensioni {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: auto;
+        /* meglio se l'altezza si adatta al contenuto */
+        padding: 2rem;
+    }
+
+    .recensioni-immagine {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .recensioni-immagine img {
+        max-width: 90%;
+    }
+
+    .recensioni-testo {
+        align-items: center;
+        margin: 0; 
+    }
+
+    .recensioni-testo h2 {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+
+    }
+
+    .button-recensioni {
+        background-color: #6f1b1d;
+        align-self: center;
+        color: #ffe6a7;
+        padding: 0.8rem 1.6rem;
+        text-decoration: none;
+        font-weight: bold;
+    }
+}
+
 
 #footer {
     background-color: #432818;
-    height: 15vh;
+    color: #ffe6a7;
+    height: 30vh;
     width: 100%;
     margin: 0;
     padding: 0;
+}
+
+.icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+}
+
+.icons a {
+    display: inline-flex; /* usa inline-flex per adattarsi al contenuto */
+    align-items: center;
+    justify-content: center;
+    padding: 0; /* niente padding per evitare spazi extra */
+    margin: 10px; /* margine negativo per centrare le icone */
+}
+
+.icons img {
+    display: block; /* rimuove spazi bianchi sotto l'immagine */
+    width: 40px;     /* dimensione controllata */
+    height: auto;
+
+}
+
+footer p {
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 0rem;
 }
