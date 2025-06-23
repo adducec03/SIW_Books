@@ -13,11 +13,14 @@
 
 <body>
 
-    <nav class="navbar">
-        <span id="navbar-logo">
-            SIW<br>Books
-        </span>
-        <span id="navbar-links">
+    <nav class="navbar sticky-navbar hidden-navbar">
+        <div class="navbar-section left">
+            <span id="navbar-logo">
+                SIW<br>Books
+            </span>
+        </div>
+
+        <div class="navbar-section center">
             <div class="dropdown">
                 <a href="/libri">Libri</a>
                 <div class="dropdown-content">
@@ -29,19 +32,57 @@
                 </div>
             </div>
             <a href="/autori">Autori</a>
-        </span>
-        <span id="navbar-auth">
-            <span class th:if="${not #authorization.expression('isAuthenticated()')}">
+        </div>
+
+        <div class="navbar-section right">
+            <span th:if="${not #authorization.expression('isAuthenticated()')}">
                 <a href="/login">Login</a>
                 <a href="/register" class="button-register">Register</a>
             </span>
             <span th:if="${nomeUtente != null}">
                 Ciao, <span th:text="${nomeUtente}"></span> | <a th:href="@{/logout}">Logout</a>
             </span>
-        </span>
+        </div>
     </nav>
 
+    <nav class="navbar initial-navbar">
+            <div class="navbar-section left">
+                <span id="navbar-logo">
+                    SIW<br>Books
+                </span>
+            </div>
+
+            <div class="navbar-section center">
+                <div class="dropdown">
+                    <a href="/libri">Libri</a>
+                    <div class="dropdown-content">
+                        <ul>
+                            <li th:each="genere : ${generi}">
+                                <a th:href="@{/libri(genere=${genere})}" th:text="${genere}"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="/autori">Autori</a>
+            </div>
+
+            <div class="navbar-section right">
+                <span th:if="${not #authorization.expression('isAuthenticated()')}">
+                    <a href="/login">Login</a>
+                    <a href="/register" class="button-register">Register</a>
+                </span>
+                <span th:if="${nomeUtente != null}">
+                    Ciao, <span th:text="${nomeUtente}"></span> | <a th:href="@{/logout}">Logout</a>
+                </span>
+            </div>
+        </nav>
+
+
+
+
     <div id="main-page">
+
+        
 
         <h1>SIW Books</h1>
         <h2>La tua biblioteca digitale</h2>
@@ -82,7 +123,8 @@
                         <em th:text="${recensione.libro.titolo}">Libro</em>:
                     </p>
                     <blockquote th:text="${recensione.descrizione}">Testo della recensione</blockquote>
-                    <span th:text="${recensione.dataCreazione != null ? recensione.dataCreazione.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : ''}"></span>
+                    <span
+                        th:text="${recensione.dataCreazione != null ? recensione.dataCreazione.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : ''}"></span>
                 </div>
             </div>
         </div>
@@ -106,27 +148,6 @@
 
         </section>
 
-
-        <!--        
-        <section id="recensioni">
-            <div class="recensioni-testo">
-                <h2>Recensioni</h2>
-                <p>
-                    Scopri centinaia di libri da leggere, dai grandi classici ai bestseller contemporanei.
-                    Esplora trame avvincenti, generi diversi e recensioni autentiche per trovare la tua prossima lettura
-                    preferita.
-                    Salva i titoli che ami, confronta valutazioni e tieni traccia dei tuoi progressi.
-                </p>
-                <a href="/libri" class="button-recensioni">Scopri nuovi libri ↗︎</a>
-            </div>
-            <div class="recensioni-immagine">
-                <img src="/recensioni.png" alt="Recensioni" />
-            </div>
-        </section>
-    </div>
-
--->
-
         <footer id="footer">
             <div class="icons">
                 <a href="https://github.com/adducec03" target="_blank" rel="noopener">
@@ -145,5 +166,19 @@
                 <p>Copyright © 2025 Carmine Adduce</p>
             </div>
         </footer>
+
+        <script>
+            window.addEventListener('scroll', function () {
+                const stickyNavbar = document.querySelector('.sticky-navbar');
+                const triggerHeight = document.getElementById('main-page').offsetHeight - 50;
+
+                if (window.scrollY > triggerHeight) {
+                    stickyNavbar.classList.add('visible');
+                } else {
+                    stickyNavbar.classList.remove('visible');
+                }
+            });
+        </script>
+</body>
 
 </html>
