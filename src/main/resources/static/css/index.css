@@ -57,7 +57,7 @@ body {
     align-items: center;
 }
 
-.navbar-section.left{
+.navbar-section.left {
     min-width: 150px;
     flex: 0 0 auto;
     text-align: center;
@@ -110,6 +110,7 @@ a.button-register:hover {
     transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
+    width: 100vw;
 }
 
 .sticky-navbar.visible {
@@ -356,37 +357,113 @@ a.button-register:hover {
 
 
 
-
-.recensioni {
-    background-image: url("/images/recensioni2.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 80vh;
-    width: 100%;
+#recensioni-home {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: space-around;
+    background-image: url('/images/recensioni2.png');
+    /* o il tuo sfondo */
+    background-size: cover;
+    background-position: center;
+    padding: 6rem 2rem;
     color: #ffe6a7;
+    position: relative;
+    height: 70vh;
+    gap: 4rem;
 }
 
-.recensioni-lista {
+.recensioni-testo{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    max-width: 500px;
+}
+
+.recensioni-testo h2{
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    font-family: "EB Garamond", serif;
+}
+
+.recensioni-testo p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+}
+
+.recensioni-testo {
+    flex: 1;
+    max-width: 500px;
+}
+
+.recensioni-slider-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 40%;
+    position: relative;
+    justify-content: space-between;
+    
+}
+
+.recensioni-slider {
+    width: 100%;
+}
+
+.card-recensione {
+    display: none;
     background-color: #ffe6a7;
-    padding: 2rem;
     color: #432818;
-    font-size: 1.1rem;
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 100%;
+    min-height: 200px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-.recensione {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    border-bottom: 1px solid #99582a;
+.card-recensione h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
 }
 
-.recensione blockquote {
-    font-style: italic;
-    margin: 0.5rem 0;
+.card-recensione h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
 }
+
+.card-recensione p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.card-recensione.active {
+    display: block;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #ffe6a7;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 1rem;
+  z-index: 10;
+}
+
+#prevBtn {
+  left: -5rem;
+}
+
+#nextBtn {
+  right: -5rem;
+}
+
 
 
 

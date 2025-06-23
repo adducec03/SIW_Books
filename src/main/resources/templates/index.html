@@ -46,43 +46,43 @@
     </nav>
 
     <nav class="navbar initial-navbar">
-            <div class="navbar-section left">
-                <span id="navbar-logo">
-                    SIW<br>Books
-                </span>
-            </div>
+        <div class="navbar-section left">
+            <span id="navbar-logo">
+                SIW<br>Books
+            </span>
+        </div>
 
-            <div class="navbar-section center">
-                <div class="dropdown">
-                    <a href="/libri">Libri</a>
-                    <div class="dropdown-content">
-                        <ul>
-                            <li th:each="genere : ${generi}">
-                                <a th:href="@{/libri(genere=${genere})}" th:text="${genere}"></a>
-                            </li>
-                        </ul>
-                    </div>
+        <div class="navbar-section center">
+            <div class="dropdown">
+                <a href="/libri">Libri</a>
+                <div class="dropdown-content">
+                    <ul>
+                        <li th:each="genere : ${generi}">
+                            <a th:href="@{/libri(genere=${genere})}" th:text="${genere}"></a>
+                        </li>
+                    </ul>
                 </div>
-                <a href="/autori">Autori</a>
             </div>
+            <a href="/autori">Autori</a>
+        </div>
 
-            <div class="navbar-section right">
-                <span th:if="${not #authorization.expression('isAuthenticated()')}">
-                    <a href="/login">Login</a>
-                    <a href="/register" class="button-register">Register</a>
-                </span>
-                <span th:if="${nomeUtente != null}">
-                    Ciao, <span th:text="${nomeUtente}"></span> | <a th:href="@{/logout}">Logout</a>
-                </span>
-            </div>
-        </nav>
+        <div class="navbar-section right">
+            <span th:if="${not #authorization.expression('isAuthenticated()')}">
+                <a href="/login">Login</a>
+                <a href="/register" class="button-register">Register</a>
+            </span>
+            <span th:if="${nomeUtente != null}">
+                Ciao, <span th:text="${nomeUtente}"></span> | <a th:href="@{/logout}">Logout</a>
+            </span>
+        </div>
+    </nav>
 
 
 
 
     <div id="main-page">
 
-        
+
 
         <h1>SIW Books</h1>
         <h2>La tua biblioteca digitale</h2>
@@ -112,22 +112,31 @@
             </div>
         </section>
 
-        <div class="recensioni">
-            <p>
-                Leggi le opinioni di altri lettori e condividi la tua esperienza. Le recensioni ti aiutano a scoprire
-                libri adatti ai tuoi gusti, confrontare valutazioni e approfondire le storie che ami.
-            </p>
-            <div class="recensioni-lista">
-                <div th:each="recensione : ${recensioniRecenti}" class="recensione">
-                    <p><strong th:text="${recensione.utente.nome}">Utente</strong> ha recensito
-                        <em th:text="${recensione.libro.titolo}">Libro</em>:
-                    </p>
-                    <blockquote th:text="${recensione.descrizione}">Testo della recensione</blockquote>
-                    <span
-                        th:text="${recensione.dataCreazione != null ? recensione.dataCreazione.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : ''}"></span>
-                </div>
+        <section id="recensioni-home">
+            <div class="recensioni-testo">
+                <h2>Recensioni</h2>
+                <p>
+                    Leggi opinioni autentiche e dettagliate sui libri che ami o che stai per scoprire.
+                    Confronta valutazioni, scopri nuovi punti di vista e contribuisci con le tue recensioni
+                    per aiutare altri lettori a scegliere la loro prossima lettura.
+                </p>
             </div>
-        </div>
+
+            <div class="recensioni-slider-wrapper">
+                <button id="prevBtn" class="slider-btn">‹</button>
+
+                <div class="recensioni-slider">
+                    <div class="card-recensione" th:each="recensione, iterStat : ${recensioniRecenti}"
+                        th:classappend="${iterStat.index == 0} ? ' active' : ''">
+                        <h2 th:text="${recensione.utente.nome}"></h2>
+                        <h3 th:text="${recensione.libro.titolo}"></h3>
+                        <p th:text="${#strings.abbreviate(recensione.descrizione, 160)}"></p>
+                    </div>
+                </div>
+
+                <button id="nextBtn" class="slider-btn">›</button>
+            </div>
+        </section>
 
 
         <section id="autori">
@@ -170,13 +179,41 @@
         <script>
             window.addEventListener('scroll', function () {
                 const stickyNavbar = document.querySelector('.sticky-navbar');
-                const triggerHeight = document.getElementById('main-page').offsetHeight - 50;
+                const mainPage = document.getElementById('main-page');
+
+                // Altezza della sezione main meno 15% della viewport height
+                const triggerHeight = mainPage.offsetHeight - (window.innerHeight * 0.20);
 
                 if (window.scrollY > triggerHeight) {
                     stickyNavbar.classList.add('visible');
                 } else {
                     stickyNavbar.classList.remove('visible');
                 }
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                const cards = document.querySelectorAll(".card-recensione");
+                const nextBtn = document.getElementById("nextBtn");
+                const prevBtn = document.getElementById("prevBtn");
+
+                let current = 0;
+
+                function showCard(index) {
+                    cards.forEach((card, i) => {
+                        card.classList.toggle("active", i === index);
+                    });
+                }
+
+                nextBtn.addEventListener("click", () => {
+                    current = (current + 1) % cards.length;
+                    showCard(current);
+                });
+
+                prevBtn.addEventListener("click", () => {
+                    current = (current - 1 + cards.length) % cards.length;
+                    showCard(current);
+                });
+
+                showCard(current); // inizializza
             });
         </script>
 </body>
