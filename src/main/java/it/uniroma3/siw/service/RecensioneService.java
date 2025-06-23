@@ -38,11 +38,15 @@ public class RecensioneService {
             nuovaRecensione.setDataCreazione(LocalDateTime.now());
             return recensioneRepository.save(nuovaRecensione);
         }
-        
+
     }
 
     public List<Recensione> findByLibroOrderByDataCreazioneDesc(Libro libro) {
         return recensioneRepository.findByLibroOrderByDataCreazioneDesc(libro);
+    }
+
+    public List<Recensione> getRecensioniRecenti() {
+        return recensioneRepository.findTop3ByOrderByDataCreazioneDesc();
     }
 
 }

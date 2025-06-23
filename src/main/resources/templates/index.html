@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="/index.css?version=2" />
+    <link rel="stylesheet" href="css/index.css?version=2" />
 </head>
 
 <body>
@@ -67,13 +67,30 @@
                 <a href="/libri" class="button-libri">Scopri nuovi libri ↗︎</a>
             </div>
             <div class="libri-immagine">
-                <img src="libro.png" alt="Libro aperto" />
+                <img src="/images/libro.png" alt="Libro aperto" />
             </div>
         </section>
 
+        <div class="recensioni">
+            <p>
+                Leggi le opinioni di altri lettori e condividi la tua esperienza. Le recensioni ti aiutano a scoprire
+                libri adatti ai tuoi gusti, confrontare valutazioni e approfondire le storie che ami.
+            </p>
+            <div class="recensioni-lista">
+                <div th:each="recensione : ${recensioniRecenti}" class="recensione">
+                    <p><strong th:text="${recensione.utente.nome}">Utente</strong> ha recensito
+                        <em th:text="${recensione.libro.titolo}">Libro</em>:
+                    </p>
+                    <blockquote th:text="${recensione.descrizione}">Testo della recensione</blockquote>
+                    <span th:text="${recensione.dataCreazione != null ? recensione.dataCreazione.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : ''}"></span>
+                </div>
+            </div>
+        </div>
+
+
         <section id="autori">
             <div class="autori-immagine">
-                <img src="autori.png" alt="Autori" style="width: 130%;" />
+                <img src="/images/autori.png" alt="Autori" style="width: 130%;" />
             </div>
             <div class="autori-testo">
                 <h2>Autori</h2>
@@ -86,8 +103,11 @@
                 </p>
                 <a href="/autori" class="button-autori">Scopri nuovi autori ↗︎</a>
             </div>
+
         </section>
 
+
+        <!--        
         <section id="recensioni">
             <div class="recensioni-testo">
                 <h2>Recensioni</h2>
@@ -105,23 +125,25 @@
         </section>
     </div>
 
-    <footer id="footer">
-        <div class="icons">
-            <a href="https://github.com/adducec03" target="_blank" rel="noopener">
-                <img src="github_icon_light.png" alt="GitHub">
-            </a>
-            <a href="https://www.instagram.com/adducec/" target="_blank" rel="noopener">
-                <img src="instagram_icon_light.png" alt="Instagram">
-            </a>
-            <a href="https://www.linkedin.com/in/carmine-adduce-b82704342/" target="_blank" rel="noopener">
-                <img src="linkedin_icon_light.png" alt="LinkedIn">
-            </a>
-        </div>
-        <div class="footer-text">
-            <p>SIW Books &copy; 2025</p>
-            <p>Progetto di Sistemi Informativi su Web - Università degli Studi Roma Tre</p>
-            <p>Copyright © 2025 Carmine Adduce</p>
-        </div>
-    </footer>
+-->
+
+        <footer id="footer">
+            <div class="icons">
+                <a href="https://github.com/adducec03" target="_blank" rel="noopener">
+                    <img src="/images/github_icon_light.png" alt="GitHub">
+                </a>
+                <a href="https://www.instagram.com/adducec/" target="_blank" rel="noopener">
+                    <img src="/images/instagram_icon_light.png" alt="Instagram">
+                </a>
+                <a href="https://www.linkedin.com/in/carmine-adduce-b82704342/" target="_blank" rel="noopener">
+                    <img src="/images/linkedin_icon_light.png" alt="LinkedIn">
+                </a>
+            </div>
+            <div class="footer-text">
+                <p>SIW Books &copy; 2025</p>
+                <p>Progetto di Sistemi Informativi su Web - Università degli Studi Roma Tre</p>
+                <p>Copyright © 2025 Carmine Adduce</p>
+            </div>
+        </footer>
 
 </html>

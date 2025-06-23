@@ -13,5 +13,5 @@ public interface RecensioneRepository extends CrudRepository<Recensione, Long> {
     List<Recensione> findByLibroId(Long libroId);
     Optional<Recensione> findByUtenteAndLibro(Utente utente, Libro libro);
     List<Recensione> findByLibroOrderByDataCreazioneDesc(Libro libro);
-
+    List<Recensione> findTop3ByOrderByDataCreazioneDesc();
 }

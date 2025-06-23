@@ -12,8 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import it.uniroma3.siw.model.Credentials;
+import it.uniroma3.siw.model.Recensione;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.LibroService;
+import it.uniroma3.siw.service.RecensioneService;
 
 @Controller
 public class HomeController {
@@ -22,8 +24,8 @@ public class HomeController {
     private CredentialsService credentialsService;
     @Autowired
     private LibroService libroService;
-
-
+    @Autowired
+    private RecensioneService recensioneService;
 
     @GetMapping("/")
     public String index(Model model, Principal principal) {
@@ -55,6 +57,9 @@ public class HomeController {
 
         List<String> generi = libroService.trovaTuttiIGeneri(); // metodo da creare
         model.addAttribute("generi", generi);
+
+        List<Recensione> recensioniRecenti = recensioneService.getRecensioniRecenti();
+        model.addAttribute("recensioniRecenti", recensioniRecenti);
 
         return "index";
     }

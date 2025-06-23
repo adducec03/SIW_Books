@@ -1,56 +1,97 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Registrazione</title>
-    <link rel="stylesheet" href="/stile.css?version=3" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione | SIW Books</title>
+    <link rel="preload" as="image" href="/images/wallpaper2.png">
+    <link rel="stylesheet" href="/css/register.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
-    <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
-    <h1>Registrazione</h1>
 
-    <form th:action="@{/register}" method="POST" th:object="${credentials}">
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+    <div class="image-wrapper">
+        <img src="/images/wallpaper2.png" class="bg-image" alt="Sfondo">
+    </div>
+
+    <a href="/" class="home-link" aria-label="Torna alla home">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <div class="register-container">
+        <div class="register-box">
+            <h2>Registrazione</h2>
+
+            <form th:action="@{/register}" method="POST" th:object="${credentials}">
+                <div th:if="${#fields.hasGlobalErrors()}" class="error-msg">
+                    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+                </div>
+
+                <div class="input-group">
+                    <label>Nome</label>
+                    <input type="text" th:field="*{utente.nome}" placeholder="Nome" required />
+                </div>
+
+                <div class="input-group">
+                    <label>Cognome</label>
+                    <input type="text" th:field="*{utente.cognome}" placeholder="Cognome" required />
+                </div>
+
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" th:field="*{utente.email}" placeholder="Email" required />
+                </div>
+
+                <div class="input-group">
+                    <label>Numero di telefono</label>
+                    <input type="number" th:field="*{utente.numeroTelefonico}" placeholder="Opzionale" />
+                </div>
+
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" th:field="*{username}" placeholder="Username" required />
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" th:field="*{password}" placeholder="Password" required />
+                </div>
+
+                <button type="submit" class="register-btn"><span>Registrati</span></button>
+            </form>
+
+            <p class="signup-text">Hai già un account? <a href="/login">Accedi</a></p>
         </div>
+    </div>
 
-        <div>
-            <label>Nome:</label>
-            <input type="text" th:field="*{utente.nome}" placeholder="Campo Obbligatorio" required />
-        </div>
+    <script>
+        // Attiva animazione registrazione
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                // Anima il box di login
+                const loginBox = document.querySelector('.register-container');
+                if (loginBox) {
+                    loginBox.classList.add('animate');
+                }
 
-        <div>
-            <label>Cognome:</label>
-            <input type="text" th:field="*{utente.cognome}" placeholder="Campo Obbligatorio" required />
-        </div>
+                // Anima l'icona della home (assicurati che abbia la classe .home-link)
+                const homeIcon = document.querySelector('.home-link');
+                if (homeIcon) {
+                    homeIcon.classList.add('animate');
+                }
+            }, 100); // Ritardo per dare effetto fluido
+        });
 
-        <div>
-            <label>email:</label>
-            <input type="email" th:field="*{utente.email}" placeholder="Campo Obbligatorio" required />
-        </div>
-
-        <div>
-            <label>Numero di telefono:</label>
-            <input type="number" th:field="*{utente.numeroTelefonico}" />
-        </div>
-
-        <div>
-            <label>Username:</label>
-            <input type="text" th:field="*{username}" placeholder="Campo Obbligatorio" required />
-        </div>
-
-        <div>
-            <label>Password:</label>
-            <input type="password" th:field="*{password}" placeholder="Campo Obbligatorio" required />
-        </div>
-
-
-
-        <div>
-            <button type="submit">Registrati</button>
-        </div>
-    </form>
+        // Fade-in immagine background
+        const bg = document.querySelector('.bg-image');
+        if (bg) {
+            bg.addEventListener('load', () => {
+                bg.classList.add('loaded');
+            });
+        }
+    </script>
 </body>
 
 </html>

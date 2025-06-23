@@ -1,0 +1,166 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", sans-serif;
+    background-color: #432818;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.image-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.bg-image.loaded {
+    opacity: 1;
+}
+
+.home-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 1.8rem;
+    color: #ffe6a7;
+    background-color: rgba(67, 40, 24, 0.8); /* colore marrone scuro semi-trasparente */
+    padding: 10px 12px;
+    border-radius: 50%;
+    text-decoration: none;
+    z-index: 100;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    will-change: opacity, transform;
+}
+
+.home-link.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.home-link:hover {
+    background-color: rgba(153, 88, 42, 0.9); /* sfumatura più chiara al passaggio */
+    transform: scale(1.1);
+}
+
+.register-container {
+    background-color: #ffe6a7;
+    padding: 2.5rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(-50px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.register-container.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.register-box h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #432818;
+    font-size: 2rem;
+}
+
+.input-group {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    margin-bottom: 0.3rem;
+    font-weight: bold;
+    color: #432818;
+}
+
+.input-group input {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #99582a;
+}
+
+button.register-btn {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    background: linear-gradient(to right, #6f1d1b, #99582a);
+    color: #ffe6a7;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+button.register-btn::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(to right, #99582a, #6f1d1b);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+button.register-btn:hover::before {
+    opacity: 1;
+}
+
+button.register-btn span {
+    position: relative;
+    z-index: 2;
+}
+
+.signup-text {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #432818;
+}
+
+.signup-text a {
+    color: #6f1d1b;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.error-msg {
+    color: red;
+    margin-bottom: 1rem;
+    text-align: center;
+}

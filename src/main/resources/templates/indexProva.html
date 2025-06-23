@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIW Books - Responsive</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Roboto&display=swap">
+    <!-- BOOTSTRAP CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<!-- BOOTSTRAP JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-brown px-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">SIW<br>Books</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Libri</a>
+          <ul class="dropdown-menu">
+            <li th:each="genere : ${generi}">
+              <a class="dropdown-item" th:href="@{/libri(genere=${genere})}" th:text="${genere}"></a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="/autori">Autori</a></li>
+      </ul>
+
+      <div>
+        <span th:if="${not #authorization.expression('isAuthenticated()')}">
+          <a href="/login" class="btn btn-outline-light me-2">Login</a>
+          <a href="/register" class="btn btn-warning">Register</a>
+        </span>
+        <span th:if="${nomeUtente != null}">
+          <span class="text-light">Ciao, <span th:text="${nomeUtente}"></span></span>
+          <a th:href="@{/logout}" class="btn btn-sm btn-outline-light ms-2">Logout</a>
+        </span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<header class="text-center text-light d-flex flex-column justify-content-center align-items-center"
+        style="background-image: url('wallpaper.png'); background-size: cover; background-position: center; height: 85vh;">
+
+  <h1 class="display-1 fw-light">SIW Books</h1>
+  <h2 class="h2 mb-4">La tua biblioteca digitale</h2>
+  <p class="lead w-75 mx-auto">
+    SIW Books è la tua biblioteca digitale: scopri libri, conosci gli autori e condividi le tue recensioni con altri lettori.
+  </p>
+  <a href="#libri" class="btn btn-danger btn-lg mt-4">Scopri di più ↗︎</a>
+</header>
+
+<section id="libri" class="container-fluid bg-warning py-5">
+  <div class="row align-items-center">
+    <div class="col-lg-6 px-5">
+      <h2 class="display-4">Libri</h2>
+      <p class="lead">
+        Scopri centinaia di libri da leggere, dai grandi classici ai bestseller contemporanei...
+      </p>
+      <a href="/libri" class="btn btn-dark mt-3">Scopri nuovi libri ↗︎</a>
+    </div>
+    <div class="col-lg-6 text-center">
+      <img src="libro.png" alt="Libro aperto" class="img-fluid">
+    </div>
+  </div>
+</section>
+
+
+<footer class="bg-dark text-light py-4">
+  <div class="container text-center">
+    <div class="mb-3">
+      <a href="https://github.com/adducec03" target="_blank">
+        <img src="github_icon_light.png" width="40" class="mx-2" alt="GitHub">
+      </a>
+      <a href="https://www.instagram.com/adducec/" target="_blank">
+        <img src="instagram_icon_light.png" width="40" class="mx-2" alt="Instagram">
+      </a>
+      <a href="https://www.linkedin.com/in/carmine-adduce-b82704342/" target="_blank">
+        <img src="linkedin_icon_light.png" width="40" class="mx-2" alt="LinkedIn">
+      </a>
+    </div>
+    <p class="mb-0">SIW Books &copy; 2025</p>
+    <small>Università Roma Tre – Carmine Adduce</small>
+  </div>
+</footer>
+
+
+</body>
+
+
+</html>
