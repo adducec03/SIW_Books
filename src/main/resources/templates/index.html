@@ -21,16 +21,7 @@
         </div>
 
         <div class="navbar-section center">
-            <div class="dropdown">
-                <a href="/libri">Libri</a>
-                <div class="dropdown-content">
-                    <ul>
-                        <li th:each="genere : ${generi}">
-                            <a th:href="@{/libri(genere=${genere})}" th:text="${genere}"></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <a href="/libri">Libri</a>
             <a href="/autori">Autori</a>
         </div>
 
@@ -53,16 +44,7 @@
         </div>
 
         <div class="navbar-section center">
-            <div class="dropdown">
-                <a href="/libri">Libri</a>
-                <div class="dropdown-content">
-                    <ul>
-                        <li th:each="genere : ${generi}">
-                            <a th:href="@{/libri(genere=${genere})}" th:text="${genere}"></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <a href="/libri">Libri</a>
             <a href="/autori">Autori</a>
         </div>
 

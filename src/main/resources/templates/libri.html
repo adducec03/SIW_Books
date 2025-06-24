@@ -1,40 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
+    <meta charset="UTF-8">
     <title>Libri</title>
-    <link rel="stylesheet" href="/stile.css?version=2" />
+    <link rel="stylesheet" href="/css/libri.css?version=2">
 </head>
 
 <body>
-    <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
-
-    <h1>Libri</h1>
-
-    <div th:if="${globalError != null}">
-        <p th:text="${globalError}" class="error-global"></p>
+    <div class="sidebar">
+        <a href="/" class="logo">SIW<br>Books</a>
+        <nav>
+            <h2>Menu</h2>
+            <ul>
+                <li class="active">Scopri</li>
+                <li>Più votati</li>
+                <li>Salvati</li>
+            </ul>
+            <h2>Generale</h2>
+            <ul>
+                <li>Impostazioni</li>
+                <li>Logout</li>
+            </ul>
+        </nav>
     </div>
 
-    <div>Cerca un libro</div>
+    <main class="content">
+        <h1>Libri</h1>
 
-    <form th:action="@{/libri}" method="get" style="margin-bottom: 30px;">
-        <input type="text" name="titolo" placeholder="Titolo" />
-        <input type="text" name="autore" placeholder="Nome e cognome autore" />
-        <input type="text" name="anno" placeholder="Anno" />
-        <input type="text" name="genere" placeholder="Genere" />
-        <button type="submit">Cerca</button>
-    </form>
+        <div th:if="${globalError != null}">
+            <p th:text="${globalError}" class="error-global"></p>
+        </div>
 
-    <div th:if="${libri.isEmpty()}">Non ci sono libri nel sistema</div>
+        <form th:action="@{/libri}" method="get" class="search-form">
+            <input type="text" name="titolo" placeholder="Titolo">
+            <input type="text" name="autore" placeholder="Autore">
+            <input type="text" name="anno" placeholder="Anno">
+            <input type="text" name="genere" placeholder="Genere">
+            <button type="submit">Cerca</button>
+        </form>
 
-    <ul>
-        <li th:each="libro : ${libri}">
-            <a th:href="@{'/libro/' + ${libro.id}}">
-                <span th:text="${libro.titolo}">Titolo</span>
-                <span th:text="' (' + ${libro.anno} + ')'">(2000)</span>
-            </a>
-        </li>
-    </ul>
+        <div class="no-libri" th:if="${libri.isEmpty()}">Non ci sono libri nel sistema</div>
+
+        <div class="book-grid">
+            <div class="book-card" th:each="libro : ${libri}">
+                <a th:href="@{'/libro/' + ${libro.id}}">
+                    <img class="book-cover" th:if="${not #lists.isEmpty(libro.urlImmagini)}"
+                        th:src="${libro.urlImmagini[0]}" alt="Copertina libro" />
+                    <div class="book-info">
+                        <h3 th:text="${libro.titolo}">Titolo</h3>
+                        <p th:text="'Anno: ' + ${libro.anno}">Anno</p>
+                        <p th:text="'Genere: ' + ${libro.genere}">Genere</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
 </body>
 
 </html>

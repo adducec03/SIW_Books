@@ -1,65 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
-    <title>Libro</title>
-    <link rel="stylesheet" href="/stile.css?version=2" />
+    <meta charset="UTF-8">
+    <title th:text="${libro.titolo}">Libro</title>
+    <link rel="stylesheet" href="/css/libro.css?version=2" />
 </head>
 
 <body>
-    <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
+    <header class="book-header">
+        <a href="/"><img src="/images/logo.png" alt="Logo" class="logo"></a>
+    </header>
 
-    <div th:if="${libro}">
-        <h1 th:text="${libro.titolo}">Titolo libro</h1>
-        <div>Anno: <span th:text=${libro.anno}>2000</span></div>
-        <div>Genere: <span th:text=${libro.genere}>Fantasy</span></div>
-
-        <!-- IMMAGINI -->
-        <ul>
-            <li th:each="img : ${libro.urlImmagini}">
-                <img th:src="@{${img}}" width="10%" alt="Immagine del libro">
-            </li>
-        </ul>
-
-        <!-- AUTORI -->
-        <div>
-            <h3>Autori:</h3>
-            <ul>
-                <li th:each="autore : ${libro.autori}">
-                    <a th:href="@{'/autore/' + ${autore.id}}"
-                        th:text="${autore.nome} + ' ' + ${autore.cognome}">Autore</a>
-                </li>
-            </ul>
+    <main class="book-container" th:if="${libro}">
+        <div class="book-left">
+            <img th:src="@{${libro.urlImmagini[0]}}" alt="Copertina libro" class="book-cover">
         </div>
-    </div>
 
+        <div class="book-right">
+            <h1 th:text="${libro.titolo}">Titolo libro</h1>
+            <p><strong>Anno:</strong> <span th:text="${libro.anno}">2000</span></p>
+            <p><strong>Genere:</strong> <span th:text="${libro.genere}">Fantasy</span></p>
 
-    <h2>Recensioni</h2>
+            <div class="book-authors">
+                <strong>Autori:</strong>
+                <ul>
+                    <li th:each="autore : ${libro.autori}">
+                        <a th:href="@{'/autore/' + ${autore.id}}" th:text="${autore.nome} + ' ' + ${autore.cognome}">Autore</a>
+                    </li>
+                </ul>
+            </div>
 
-    <div th:if="${#lists.isEmpty(libro.recensioni)}">
-        <p>Nessuna recensione disponibile.</p>
-    </div>
+            <div class="book-actions" sec:authorize="isAuthenticated()">
+                <a th:href="@{/recensioni/nuova(libroId=${libro.id})}" class="button">Aggiungi recensione</a>
+            </div>
+        </div>
+    </main>
 
-    <section id="recensioni">
+    <section class="book-reviews">
         <h2>Recensioni</h2>
-        <div th:each="recensione : ${recensioni}">
+
+        <div th:if="${#lists.isEmpty(libro.recensioni)}">
+            <p>Nessuna recensione disponibile.</p>
+        </div>
+
+        <div class="review-list" th:each="recensione : ${recensioni}">
             <div class="recensione">
                 <h3 th:text="${recensione.titolo}">Titolo</h3>
                 <p th:text="${recensione.descrizione}">Descrizione</p>
-                <p>Voto: <span th:text="${recensione.voto}">0</span></p>
-                <p><i>Scritta il <span
-                            th:text="${#temporals.format(recensione.dataCreazione, 'dd/MM/yyyy HH:mm')}"></span></i></p>
-                <p>Recensione di <span th:text="${recensione.utente.nome} + ' ' + ${recensione.utente.cognome}">Utente</span></p>
+                <p><strong>Voto:</strong> <span th:text="${recensione.voto}">0</span></p>
+                <p><em>Scritta il 
+                    <span th:text="${#temporals.format(recensione.dataCreazione, 'dd/MM/yyyy HH:mm')}"></span></em>
+                </p>
+                <p><strong>Autore:</strong> 
+                    <span th:text="${recensione.utente.nome} + ' ' + ${recensione.utente.cognome}">Utente</span>
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- Bottone per aggiungere recensione (solo utenti autenticati) -->
-    <div sec:authorize="isAuthenticated()">
-        <a th:href="@{/recensioni/nuova(libroId=${libro.id})}" class="button">Aggiungi recensione</a>
-    </div>
-
-    <div th:unless="${libro}">Non esiste</div>
+    <div th:unless="${libro}" class="error-message">Libro non trovato.</div>
 </body>
 
 </html>
