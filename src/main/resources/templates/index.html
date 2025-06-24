@@ -130,7 +130,7 @@
                         th:classappend="${iterStat.index == 0} ? ' active' : ''">
                         <h2 th:text="${recensione.utente.nome}"></h2>
                         <h3 th:text="${recensione.libro.titolo}"></h3>
-                        <p th:text="${#strings.abbreviate(recensione.descrizione, 160)}"></p>
+                        <p class="descrizione" th:text="${#strings.abbreviate(recensione.descrizione, 160)}"></p>
                     </div>
                 </div>
 

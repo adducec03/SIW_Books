@@ -354,32 +354,28 @@ a.button-register:hover {
     height: auto;
 }
 
-
-
-
 #recensioni-home {
     display: flex;
     align-items: center;
     justify-content: space-around;
     background-image: url('/images/recensioni2.png');
-    /* o il tuo sfondo */
     background-size: cover;
     background-position: center;
     padding: 6rem 2rem;
     color: #ffe6a7;
     position: relative;
     height: 70vh;
-    gap: 4rem;
+    gap: 1rem;
 }
 
-.recensioni-testo{
+.recensioni-testo {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    max-width: 500px;
+    flex: 1.2;
+    max-width: 1000px;
 }
 
-.recensioni-testo h2{
+.recensioni-testo h2 {
     font-size: 4rem;
     margin-bottom: 1rem;
     font-family: "EB Garamond", serif;
@@ -402,10 +398,10 @@ a.button-register:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: 40%;
+    max-width: 30%;
     position: relative;
     justify-content: space-between;
-    
+
 }
 
 .recensioni-slider {
@@ -422,6 +418,11 @@ a.button-register:hover {
     max-width: 100%;
     min-height: 200px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-recensione h2 {
@@ -430,13 +431,14 @@ a.button-register:hover {
 }
 
 .card-recensione h3 {
-    font-size: 2rem;
+    font-size: rem;
     margin-bottom: 1rem;
 }
 
-.card-recensione p {
+.card-recensione .descrizione {
     font-size: 1.2rem;
     margin-bottom: 1rem;
+    max-width: 100%;
 }
 
 .card-recensione.active {
@@ -444,24 +446,24 @@ a.button-register:hover {
 }
 
 .slider-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #ffe6a7;
-  font-size: 2rem;
-  cursor: pointer;
-  padding: 1rem;
-  z-index: 10;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #ffe6a7;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 1rem;
+    z-index: 10;
 }
 
 #prevBtn {
-  left: -5rem;
+    left: -5rem;
 }
 
 #nextBtn {
-  right: -5rem;
+    right: -5rem;
 }
 
 
