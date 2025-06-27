@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.uniroma3.siw.model.Libro;
 import it.uniroma3.siw.model.Recensione;
+import it.uniroma3.siw.model.Utente;
 import it.uniroma3.siw.service.AutoreService;
+import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.LibroService;
 import it.uniroma3.siw.service.RecensioneService;
+import it.uniroma3.siw.service.UtenteService;
 import jakarta.validation.Valid;
 
 @Controller
@@ -32,6 +36,12 @@ public class LibroController {
 
     @Autowired
     RecensioneService recensioneService;
+
+    @Autowired
+    UtenteService utenteService;
+
+    @Autowired
+    CredentialsService credentialsService;
 
     @GetMapping("/libro/{id}")
     public String getLibro(@PathVariable("id") Long id, Model model) {
@@ -139,5 +149,18 @@ public class LibroController {
         model.addAttribute("libri", libri);
         model.addAttribute("medieVoti", medieVoti);
         model.addAttribute("stelle", stelle);
+    }
+
+    @PostMapping("/libro/{id}/salva")
+    public String salvaLibro(@PathVariable("id") Long idLibro, RedirectAttributes redirectAttributes) {
+        Libro libro = this.libroService.getLibroById(idLibro);
+        Utente utente = this.credentialsService.getUtenteCorrente();
+
+        if (libro != null && utente != null) {
+            this.utenteService.salvaLibroPerUtente(utente, libro);
+            redirectAttributes.addFlashAttribute("success", "Libro salvato!");
+        }
+
+        return "redirect:/libro/" + idLibro;
     }
 }

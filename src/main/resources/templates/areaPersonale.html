@@ -1,6 +1,8 @@
 <h2>I tuoi libri salvati</h2>
 <ul>
-    <li th:each="libro : ${libriSalvati}" th:text="${libro.titolo}"></li>
+    <li th:each="libro : ${libriSalvati}">
+        <a th:href="@{'/libro/' + ${libro.id}}" th:text="${libro.titolo}">Titolo</a>
+    </li>
 </ul>
 
 <h2>Le tue recensioni</h2>

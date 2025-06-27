@@ -26,13 +26,17 @@
                 <strong>Autori:</strong>
                 <ul>
                     <li th:each="autore : ${libro.autori}">
-                        <a th:href="@{'/autore/' + ${autore.id}}" th:text="${autore.nome} + ' ' + ${autore.cognome}">Autore</a>
+                        <a th:href="@{'/autore/' + ${autore.id}}"
+                            th:text="${autore.nome} + ' ' + ${autore.cognome}">Autore</a>
                     </li>
                 </ul>
             </div>
 
             <div class="book-actions" sec:authorize="isAuthenticated()">
                 <a th:href="@{/recensioni/nuova(libroId=${libro.id})}" class="button">Aggiungi recensione</a>
+                <form method="post" th:action="@{'/libro/' + ${libro.id} + '/salva'}">
+                    <button type="submit">Salva nei preferiti</button>
+                </form>
             </div>
         </div>
     </main>
@@ -49,10 +53,10 @@
                 <h3 th:text="${recensione.titolo}">Titolo</h3>
                 <p th:text="${recensione.descrizione}">Descrizione</p>
                 <p><strong>Voto:</strong> <span th:text="${recensione.voto}">0</span></p>
-                <p><em>Scritta il 
-                    <span th:text="${#temporals.format(recensione.dataCreazione, 'dd/MM/yyyy HH:mm')}"></span></em>
+                <p><em>Scritta il
+                        <span th:text="${#temporals.format(recensione.dataCreazione, 'dd/MM/yyyy HH:mm')}"></span></em>
                 </p>
-                <p><strong>Autore:</strong> 
+                <p><strong>Autore:</strong>
                     <span th:text="${recensione.utente.nome} + ' ' + ${recensione.utente.cognome}">Utente</span>
                 </p>
             </div>

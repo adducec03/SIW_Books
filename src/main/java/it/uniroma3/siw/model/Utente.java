@@ -153,4 +153,12 @@ public class Utente {
         this.recensioni = recensioni;
     }
 
+    public void salvaLibro(Libro libro) {
+        this.libriSalvati.add(libro);
+    }
+
+    public void rimuoviLibro(Libro libro) {
+        this.libriSalvati.remove(libro);
+    }
+
 }
