@@ -1,11 +1,16 @@
 package it.uniroma3.siw.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -22,6 +27,10 @@ public class Utente {
     private Integer numeroTelefonico;
     @Column(nullable = false, unique = true)
     private String email;
+    @ManyToMany
+    private List<Libro> libriSalvati;
+    @OneToMany(mappedBy = "utente")
+    private List<Recensione> recensioni = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Ruolo ruolo;
@@ -126,6 +135,22 @@ public class Utente {
         } else if (!email.equals(other.email))
             return false;
         return true;
+    }
+
+    public List<Libro> getLibriSalvati() {
+        return libriSalvati;
+    }
+
+    public void setLibriSalvati(List<Libro> libriSalvati) {
+        this.libriSalvati = libriSalvati;
+    }
+
+    public List<Recensione> getRecensioni() {
+        return recensioni;
+    }
+
+    public void setRecensioni(List<Recensione> recensioni) {
+        this.recensioni = recensioni;
     }
 
 }

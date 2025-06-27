@@ -1,6 +1,8 @@
 package it.uniroma3.siw.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,13 +41,6 @@ public class LibroController {
         model.addAttribute("recensioni", recensioni);
         return "libro.html";
     }
-    /*
-     * @GetMapping("/libri")
-     * public String showLibri(Model model) {
-     * model.addAttribute("libri", this.libroService.getAllLibri());
-     * return "libri.html";
-     * }
-     */
 
     @GetMapping("/formNewLibro")
     public String formNewLibro(Model model) {
@@ -89,7 +84,60 @@ public class LibroController {
             libri = (List<Libro>) libroService.getAllLibri();
         }
 
+        Map<Long, Double> medieVoti = new HashMap<>();
+        Map<Long, Integer> stelle = new HashMap<>();
+
+        for (Libro libro : libri) {
+            Double media = libroService.calcolaMediaVoti(libro);
+            medieVoti.put(libro.getId(), media);
+            stelle.put(libro.getId(), (media != null) ? (int) Math.round(media) : 0);
+        }
+
         model.addAttribute("libri", libri);
+        model.addAttribute("medieVoti", medieVoti);
+        model.addAttribute("stelle", stelle);
+
         return "libri.html";
+    }
+
+    @GetMapping("/libri/salvati")
+    public String mostraLibriPiuSalvati(Model model) {
+        aggiungiMedieEVoti(model, libroService.trovaLibriPiuSalvati());
+        return "libri";
+    }
+
+    @GetMapping("/libri/piu-votati")
+    public String mostraLibriPiuVotati(Model model) {
+        List<Libro> libri = libroService.trovaLibriPiuVotati();
+
+        Map<Long, Double> medieVoti = new HashMap<>();
+        Map<Long, Integer> stelle = new HashMap<>();
+
+        for (Libro libro : libri) {
+            Double media = libroService.calcolaMediaVoti(libro);
+            medieVoti.put(libro.getId(), media);
+            stelle.put(libro.getId(), (media != null) ? (int) Math.round(media) : 0);
+        }
+
+        model.addAttribute("libri", libri);
+        model.addAttribute("medieVoti", medieVoti);
+        model.addAttribute("stelle", stelle);
+
+        return "libri";
+    }
+
+    private void aggiungiMedieEVoti(Model model, List<Libro> libri) {
+        Map<Long, Double> medieVoti = new HashMap<>();
+        Map<Long, Integer> stelle = new HashMap<>();
+
+        for (Libro libro : libri) {
+            Double media = libroService.calcolaMediaVoti(libro);
+            medieVoti.put(libro.getId(), media);
+            stelle.put(libro.getId(), (media != null) ? (int) Math.round(media) : 0);
+        }
+
+        model.addAttribute("libri", libri);
+        model.addAttribute("medieVoti", medieVoti);
+        model.addAttribute("stelle", stelle);
     }
 }

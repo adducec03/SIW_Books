@@ -54,6 +54,7 @@
                 <a href="/register" class="button-register">Register</a>
             </span>
             <span th:if="${nomeUtente != null}">
+                <a th:href="@{/areaPersonale}">Area Personale</a>
                 Ciao, <span th:text="${nomeUtente}"></span> | <a th:href="@{/logout}">Logout</a>
             </span>
         </div>

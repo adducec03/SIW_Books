@@ -1,0 +1,13 @@
+<h2>I tuoi libri salvati</h2>
+<ul>
+    <li th:each="libro : ${libriSalvati}" th:text="${libro.titolo}"></li>
+</ul>
+
+<h2>Le tue recensioni</h2>
+<ul>
+    <li th:each="recensione : ${recensioni}">
+        <span th:text="${recensione.libro.titolo}"></span>:
+        <strong th:text="${recensione.voto}">0</strong> stelle
+        <p th:text="${recensione.descrizione}"></p>
+    </li>
+</ul>

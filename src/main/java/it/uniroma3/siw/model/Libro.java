@@ -33,6 +33,8 @@ public class Libro {
     private List<Autore> autori = new ArrayList<>();
     @OneToMany(mappedBy = "libro")
     private List<Recensione> recensioni = new ArrayList<>();
+    @ManyToMany(mappedBy = "libriSalvati")
+    private List<Utente> utentiCheHannoSalvato;
 
     // ----------------------------METODI-----------------------------//
 

@@ -13,9 +13,9 @@
         <nav>
             <h2>Menu</h2>
             <ul>
-                <li class="active">Scopri</li>
-                <li>Più votati</li>
-                <li>Salvati</li>
+                <li><a href="/libri">Aggiunti di recente</a></li>
+                <li><a href="/libri/piu-votati">Più votati</a></li>
+                <li><a href="/libri/salvati">Più salvati</a></li>
             </ul>
             <h2>Generale</h2>
             <ul>
@@ -51,6 +51,13 @@
                         <h3 th:text="${libro.titolo}">Titolo</h3>
                         <p th:text="'Anno: ' + ${libro.anno}">Anno</p>
                         <p th:text="'Genere: ' + ${libro.genere}">Genere</p>
+
+                        <!-- Stelle basate sulla media voto -->
+                        <!-- Stelle basate sulla media pre-calcolata nel controller -->
+                        <div th:if="${stelle[libro.id] != null}" th:with="voto=${stelle[libro.id]}">
+                            <span th:each="i : ${#numbers.sequence(1, 5)}" th:text="${i <= voto} ? '★' : '☆'">
+                            </span>
+                        </div>
                     </div>
                 </a>
             </div>

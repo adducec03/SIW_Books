@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import it.uniroma3.siw.service.CustomOAuth2UserService;
 
@@ -18,18 +19,18 @@ import it.uniroma3.siw.service.CustomOAuth2UserService;
 @EnableWebSecurity
 public class AuthConfiguration {
 
-        @Autowired
-        private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-        @Autowired
-        private CustomOAuth2UserService customOAuth2UserService;
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
 
-        @Autowired
-        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .authoritiesByUsernameQuery("SELECT username, ruolo from credentials WHERE username=?")
-                .usersByUsernameQuery("SELECT username, password, 1 as enabled FROM credentials WHERE username=?");
+            .dataSource(dataSource)
+            .authoritiesByUsernameQuery("SELECT username, ruolo from credentials WHERE username=?")
+            .usersByUsernameQuery("SELECT username, password, 1 as enabled FROM credentials WHERE username=?");
     }
 
     @Bean
@@ -45,10 +46,12 @@ public class AuthConfiguration {
                                 "/", "/index", "/register", "/login", "/autori", "/autore", "/autore/**", "/libri",
                                 "/libro", "/libro/**", "/oauth2/**",
                                 "/css/**.css", "/images/**", "/js/**", "/favicon.ico", "/logo.png", "/wallpaper.png", "/libro.png", "autori.png", "/recensioni.png",
-                                "/github_icon_light.png", "/instagram_icon_light.png", "/linkedin_icon_light.png", "/recensioni2.png")
+                                "/github_icon_light.png", "/instagram_icon_light.png", "/linkedin_icon_light.png", "/recensioni2.png",
+                                "/libri/salvati", "/libri/piu-votati")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/areaPersonale/").authenticated() // <-- AGGIUNTA QUESTA RIGA
                         .anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login")
@@ -60,7 +63,6 @@ public class AuthConfiguration {
                         .defaultSuccessUrl("/", true)
                         .failureUrl("/login?error=true")
                         .permitAll())
-                
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
