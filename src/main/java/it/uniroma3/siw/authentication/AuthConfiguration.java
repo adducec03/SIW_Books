@@ -51,7 +51,8 @@ public class AuthConfiguration {
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers("/areaPersonale/").authenticated() // <-- AGGIUNTA QUESTA RIGA
+                        .requestMatchers(HttpMethod.POST, "/libro/*/unsave").authenticated()
+                        .requestMatchers("/areaPersonale/**").authenticated()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login")

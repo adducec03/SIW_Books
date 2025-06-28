@@ -27,6 +27,9 @@ public class Credentials {
     
     @OneToOne(cascade = CascadeType.ALL)
     private Utente utente;
+    
+    @Column(nullable=false)
+    private String provider;
 
     
     public String getUsername() {
@@ -61,6 +64,7 @@ public class Credentials {
         result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((ruolo == null) ? 0 : ruolo.hashCode());
         result = prime * result + ((utente == null) ? 0 : utente.hashCode());
+        result = prime * result + ((provider == null) ? 0 : provider.hashCode());
         return result;
     }
     @Override
@@ -92,7 +96,18 @@ public class Credentials {
                 return false;
         } else if (!utente.equals(other.utente))
             return false;
+        if (provider == null) {
+            if (other.provider != null)
+                return false;
+        } else if (!provider.equals(other.provider))
+            return false;
         return true;
+    }
+    public String getProvider() {
+        return provider;
+    }
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
 

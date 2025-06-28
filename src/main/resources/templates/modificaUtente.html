@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Dati Utente</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Se hai uno stile base -->
+</head>
+<body>
+    <h1>Modifica Dati Utente</h1>
+
+    <form th:action="@{/areaPersonale/modifica}" method="post">
+        <label>Nome:</label>
+        <input type="text" name="nome" th:value="${utente.nome}" required /><br/>
+
+        <label>Cognome:</label>
+        <input type="text" name="cognome" th:value="${utente.cognome}" required /><br/>
+
+        <label>Telefono:</label>
+        <input type="text" name="telefono" th:value="${utente.numeroTelefonico}" /><br/>
+
+        <div th:if="${isOAuth == false}">
+            <label>Email:</label>
+            <input type="email" name="email" th:value="${utente.email}" required /><br/>
+
+            <label>Username:</label>
+            <input type="text" name="username" th:value="${credentials.username}" required /><br/>
+
+            <label>Nuova Password:</label>
+            <input type="password" name="password" /><br/>
+        </div>
+
+        <button type="submit">Salva modifiche</button>
+    </form>
+
+    <a href="/areaPersonale">Torna all'Area Personale</a>
+</body>
+</html>

@@ -46,6 +46,7 @@ public class AuthenticationController {
             return "register";
         }
 
+        credentials.setProvider("form");
         credentialsService.saveCredentials(credentials);
         return "redirect:/login";
     }

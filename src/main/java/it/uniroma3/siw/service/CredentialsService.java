@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,11 @@ public class CredentialsService {
 
     public boolean usernameExists(String username) {
         return credentialsRepository.findByUsername(username).isPresent();
+    }
+
+    public Credentials getCredentialsUtente(Utente utente) {
+        return credentialsRepository.findByUtente(utente)
+                .orElseThrow(() -> new UsernameNotFoundException("Credenziali non trovate per l’utente"));
     }
 
     public Utente getUtenteCorrente() {

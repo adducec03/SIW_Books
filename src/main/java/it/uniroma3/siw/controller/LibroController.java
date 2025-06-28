@@ -163,4 +163,15 @@ public class LibroController {
 
         return "redirect:/libro/" + idLibro;
     }
+
+    @PostMapping("/libro/{id}/unsave")
+    public String unsaveLibro(@PathVariable("id") Long id) {
+        Utente utente = credentialsService.getUtenteCorrente();
+        Libro libro = libroService.getLibroById(id);
+
+        utente.getLibriSalvati().remove(libro);
+        utenteService.saveUser(utente); // salva la modifica
+
+        return "redirect:/areaPersonale";
+    }
 }

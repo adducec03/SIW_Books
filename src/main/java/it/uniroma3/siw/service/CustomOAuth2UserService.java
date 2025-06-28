@@ -81,6 +81,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         cred.setPassword("oauth"); // Dummy password
         cred.setRuolo(Credentials.DEFAULT_ROLE);
         cred.setUtente(utente);
+        cred.setProvider("oauth"); 
 
         credentialsRepository.save(cred);
 

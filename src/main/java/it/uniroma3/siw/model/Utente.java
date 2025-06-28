@@ -3,14 +3,18 @@ package it.uniroma3.siw.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PreRemove;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -27,9 +31,15 @@ public class Utente {
     private Integer numeroTelefonico;
     @Column(nullable = false, unique = true)
     private String email;
+
     @ManyToMany
+    @JoinTable(
+    name = "utente_libri_salvati",
+    joinColumns = @JoinColumn(name = "utente_id"),
+    inverseJoinColumns = @JoinColumn(name = "libro_id"))
     private List<Libro> libriSalvati;
-    @OneToMany(mappedBy = "utente")
+
+    @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recensione> recensioni = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -38,6 +48,11 @@ public class Utente {
     public enum Ruolo {
         USER,
         ADMIN
+    }
+
+    @PreRemove
+    private void removeAssociations() {
+        this.libriSalvati.clear();
     }
 
     public Ruolo getRuolo() {
