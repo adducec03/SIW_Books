@@ -59,6 +59,7 @@ public class LibroController {
     public String formNewLibro(Model model) {
         model.addAttribute("libro", new Libro());
         model.addAttribute("autori", autoreService.getAllAutori());
+        
         return "formNewLibro.html";
     }
 
@@ -113,7 +114,7 @@ public class LibroController {
         if (userDetails != null) {
             Credentials credentials = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
             if ("ADMIN".equals(credentials.getRuolo())) {
-                return "admin/libri.html"; 
+                return "admin/libri.html";
             }
         }
         return "libri.html";
@@ -162,7 +163,7 @@ public class LibroController {
     }
 
     @PostMapping("/libro/{id}/salva")
-    public String salvaLibro(@PathVariable("id") Long idLibro, RedirectAttributes redirectAttributes) {
+    public String salvaLibro(@PathVariable("id") Long idLibro, RedirectAttributes redirectAttributes,@AuthenticationPrincipal UserDetails userDetails) {
         Libro libro = this.libroService.getLibroById(idLibro);
         Utente utente = this.credentialsService.getUtenteCorrente();
 
@@ -171,6 +172,12 @@ public class LibroController {
             redirectAttributes.addFlashAttribute("success", "Libro salvato!");
         }
 
+        if (userDetails != null) {
+            Credentials credentials = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
+            if ("ADMIN".equals(credentials.getRuolo())) {
+                return "redirect:/admin/libro/" + idLibro;
+            }
+        }
         return "redirect:/libro/" + idLibro;
     }
 
@@ -184,4 +191,6 @@ public class LibroController {
 
         return "redirect:/areaPersonale";
     }
+
+
 }

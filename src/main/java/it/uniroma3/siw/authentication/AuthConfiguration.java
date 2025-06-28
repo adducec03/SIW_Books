@@ -53,6 +53,7 @@ public class AuthConfiguration {
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/libro/*/unsave").authenticated()
                         .requestMatchers("/areaPersonale/**").authenticated()
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login")

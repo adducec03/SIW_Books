@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #ffe6a7, #99582a, #5c1817);
+    background: linear-gradient(135deg, #d1c6a6, #ffecb1, #edcc6b);
     min-height: 100vh;
     line-height: 1.6;
 }
@@ -93,7 +93,7 @@ body {
 }
 
 .btn-modify:hover {
-    background: linear-gradient(90deg, #432818, #99582a);
+    background: linear-gradient(90deg, #6f1d1b, #99582a);
     transform: scale(1.05);
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }

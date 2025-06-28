@@ -45,9 +45,12 @@
 
         <div class="book-grid">
             <div class="book-card" th:each="libro : ${libri}">
-                <a th:href="@{'/libro/' + ${libro.id}}">
+                <a th:href="@{'/admin/libro/' + ${libro.id}}">
                     <img class="book-cover" th:if="${not #lists.isEmpty(libro.urlImmagini)}"
                         th:src="${libro.urlImmagini[0]}" alt="Copertina libro" />
+                    <div th:unless="${libro.urlImmagini != null and !libro.urlImmagini.isEmpty()}">
+                        <img th:src="@{/images/noImage.png}" style="width: 100%; height: 100%; object-fit: cover;" />
+                    </div>
                     <div class="book-info">
                         <h3 th:text="${libro.titolo}">Titolo</h3>
                         <p th:text="'Anno: ' + ${libro.anno}">Anno</p>

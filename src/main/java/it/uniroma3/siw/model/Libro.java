@@ -28,7 +28,7 @@ public class Libro {
     private Integer anno;
     private String genere;
     @ElementCollection
-    private List<String> urlImmagini;
+    private List<String> urlImmagini = new ArrayList<>();
     @ManyToMany
     private List<Autore> autori = new ArrayList<>();
     @OneToMany(mappedBy = "libro")
