@@ -70,6 +70,12 @@
             <input type="url" name="urlImmagine" />
         </div>
 
+        <div>
+            <label>Descrizione:</label>
+            <textarea th:field="*{descrizione}" rows="6" cols="50"></textarea>
+            <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"></span>
+        </div>
+
 
         <div>
             <button type="submit">Conferma</button>

@@ -50,6 +50,7 @@ public class AdminAutoreController {
             @RequestParam String dataNascita,
             @RequestParam(required = false) String dataMorte,
             @RequestParam(required = false) String urlImmagine,
+            @RequestParam(required = false) String descrizione,
             Model model) {
 
         Autore autore = autoreService.getAutoreById(id);
@@ -77,6 +78,7 @@ public class AdminAutoreController {
         autore.setDataNascita(nascita);
         autore.setDataMorte(morte);
         autore.setUrlImmagine(urlImmagine);
+        autore.setDescrizione(descrizione);
 
         autoreService.save(autore);
         return "redirect:/admin/autore/" + id;
