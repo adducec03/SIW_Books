@@ -20,7 +20,7 @@
                 th:text="${#temporals.format(autore.dataMorte, 'dd/MM/yyyy')}">1/1/1900</span>
         </div>
         <div>Nazionalità: <span th:text="${autore.nazionalita}">Italiano</span></div>
-        <div><a th:href="/admin/modificaAutore">Modifica Autore</a></div>
+        <div><a th:href="@{'/admin/autore/' + ${autore.id} + '/modifica'}">Modifica Autore</a></div>
     </div>
     <div th:unless="${autore}">Non esiste</div>
 </body>
