@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Libro;
 import it.uniroma3.siw.model.Recensione;
 import it.uniroma3.siw.model.Utente;
@@ -82,7 +85,7 @@ public class LibroController {
             @RequestParam(required = false) String autore,
             @RequestParam(required = false) Integer anno,
             @RequestParam(required = false) String genere,
-            Model model) {
+            Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
         List<Libro> libri;
 
@@ -107,7 +110,14 @@ public class LibroController {
         model.addAttribute("medieVoti", medieVoti);
         model.addAttribute("stelle", stelle);
 
+        if (userDetails != null) {
+            Credentials credentials = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
+            if ("ADMIN".equals(credentials.getRuolo())) {
+                return "admin/libri.html"; 
+            }
+        }
         return "libri.html";
+
     }
 
     @GetMapping("/libri/salvati")

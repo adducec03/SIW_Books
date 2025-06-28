@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${libro.titolo}">Libro</title>
+    <link rel="stylesheet" href="/css/libro.css?version=2" />
+</head>
+
+<body>
+    <header class="book-header">
+        <a href="/"><img src="/images/logo.png" alt="Logo" class="logo"></a>
+    </header>
+
+    <main class="book-container" th:if="${libro}">
+        <div class="book-left">
+            <img th:src="@{${libro.urlImmagini[0]}}" alt="Copertina libro" class="book-cover">
+        </div>
+
+        <div class="book-right">
+            <h1 th:text="${libro.titolo}">Titolo libro</h1>
+            <p><strong>Anno:</strong> <span th:text="${libro.anno}">2000</span></p>
+            <p><strong>Genere:</strong> <span th:text="${libro.genere}">Fantasy</span></p>
+
+            <div class="book-authors">
+                <strong>Autori:</strong>
+                <ul>
+                    <li th:each="autore : ${libro.autori}">
+                        <a th:href="@{'/autore/' + ${autore.id}}"
+                            th:text="${autore.nome} + ' ' + ${autore.cognome}">Autore</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="book-actions" sec:authorize="isAuthenticated()">
+                <a th:href="@{/recensioni/nuova(libroId=${libro.id})}" class="button">Aggiungi recensione</a>
+                <form method="post" th:action="@{'/libro/' + ${libro.id} + '/salva'}">
+                    <button type="submit">Salva nei preferiti</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <section class="book-reviews">
+        <h2>Recensioni</h2>
+
+        <div th:if="${#lists.isEmpty(libro.recensioni)}">
+            <p>Nessuna recensione disponibile.</p>
+        </div>
+
+        <div class="review-list" th:each="recensione : ${recensioni}">
+            <div class="recensione">
+                <h3 th:text="${recensione.titolo}">Titolo</h3>
+                <p th:text="${recensione.descrizione}">Descrizione</p>
+                <p><strong>Voto:</strong> <span th:text="${recensione.voto}">0</span></p>
+                <p><em>Scritta il
+                        <span th:text="${#temporals.format(recensione.dataCreazione, 'dd/MM/yyyy HH:mm')}"></span></em>
+                </p>
+                <p><strong>Autore:</strong>
+                    <span th:text="${recensione.utente.nome} + ' ' + ${recensione.utente.cognome}">Utente</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div><a th:href="/admin/modificaLibro">Modifica Libro></a></div>
+
+    <div th:unless="${libro}" class="error-message">Libro non trovato.</div>
+</body>
+
+</html>

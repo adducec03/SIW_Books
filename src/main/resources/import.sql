@@ -9,3 +9,9 @@ INSERT INTO libro_url_immagini (libro_id, url_immagini) VALUES (2001, 'https://a
 
 -- RELAZIONE LIBRO ↔ AUTORE
 INSERT INTO libro_autori (libro_id, autori_id) VALUES (2001, 1001), (2002, 1001), (2003, 1002), (2004, 1003), (2005, 1007), (2006, 1008), (2007, 1004), (2008, 1005), (2009, 1006), (2010, 1009);
+
+-- UTENTE
+INSERT INTO utente (id, nome, cognome, email, numero_telefonico) VALUES (100, 'Admin', 'User', 'admin@example.com', '0000000000');
+
+-- CREDENZIALI (password=admin123)
+INSERT INTO credentials (id, username, password, ruolo, utente_id, provider) VALUES (100,'admin','$2a$10$KTUov316ZwY0tZ7a21Cix.stNhLIRDaN4lbdG2d0PO1M9XjxAYmBy','ADMIN',100, 'form');

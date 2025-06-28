@@ -6,8 +6,6 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -42,26 +40,26 @@ public class Utente {
     @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recensione> recensioni = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
+    /*@Enumerated(EnumType.STRING)
     private Ruolo ruolo;
 
     public enum Ruolo {
         USER,
         ADMIN
-    }
+    }*/
 
     @PreRemove
     private void removeAssociations() {
         this.libriSalvati.clear();
     }
 
-    public Ruolo getRuolo() {
+    /*public Ruolo getRuolo() {
         return ruolo;
     }
 
     public void setRuolo(Ruolo ruolo) {
         this.ruolo = ruolo;
-    }
+    }*/
 
     public Long getId() {
         return id;
