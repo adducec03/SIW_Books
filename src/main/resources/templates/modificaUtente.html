@@ -2,36 +2,127 @@
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Modifica Dati Utente</title>
-    <link rel="stylesheet" href="/css/style.css"> <!-- Se hai uno stile base -->
+    <title>Modifica Dati Utente - Libreria Digitale</title>
+    <link rel="stylesheet" href="/css/modificaUtente.css" />
 </head>
 <body>
-    <h1>Modifica Dati Utente</h1>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <h1>Libreria Digitale</h1>
+        </div>
+    </header>
 
-    <form th:action="@{/areaPersonale/modifica}" method="post">
-        <label>Nome:</label>
-        <input type="text" name="nome" th:value="${utente.nome}" required /><br/>
-
-        <label>Cognome:</label>
-        <input type="text" name="cognome" th:value="${utente.cognome}" required /><br/>
-
-        <label>Telefono:</label>
-        <input type="text" name="telefono" th:value="${utente.numeroTelefonico}" /><br/>
-
-        <div th:if="${isOAuth == false}">
-            <label>Email:</label>
-            <input type="email" name="email" th:value="${utente.email}" required /><br/>
-
-            <label>Username:</label>
-            <input type="text" name="username" th:value="${credentials.username}" required /><br/>
-
-            <label>Nuova Password:</label>
-            <input type="password" name="password" /><br/>
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Page Title -->
+        <div class="page-title">
+            <h2>Modifica Dati Utente</h2>
+            <p>Aggiorna le tue informazioni personali</p>
         </div>
 
-        <button type="submit">Salva modifiche</button>
-    </form>
 
-    <a href="/areaPersonale">Torna all'Area Personale</a>
+        <!-- Edit Form -->
+        <div class="form-container">
+            <div class="form-header">
+                <h3>
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Informazioni Personali
+                </h3>
+            </div>
+
+            <form class="form-content" th:action="@{/areaPersonale/modifica}" method="post">
+                <!-- Nome e Cognome Row -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome">Nome *</label>
+                        <input type="text" id="nome" name="nome" th:value="${utente.nome}" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cognome">Cognome *</label>
+                        <input type="text" id="cognome" name="cognome" th:value="${utente.cognome}" required />
+                    </div>
+                </div>
+
+                <!-- Telefono -->
+                <div class="form-group">
+                    <label for="telefono">Numero di Telefono</label>
+                    <input type="tel" id="telefono" name="telefono" th:value="${utente.numeroTelefonico}" />
+                </div>
+
+                <!-- Account Settings (Non-OAuth) -->
+                <div th:if="${isOAuth == false}" class="credentials-section">
+                    <h4 class="section-title">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Credenziali di Accesso
+                    </h4>
+                    
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" th:value="${utente.email}" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Username *</label>
+                        <input type="text" id="username" name="username" th:value="${credentials.username}" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Nuova Password</label>
+                        <input type="password" id="password" name="password" placeholder="Lascia vuoto per mantenere quella attuale" />
+                        <p class="password-hint">
+                            La password deve contenere almeno 8 caratteri
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="button-row">
+                    <button type="submit" class="btn-primary">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Salva Modifiche
+                    </button>
+                    
+                    <a href="/areaPersonale" class="btn-secondary">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Torna all'Area Personale
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="footer-info">
+            <p>
+                I tuoi dati sono protetti e utilizzati secondo la nostra 
+                <a href="#">Privacy Policy</a>
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Libreria Digitale</span>
+            </div>
+            <p>© 2024 Libreria Digitale. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
 </body>
 </html>

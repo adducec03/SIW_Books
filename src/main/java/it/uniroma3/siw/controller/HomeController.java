@@ -61,6 +61,6 @@ public class HomeController {
         List<Recensione> recensioniRecenti = recensioneService.getRecensioniRecenti();
         model.addAttribute("recensioniRecenti", recensioniRecenti);
 
-        return "index";
+        return "indexProva";
     }
 }
