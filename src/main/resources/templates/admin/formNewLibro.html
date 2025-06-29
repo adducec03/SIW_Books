@@ -34,6 +34,13 @@
             <span th:if="${#fields.hasErrors('genere')}" th:errors="*{genere}"></span>
         </div>
 
+        <div>
+            <label for="descrizione">Descrizione:</label><br>
+            <textarea id="descrizione" th:field="*{descrizione}" rows="5" cols="60"
+                placeholder="Inserisci una breve descrizione del libro..."></textarea>
+            <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"></span>
+        </div>
+        
         <div id="immagini-container">
             <label>URL immagine:</label>
             <input type="url" name="urlImmagini" />
@@ -50,6 +57,7 @@
                 container.appendChild(input);
             }
         </script>
+
 
         <!-- Se vuoi visualizzare gli autori -->
         <div th:if="${autori != null}">

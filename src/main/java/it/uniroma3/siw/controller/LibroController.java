@@ -59,12 +59,12 @@ public class LibroController {
     public String formNewLibro(Model model) {
         model.addAttribute("libro", new Libro());
         model.addAttribute("autori", autoreService.getAllAutori());
-        
+
         return "formNewLibro.html";
     }
 
     @PostMapping("/libro")
-    public String newLibro(@Valid @ModelAttribute("libro") Libro libro, BindingResult bindingResult, Model model) {
+    public String newLibro(@Valid @ModelAttribute("libro") Libro libro, BindingResult bindingResult, Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
         if (bindingResult.hasErrors()) { // sono emersi errori nel binding
             model.addAttribute("autori", autoreService.getAllAutori());
@@ -72,6 +72,13 @@ public class LibroController {
         } else { // NON sono emersi errori nel binding
             this.libroService.save(libro);
             model.addAttribute("libro", libro);
+
+            if (userDetails != null) {
+                Credentials credentials = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
+                if ("ADMIN".equals(credentials.getRuolo())) {
+                    return "redirect:/admin/libro/" + libro.getId();
+                }
+            }
             return "redirect:libro/" + libro.getId();
         }
     }
@@ -163,7 +170,8 @@ public class LibroController {
     }
 
     @PostMapping("/libro/{id}/salva")
-    public String salvaLibro(@PathVariable("id") Long idLibro, RedirectAttributes redirectAttributes,@AuthenticationPrincipal UserDetails userDetails) {
+    public String salvaLibro(@PathVariable("id") Long idLibro, RedirectAttributes redirectAttributes,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Libro libro = this.libroService.getLibroById(idLibro);
         Utente utente = this.credentialsService.getUtenteCorrente();
 
@@ -191,6 +199,5 @@ public class LibroController {
 
         return "redirect:/areaPersonale";
     }
-
 
 }

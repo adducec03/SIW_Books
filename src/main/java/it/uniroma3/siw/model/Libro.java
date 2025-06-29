@@ -3,6 +3,7 @@ package it.uniroma3.siw.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,9 @@ public class Libro {
     @Max(2023)
     private Integer anno;
     private String genere;
+    @Column(columnDefinition = "TEXT")
+    private String descrizione;
+
     @ElementCollection
     private List<String> urlImmagini = new ArrayList<>();
     @ManyToMany
@@ -37,6 +41,22 @@ public class Libro {
     private List<Utente> utentiCheHannoSalvato;
 
     // ----------------------------METODI-----------------------------//
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
+
+    public List<Utente> getUtentiCheHannoSalvato() {
+        return utentiCheHannoSalvato;
+    }
+
+    public void setUtentiCheHannoSalvato(List<Utente> utentiCheHannoSalvato) {
+        this.utentiCheHannoSalvato = utentiCheHannoSalvato;
+    }
 
     public List<Recensione> getRecensioni() {
         return recensioni;

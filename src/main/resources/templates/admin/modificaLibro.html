@@ -12,10 +12,16 @@
     <form th:action="@{/admin/libro/{id}(id=${libro.id})}" th:object="${libro}" method="post">
 
         <label for="titolo">Titolo:</label>
-        <input type="text" id="titolo" th:field="*{titolo}" required/><br/>
+        <input type="text" id="titolo" th:field="*{titolo}" required /><br />
 
         <label for="anno">Anno di pubblicazione:</label>
-        <input type="number" id="anno" th:field="*{anno}" required/><br/>
+        <input type="number" id="anno" th:field="*{anno}" required /><br />
+
+        <div>
+            <label for="descrizione">Descrizione:</label><br>
+            <textarea id="descrizione" th:field="*{descrizione}" rows="5" cols="60"></textarea>
+            <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"></span>
+        </div>
 
         <h3>Immagini esistenti</h3>
         <ul>
@@ -33,6 +39,8 @@
         <input type="text" name="newImages" />
         <input type="text" name="newImages" />
         <!-- puoi aggiungere JS per aggiungerne dinamicamente -->
+
+
 
         <button type="submit">Salva</button>
     </form>

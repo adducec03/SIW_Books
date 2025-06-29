@@ -38,7 +38,15 @@
                     <button type="submit">Salva nei preferiti</button>
                 </form>
             </div>
+
+            <div th:if="${libro.descrizione}">
+                <h3>Descrizione</h3>
+                <p th:text="${libro.descrizione}"></p>
+            </div>
+
         </div>
+
+
     </main>
 
     <section class="book-reviews">

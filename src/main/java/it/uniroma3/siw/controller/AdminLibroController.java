@@ -46,6 +46,7 @@ public class AdminLibroController {
         return "admin/formNewLibro";
     }
 
+
     // Form modifica libro
     @GetMapping("/modificaLibro/{id}")
     public String formModificaLibro(@PathVariable("id") Long id, Model model) {
@@ -77,6 +78,8 @@ public class AdminLibroController {
         libroEsistente.setAutori(libro.getAutori());
         libroEsistente.setTitolo(libro.getTitolo());
         libroEsistente.setAnno(libro.getAnno());
+        libroEsistente.setDescrizione(libro.getDescrizione());
+
 
         // 3. Gestione immagini
         List<String> immagini = existingImages != null ? new ArrayList<>(existingImages) : new ArrayList<>();
