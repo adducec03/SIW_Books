@@ -64,7 +64,8 @@ public class LibroController {
     }
 
     @PostMapping("/libro")
-    public String newLibro(@Valid @ModelAttribute("libro") Libro libro, BindingResult bindingResult, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+    public String newLibro(@Valid @ModelAttribute("libro") Libro libro, BindingResult bindingResult, Model model,
+            @AuthenticationPrincipal UserDetails userDetails) {
 
         if (bindingResult.hasErrors()) { // sono emersi errori nel binding
             model.addAttribute("autori", autoreService.getAllAutori());
@@ -93,18 +94,33 @@ public class LibroController {
             @RequestParam(required = false) String autore,
             @RequestParam(required = false) Integer anno,
             @RequestParam(required = false) String genere,
-            Model model, @AuthenticationPrincipal UserDetails userDetails) {
+            @RequestParam(required = false) String sort,
+            Model model,
+            @AuthenticationPrincipal UserDetails userDetails) {
 
         List<Libro> libri;
 
-        if ((titolo != null && !titolo.isBlank()) ||
+        boolean hasFiltri = (titolo != null && !titolo.isBlank()) ||
                 (autore != null && !autore.isBlank()) ||
-                anno != null || (genere != null && !genere.isBlank())) {
+                (genere != null && !genere.isBlank()) ||
+                (anno != null);
+
+        // 1. Gestione ordinamento
+        if ("piu-votati".equalsIgnoreCase(sort)) {
+            libri = libroService.trovaLibriPiuVotati();
+        } else if ("salvati".equalsIgnoreCase(sort)) {
+            libri = libroService.trovaLibriPiuSalvati();
+        }
+        // 2. Altrimenti applica i filtri se presenti
+        else if (hasFiltri) {
             libri = libroService.findByFiltri(titolo, autore, anno, genere);
-        } else {
+        }
+        // 3. Nessun filtro, nessun ordinamento: mostra tutti
+        else {
             libri = (List<Libro>) libroService.getAllLibri();
         }
 
+        // Calcola voti medi
         Map<Long, Double> medieVoti = new HashMap<>();
         Map<Long, Integer> stelle = new HashMap<>();
 
@@ -114,28 +130,59 @@ public class LibroController {
             stelle.put(libro.getId(), (media != null) ? (int) Math.round(media) : 0);
         }
 
+        // Aggiungi al model
         model.addAttribute("libri", libri);
         model.addAttribute("medieVoti", medieVoti);
         model.addAttribute("stelle", stelle);
+        model.addAttribute("filtro", "recenti");
+
+        // Admin o utente normale
+        if (userDetails != null) {
+            Credentials credentials = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
+            if ("ADMIN".equals(credentials.getRuolo())) {
+                return "admin/libri";
+            }
+        }
+
+        return "libri";
+    }
+
+    @GetMapping("/libri/frammento")
+    public String getLibriByFiltro(@RequestParam String tipo, Model model) {
+        List<Libro> libri;
+
+        switch (tipo) {
+            case "votati":
+                libri = libroService.trovaLibriPiuVotati();
+                break;
+            case "salvati":
+                libri = libroService.trovaLibriPiuSalvati();
+                break;
+            default:
+                libri = (List<Libro>) libroService.getAllLibri();
+        }
+
+        aggiungiMedieEVoti(model, libri);
+        return "fragments/libri :: booksGrid";
+    }
+
+    @GetMapping("/libri/salvati")
+    public String mostraLibriPiuSalvati(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        aggiungiMedieEVoti(model, libroService.trovaLibriPiuSalvati());
+        model.addAttribute("filtro", "salvati");
 
         if (userDetails != null) {
             Credentials credentials = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
             if ("ADMIN".equals(credentials.getRuolo())) {
-                return "admin/libri.html";
+                return "admin/libri";
             }
         }
-        return "libri.html";
 
-    }
-
-    @GetMapping("/libri/salvati")
-    public String mostraLibriPiuSalvati(Model model) {
-        aggiungiMedieEVoti(model, libroService.trovaLibriPiuSalvati());
         return "libri";
     }
 
     @GetMapping("/libri/piu-votati")
-    public String mostraLibriPiuVotati(Model model) {
+    public String mostraLibriPiuVotati(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         List<Libro> libri = libroService.trovaLibriPiuVotati();
 
         Map<Long, Double> medieVoti = new HashMap<>();
@@ -150,6 +197,14 @@ public class LibroController {
         model.addAttribute("libri", libri);
         model.addAttribute("medieVoti", medieVoti);
         model.addAttribute("stelle", stelle);
+        model.addAttribute("filtro", "votati");
+
+        if (userDetails != null) {
+            Credentials credentials = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
+            if ("ADMIN".equals(credentials.getRuolo())) {
+                return "admin/libri";
+            }
+        }
 
         return "libri";
     }

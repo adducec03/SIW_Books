@@ -2,7 +2,9 @@ package it.uniroma3.siw.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -108,5 +110,49 @@ public class AdminLibroController {
         libroService.save(libroEsistente);
 
         return "redirect:/admin/libro/" + id;
+    }
+
+    @GetMapping("/libri/salvati")
+    public String mostraLibriPiuSalvati(Model model) {
+        aggiungiMedieEVoti(model, libroService.trovaLibriPiuSalvati());
+        model.addAttribute("filtro", "salvati");
+
+        return "admin/libri";
+    }
+
+    @GetMapping("/libri/piu-votati")
+    public String mostraLibriPiuVotati(Model model) {
+        List<Libro> libri = libroService.trovaLibriPiuVotati();
+
+        Map<Long, Double> medieVoti = new HashMap<>();
+        Map<Long, Integer> stelle = new HashMap<>();
+
+        for (Libro libro : libri) {
+            Double media = libroService.calcolaMediaVoti(libro);
+            medieVoti.put(libro.getId(), media);
+            stelle.put(libro.getId(), (media != null) ? (int) Math.round(media) : 0);
+        }
+
+        model.addAttribute("libri", libri);
+        model.addAttribute("medieVoti", medieVoti);
+        model.addAttribute("stelle", stelle);
+        model.addAttribute("filtro", "votati");
+
+        return "admin/libri";
+    }
+
+    private void aggiungiMedieEVoti(Model model, List<Libro> libri) {
+        Map<Long, Double> medieVoti = new HashMap<>();
+        Map<Long, Integer> stelle = new HashMap<>();
+
+        for (Libro libro : libri) {
+            Double media = libroService.calcolaMediaVoti(libro);
+            medieVoti.put(libro.getId(), media);
+            stelle.put(libro.getId(), (media != null) ? (int) Math.round(media) : 0);
+        }
+
+        model.addAttribute("libri", libri);
+        model.addAttribute("medieVoti", medieVoti);
+        model.addAttribute("stelle", stelle);
     }
 }

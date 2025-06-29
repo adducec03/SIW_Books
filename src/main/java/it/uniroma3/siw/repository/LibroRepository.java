@@ -41,7 +41,7 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     @Query("SELECT l FROM Libro l WHERE l.anno = :anno AND LOWER(l.genere) = LOWER(:genere)")
     List<Libro> findByAnnoAndGenereIgnoreCase(@Param("anno") Integer anno, @Param("genere") String genere);
 
-    @Query("SELECT l FROM Libro l JOIN l.utentiCheHannoSalvato u GROUP BY l ORDER BY COUNT(u) DESC")
+    @Query("SELECT l FROM Libro l LEFT JOIN l.utentiCheHannoSalvato u GROUP BY l ORDER BY COUNT(u) DESC")
     List<Libro> findLibriPiuSalvati();
 
     @Query(" SELECT l FROM Libro l LEFT JOIN l.recensioni r GROUP BY l ORDER BY AVG(r.voto) DESC")

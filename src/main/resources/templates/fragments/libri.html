@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="libriFragment(libri, stelle)">
+        <div class="books-section">
+            <div th:if="${libri.isEmpty()}" class="empty-state">
+                <svg width="64" height="64" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <h3>Nessun libro trovato</h3>
+                <p>Non ci sono libri che corrispondono ai tuoi criteri di ricerca</p>
+            </div>
+
+            <div th:unless="${libri.isEmpty()}" class="books-grid">
+                <div class="book-card" th:each="libro : ${libri}">
+                    <a th:href="@{'/admin/libro/' + ${libro.id}}" class="book-link">
+                        <div class="book-cover">
+                            <img th:if="${not #lists.isEmpty(libro.urlImmagini)}" th:src="${libro.urlImmagini[0]}"
+                                th:alt="'Copertina di ' + ${libro.titolo}" />
+                            <img th:unless="${not #lists.isEmpty(libro.urlImmagini)}" th:src="@{/images/noImage.png}"
+                                alt="Copertina non disponibile" />
+                            <div class="book-overlay">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="book-info">
+                            <h3 th:text="${libro.titolo != null ? libro.titolo : 'Titolo sconosciuto'}"
+                                class="book-title">Titolo del libro</h3>
+
+                            <p class="book-author">
+                                <span th:if="${#lists.isEmpty(libro.autori)}">Autore sconosciuto</span>
+                                <span th:each="autore, iter : ${libro.autori}"
+                                    th:text="${autore.nome + ' ' + autore.cognome + (iter.last ? '' : ', ')}">
+                                    Autore
+                                </span>
+                            </p>
+
+                            <div class="book-meta">
+                                <span th:text="${libro.anno}" class="book-year">Anno</span>
+                                <span th:text="${libro.genere}" class="book-genre">Genere</span>
+                            </div>
+
+                            <div class="book-interactions">
+
+
+
+                                <div class="book-rating" th:if="${stelle[libro.id] != null}"
+                                    th:with="voto=${stelle[libro.id]}">
+                                    <div class="stars">
+                                        <span th:each="i : ${#numbers.sequence(1, 5)}"
+                                            th:class="${i <= voto} ? 'star filled' : 'star'"
+                                            th:text="${i <= voto} ? '★' : '☆'">★</span>
+                                    </div>
+                                    <span class="rating-text" th:text="${voto} + '/5'">5/5</span>
+                                </div>
+
+                                <div class="book-rating" th:unless="${stelle[libro.id] != null}">
+                                    <span class="no-rating">Nessuna valutazione</span>
+                                </div>
+
+
+                                <div class="book-saves">
+                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                    <span
+                                        th:text="${libro.utentiCheHannoSalvato != null ? #lists.size(libro.utentiCheHannoSalvato) : '0'}">0
+                                        salvataggi</span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
