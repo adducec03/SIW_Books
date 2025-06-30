@@ -22,6 +22,10 @@ public class LibroService {
         return libroRepository.findById(id).get();
     }
 
+    public List<Libro> getLibriOrdinatiPerId() {
+        return libroRepository.findAllByOrderByIdDesc();
+    }
+
     public Iterable<Libro> getAllLibri() {
         return libroRepository.findAll();
     }

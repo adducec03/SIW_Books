@@ -1,5 +1,6 @@
 package it.uniroma3.siw.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,12 +48,18 @@ public class LibroController {
     CredentialsService credentialsService;
 
     @GetMapping("/libro/{id}")
-    public String getLibro(@PathVariable("id") Long id, Model model) {
+    public String getLibro(@PathVariable("id") Long id, Model model, Principal principal) {
         Libro libro = this.libroService.getLibroById(id);
         model.addAttribute("libro", libro);
         List<Recensione> recensioni = recensioneService.findByLibroOrderByDataCreazioneDesc(libro);
         model.addAttribute("recensioni", recensioni);
+        if (principal != null) {
+            Credentials cred = credentialsService.getCredentials(principal.getName()).orElse(null);
+            if (cred != null)
+                model.addAttribute("utente", cred.getUtente());
+        }
         return "libro.html";
+
     }
 
     @GetMapping("/formNewLibro")
@@ -117,7 +124,7 @@ public class LibroController {
         }
         // 3. Nessun filtro, nessun ordinamento: mostra tutti
         else {
-            libri = (List<Libro>) libroService.getAllLibri();
+            libri = (List<Libro>) libroService.getLibriOrdinatiPerId();
         }
 
         // Calcola voti medi

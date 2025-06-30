@@ -35,7 +35,7 @@ public class Utente {
     name = "utente_libri_salvati",
     joinColumns = @JoinColumn(name = "utente_id"),
     inverseJoinColumns = @JoinColumn(name = "libro_id"))
-    private List<Libro> libriSalvati;
+    private List<Libro> libriSalvati=new ArrayList<>();
 
     @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recensione> recensioni = new ArrayList<>();

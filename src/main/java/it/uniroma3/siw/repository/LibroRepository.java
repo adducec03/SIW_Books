@@ -14,6 +14,8 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
 
     public boolean existsByTitoloAndAnno(String titolo, Integer anno);
 
+    List<Libro> findAllByOrderByIdDesc();
+
     @Query("SELECT l FROM Libro l JOIN l.autori a WHERE LOWER(l.titolo) LIKE LOWER(CONCAT('%', :titolo, '%'))")
     List<Libro> findByTitoloContainingIgnoreCase(@Param("titolo") String titolo);
 

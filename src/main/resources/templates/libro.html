@@ -4,74 +4,176 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${libro.titolo}">Libro</title>
-    <link rel="stylesheet" href="/css/libro.css?version=2" />
+    <link rel="stylesheet" href="/css/libro.css?version=3" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
-    <header class="book-header">
-        <a href="/"><img src="/images/logo.png" alt="Logo" class="logo"></a>
-    </header>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <a href="/" class="logo">
+                    SIW Books
+                </a>
+            </div>
+
+            <div class="navbar-nav">
+                <a href="/">Home</a>
+                <a href="/libri" class="active">Libri</a>
+                <a href="/autori">Autori</a>
+            </div>
+
+            <div class="navbar-auth">
+                <span th:if="${not #authorization.expression('isAuthenticated()')}">
+                    <a href="/login">Login</a>
+                    <a href="/register" class="btn-register">Register</a>
+                </span>
+                <span th:if="${nomeUtente != null}">
+                    <a th:href="@{/areaPersonale}">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span th:text="${nomeUtente}"></span>
+                    </a>
+                    <a th:href="@{/logout}" class="logout-btn">Logout</a>
+                </span>
+            </div>
+        </div>
+    </nav>
+
 
     <main class="book-container" th:if="${libro}">
-        <div class="book-left">
-            <img th:src="@{${libro.urlImmagini[0]}}" alt="Copertina libro" class="book-cover">
+        <div class="book-content">
+            <div class="book-left">
+                <div class="image-gallery" th:if="${libro.urlImmagini != null and !libro.urlImmagini.isEmpty()}">
+                    <div class="main-image">
+                        <img th:src="${libro.urlImmagini[0]}" alt="Copertina libro" class="book-cover" />
+                    </div>
+                    <div class="thumbnail-gallery" th:if="${#lists.size(libro.urlImmagini) > 1}">
+                        <img th:each="url, iterStat : ${libro.urlImmagini}" th:src="${url}"
+                            th:alt="'Immagine ' + ${iterStat.count}" class="thumbnail"
+                            th:classappend="${iterStat.index == 0} ? 'active' : ''" />
+                    </div>
+                </div>
+
+                <div class="no-image" th:unless="${libro.urlImmagini != null and !libro.urlImmagini.isEmpty()}">
+                    <img src="/images/noImage.png" alt="Nessuna immagine disponibile" class="book-cover placeholder" />
+                </div>
+            </div>
+
+            <div class="book-right">
+                <div class="book-info">
+                    <h1 class="book-title" th:text="${libro.titolo}">Titolo libro</h1>
+
+                    <div class="book-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Anno:</span>
+                            <span class="meta-value" th:text="${libro.anno}">2000</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Genere:</span>
+                            <span class="meta-value genre-tag" th:text="${libro.genere}">Fantasy</span>
+                        </div>
+                    </div>
+
+                    <div class="book-authors">
+                        <h3 class="authors-title">Autori</h3>
+                        <div class="authors-list">
+                            <a th:each="autore : ${libro.autori}" th:href="@{'/autore/' + ${autore.id}}"
+                                th:text="${autore.nome} + ' ' + ${autore.cognome}" class="author-link">Autore</a>
+                        </div>
+                    </div>
+
+                    <div class="book-actions" sec:authorize="isAuthenticated()">
+                        <a th:href="@{/recensioni/nuova(libroId=${libro.id})}" class="btn btn-primary">
+                            Aggiungi recensione
+                        </a>
+                        <!-- Mostra il bottone SOLO se il libro NON è ancora salvato -->
+                        <form method="post" th:action="@{'/libro/' + ${libro.id} + '/salva'}"
+                            th:if="${utente != null and !utente.libriSalvati.contains(libro)}" class="favorite-form">
+                            <button type="submit" class="btn btn-favorite">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="18"
+                                    height="18" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                </svg>
+                                Salva nei preferiti
+                            </button>
+                        </form>
+
+                        <!-- Mostra solo una scritta se è già salvato -->
+                        <div class="already-saved" th:if="${utente != null and utente.libriSalvati.contains(libro)}">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" width="18"
+                                height="18" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                            </svg>
+                            <span style="color: red; font-weight: 600;" fill="true" class="btn btn-favorite-done">Salvato</span>
+                        </div>
+                    </div>
+
+                    <div class="book-description" th:if="${libro.descrizione}">
+                        <h3 class="description-title">Descrizione</h3>
+                        <p class="description-text" th:text="${libro.descrizione}"></p>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="book-right">
-            <h1 th:text="${libro.titolo}">Titolo libro</h1>
-            <p><strong>Anno:</strong> <span th:text="${libro.anno}">2000</span></p>
-            <p><strong>Genere:</strong> <span th:text="${libro.genere}">Fantasy</span></p>
-
-            <div class="book-authors">
-                <strong>Autori:</strong>
-                <ul>
-                    <li th:each="autore : ${libro.autori}">
-                        <a th:href="@{'/autore/' + ${autore.id}}"
-                            th:text="${autore.nome} + ' ' + ${autore.cognome}">Autore</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="book-actions" sec:authorize="isAuthenticated()">
-                <a th:href="@{/recensioni/nuova(libroId=${libro.id})}" class="button">Aggiungi recensione</a>
-                <form method="post" th:action="@{'/libro/' + ${libro.id} + '/salva'}">
-                    <button type="submit">Salva nei preferiti</button>
-                </form>
-            </div>
-
-            <div th:if="${libro.descrizione}">
-                <h3>Descrizione</h3>
-                <p th:text="${libro.descrizione}"></p>
-            </div>
-
-        </div>
-
-
     </main>
 
     <section class="book-reviews">
-        <h2>Recensioni</h2>
+        <div class="reviews-container">
+            <h2 class="reviews-title">Recensioni</h2>
 
-        <div th:if="${#lists.isEmpty(libro.recensioni)}">
-            <p>Nessuna recensione disponibile.</p>
-        </div>
+            <div class="no-reviews" th:if="${#lists.isEmpty(libro.recensioni)}">
+                <div class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                        class="bi bi-book" viewBox="0 0 16 16">
+                        <path
+                            d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783" />
+                    </svg>
+                    <p> Nessuna recensione disponibile per questo libro.</p>
+                    <p class="empty-subtitle">Sii il primo a lasciare una recensione!</p>
+                </div>
+            </div>
 
-        <div class="review-list" th:each="recensione : ${recensioni}">
-            <div class="recensione">
-                <h3 th:text="${recensione.titolo}">Titolo</h3>
-                <p th:text="${recensione.descrizione}">Descrizione</p>
-                <p><strong>Voto:</strong> <span th:text="${recensione.voto}">0</span></p>
-                <p><em>Scritta il
-                        <span th:text="${#temporals.format(recensione.dataCreazione, 'dd/MM/yyyy HH:mm')}"></span></em>
-                </p>
-                <p><strong>Autore:</strong>
-                    <span th:text="${recensione.utente.nome} + ' ' + ${recensione.utente.cognome}">Utente</span>
-                </p>
+            <div class="review-list" th:unless="${#lists.isEmpty(libro.recensioni)}">
+                <div class="review-card" th:each="recensione : ${recensioni}">
+                    <div class="review-header">
+                        <h3 class="review-title" th:text="${recensione.titolo}">Titolo</h3>
+                        <div class="review-rating">
+                            <span class="rating-stars" th:attr="data-rating=${recensione.voto}">
+                                <span th:each="i : ${#numbers.sequence(1, 5)}"
+                                    th:class="${i <= recensione.voto} ? 'star filled' : 'star'">★</span>
+                            </span>
+                            <span class="rating-number" th:text="${recensione.voto}">0</span>
+                        </div>
+                    </div>
+
+                    <p class="review-description" th:text="${recensione.descrizione}">Descrizione</p>
+
+                    <div class="review-footer">
+                        <div class="review-author">
+                            <strong
+                                th:text="${recensione.utente.nome} + ' ' + ${recensione.utente.cognome}">Utente</strong>
+                        </div>
+                        <div class="review-date">
+                            <span th:text="${#temporals.format(recensione.dataCreazione, 'dd/MM/yyyy HH:mm')}"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <div th:unless="${libro}" class="error-message">Libro non trovato.</div>
+    <div th:unless="${libro}" class="error-message">
+        <div class="error-content">
+            <h2>📖 Libro non trovato</h2>
+            <p>Il libro che stai cercando non è disponibile.</p>
+            <a href="/" class="btn btn-primary">Torna alla home</a>
+        </div>
+    </div>
 </body>
 
 </html>

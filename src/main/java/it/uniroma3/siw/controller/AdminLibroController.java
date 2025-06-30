@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Libro;
+import it.uniroma3.siw.model.Recensione;
+import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.LibroService;
+import it.uniroma3.siw.service.RecensioneService;
 
 // AdminLibroController.java
 @Controller
@@ -26,6 +32,12 @@ public class AdminLibroController {
 
     @Autowired
     private LibroService libroService;
+
+    @Autowired
+    private CredentialsService credentialsService;
+
+    @Autowired
+    private RecensioneService recensioneService;
 
     // Lista libri per admin
     @GetMapping("/libri")
@@ -36,8 +48,15 @@ public class AdminLibroController {
 
     // Dettagli libro per admin
     @GetMapping("/libro/{id}")
-    public String adminDettaglioLibro(@PathVariable("id") Long id, Model model) {
+    public String adminDettaglioLibro(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Libro libro = this.libroService.getLibroById(id);
         model.addAttribute("libro", libroService.getLibroById(id));
+        List<Recensione> recensioni = recensioneService.findByLibroOrderByDataCreazioneDesc(libro);
+        model.addAttribute("recensioni", recensioni);
+        if (userDetails != null) {
+            Credentials cred = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
+            model.addAttribute("utente", cred.getUtente());
+        }
         return "admin/libro";
     }
 
@@ -47,7 +66,6 @@ public class AdminLibroController {
         model.addAttribute("libro", new Libro());
         return "admin/formNewLibro";
     }
-
 
     // Form modifica libro
     @GetMapping("/modificaLibro/{id}")
@@ -77,11 +95,11 @@ public class AdminLibroController {
             return "redirect:/admin/libri"; // gestione fallback
 
         // 2. Aggiorna i campi base
+        libroEsistente.setId(libro.getId());
         libroEsistente.setAutori(libro.getAutori());
         libroEsistente.setTitolo(libro.getTitolo());
         libroEsistente.setAnno(libro.getAnno());
         libroEsistente.setDescrizione(libro.getDescrizione());
-
 
         // 3. Gestione immagini
         List<String> immagini = existingImages != null ? new ArrayList<>(existingImages) : new ArrayList<>();

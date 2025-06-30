@@ -15,7 +15,7 @@
 
             <div th:unless="${libri.isEmpty()}" class="books-grid">
                 <div class="book-card" th:each="libro : ${libri}">
-                    <a th:href="@{'/libro/' + ${libro.id}}" class="book-link">
+                    <a th:href="@{'/admin/libro/' + ${libro.id}}" class="book-link">
                         <div class="book-cover">
                             <img th:if="${not #lists.isEmpty(libro.urlImmagini)}" th:src="${libro.urlImmagini[0]}"
                                 th:alt="'Copertina di ' + ${libro.titolo}" />

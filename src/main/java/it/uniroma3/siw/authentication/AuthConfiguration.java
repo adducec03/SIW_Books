@@ -43,15 +43,15 @@ public class AuthConfiguration {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET,
-                                "/", "/index", "/register", "/login", "/autori", "/autore", "/autore/**", "/libri",
+                                "/", "/index", "/register", "/login", "/autori", "/autore", "/autore/**", "/libri", "/libri/",
                                 "/libro", "/libro/**", "/oauth2/**",
                                 "/css/**.css", "/images/**", "/js/**", "/favicon.ico", "/logo.png", "/wallpaper.png", "/libro.png", "autori.png", "/recensioni.png",
                                 "/github_icon_light.png", "/instagram_icon_light.png", "/linkedin_icon_light.png", "/recensioni2.png",
-                                "/libri/salvati", "/libri/piu-votati")
+                                "/libri/salvati", "/libri/piu-votati","/fragments/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/libro/*/unsave").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/libro/*/unsave", "/libro/*/salva").authenticated()
                         .requestMatchers("/areaPersonale/**").authenticated()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
