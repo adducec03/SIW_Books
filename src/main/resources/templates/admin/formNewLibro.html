@@ -1,68 +1,505 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>New Libro</title>
-    <link rel="stylesheet" href="/formNewLibro.css?version=3" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggiungi Nuovo Libro - SIW Books</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #ffe6a7;
+            --text-primary: #432818;
+            --secondary-color: #99582a;
+            --button-color: #6f1d1b;
+            --button-hover: #5a1816;
+            --white: #ffffff;
+            --error-color: #d32f2f;
+            --success-color: #388e3c;
+            --border-color: #d4b483;
+            --shadow-light: rgba(67, 40, 24, 0.1);
+            --shadow-medium: rgba(67, 40, 24, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overscroll-behavior: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #ffedc0, #cb322f);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--white) 0%, rgba(255, 237, 196, 0.9) 100%);
+            box-shadow: 0 2px 10px var(--shadow-light);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 12px;
+        }
+
+        .brand-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--button-color);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px var(--shadow-medium);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Global Errors */
+        .global-errors {
+            background: #ffebee;
+            border: 1px solid #ffcdd2;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .global-errors p {
+            color: var(--error-color);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .global-errors p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(153, 88, 42, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .form-select {
+            min-height: 120px;
+            padding: 0.5rem;
+        }
+
+        .form-select option {
+            padding: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .file-input-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .file-input-label:hover {
+            border-color: var(--secondary-color);
+            background: rgba(153, 88, 42, 0.05);
+        }
+
+        .file-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* Error Messages */
+        .field-error {
+            display: block;
+            color: var(--error-color);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .btn-primary {
+            background: var(--button-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(111, 29, 27, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 0 1rem;
+                margin: 1rem auto;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .form-container {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Animation for form appearance */
+        .form-container {
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .form-input:focus,
+        .btn:focus,
+        .file-input-label:focus {
+            outline: 2px solid var(--secondary-color);
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 
 <body>
-    <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
-    <h1>Aggiungi un libro</h1>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo-container">
+                <span class="brand-text">SIW Books</span>
+            </a>
+            <nav>
+                <a href="/libri" class="nav-link">Torna al Catalogo</a>
+            </nav>
+        </div>
+    </header>
 
-    <form th:action="@{/libro}" method="POST" th:object="${libro}" enctype="multipart/form-data">
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">Aggiungi Nuovo Libro</h1>
+            <p class="page-subtitle">Inserisci i dettagli del libro nel sistema</p>
         </div>
 
-        <div>
-            <label>Titolo:</label>
-            <input type="text" th:field="*{titolo}" />
-            <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}"></span>
+        <div class="form-container">
+            <!-- Global Errors -->
+            <!--<div th:if="${#fields.hasGlobalErrors()}" class="global-errors">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore globale</p>
+            </div>-->
+
+            <form th:action="@{/libro}" method="POST" th:object="${libro}" enctype="multipart/form-data">
+                <!-- Title and Year Row -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="titolo" class="form-label">Titolo *</label>
+                        <input type="text" id="titolo" th:field="*{titolo}" class="form-input"
+                            placeholder="Inserisci il titolo del libro" required>
+                        <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" class="field-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="anno" class="form-label">Anno di Pubblicazione *</label>
+                        <input type="number" id="anno" th:field="*{anno}" class="form-input" placeholder="es. 2023"
+                            min="1" max="2024" required>
+                        <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="field-error"></span>
+                    </div>
+                </div>
+
+                <!-- Genre -->
+                <div class="form-group">
+                    <label for="genere" class="form-label">Genere *</label>
+                    <input type="text" id="genere" th:field="*{genere}" class="form-input"
+                        placeholder="es. Fantasy, Romanzo, Giallo, Biografia" required>
+                    <span th:if="${#fields.hasErrors('genere')}" th:errors="*{genere}" class="field-error"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="descrizione" class="form-label">Descrizione</label>
+                    <textarea id="descrizione" th:field="*{descrizione}" class="form-input form-textarea"
+                        placeholder="Inserisci una breve descrizione del libro, trama o riassunto..."></textarea>
+                    <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"
+                        class="field-error"></span>
+                </div>
+
+                <!-- Authors Selection -->
+                <div class="form-group">
+                    <label for="autori" class="form-label">Seleziona Autori *</label>
+                    <select id="autori" name="autori" multiple size="5" class="form-input form-select" required>
+                        <option th:each="autore : ${autori}" th:value="${autore.id}"
+                            th:text="${autore.nome + ' ' + autore.cognome}">
+                            Autore Nome
+                        </option>
+                    </select>
+                    <small
+                        style="color: var(--secondary-color); font-size: 0.875rem; margin-top: 0.25rem; display: block;">
+                        Tieni premuto Ctrl (o Cmd su Mac) per selezionare più autori
+                    </small>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label for="immagini" class="form-label">Immagini del Libro</label>
+                    <div class="file-input-container">
+                        <input type="file" id="immagini" name="immagini" multiple accept="image/*" class="file-input">
+                        <label for="immagini" class="file-input-label">
+                            <span class="file-icon">📷</span>
+                            Seleziona immagini (copertina, retro, etc.)
+                        </label>
+                    </div>
+                    <small
+                        style="color: var(--secondary-color); font-size: 0.875rem; margin-top: 0.25rem; display: block;">
+                        Formati supportati: JPG, PNG, GIF. Massimo 5MB per immagine.
+                    </small>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <a href="/libri" class="btn btn-secondary">Annulla</a>
+                    <button type="submit" class="btn btn-primary">
+                        Aggiungi Libro
+                    </button>
+                </div>
+            </form>
         </div>
+    </main>
 
-        <div>
-            <label>Anno:</label>
-            <input type="text" th:field="*{anno}" />
-            <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}"></span>
-        </div>
+    <script>
+        // File input enhancement
+        document.getElementById('immagini').addEventListener('change', function (e) {
+            const label = document.querySelector('.file-input-label');
+            const fileCount = e.target.files.length;
 
-        <div>
-            <label>Genere:</label>
-            <input type="text" th:field="*{genere}" />
-            <span th:if="${#fields.hasErrors('genere')}" th:errors="*{genere}"></span>
-        </div>
+            if (fileCount > 0) {
+                const labelText = fileCount === 1
+                    ? '1 file selezionato'
+                    : `${fileCount} file selezionati`;
+                label.innerHTML = `<span class="file-icon">📷</span> ${labelText}`;
+                label.style.borderColor = 'var(--success-color)';
+                label.style.color = 'var(--success-color)';
+            } else {
+                label.innerHTML = '<span class="file-icon">📷</span> Seleziona immagini (copertina, retro, etc.)';
+                label.style.borderColor = 'var(--border-color)';
+                label.style.color = 'var(--secondary-color)';
+            }
+        });
 
-        <div>
-            <label for="descrizione">Descrizione:</label><br>
-            <textarea id="descrizione" th:field="*{descrizione}" rows="5" cols="60"
-                placeholder="Inserisci una breve descrizione del libro..."></textarea>
-            <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"></span>
-        </div>
+        // Form validation enhancement
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const requiredFields = document.querySelectorAll('input[required], select[required]');
+            let hasErrors = false;
 
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = 'var(--error-color)';
+                    hasErrors = true;
+                } else {
+                    field.style.borderColor = 'var(--border-color)';
+                }
+            });
 
-
-
-        <div>
-            <label>Aggiungi immagini:</label>
-            <input type="file" name="immagini" multiple />
-        </div>
-
-        <div>
-            <label for="autori">Seleziona Autori:</label><br>
-            <select id="autori" name="autori" multiple size="5">
-                <option th:each="autore : ${autori}" th:value="${autore.id}"
-                    th:text="${autore.nome + ' ' + autore.cognome}">
-                </option>
-            </select>
-        </div>
-
-
-
-        <div>
-            <button type="submit">Conferma</button>
-        </div>
-    </form>
+            if (hasErrors) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    </script>
 </body>
 
 </html>
