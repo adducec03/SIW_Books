@@ -45,18 +45,21 @@
     <main class="book-container" th:if="${libro}">
         <div class="book-content">
             <div class="book-left">
-                <div class="image-gallery" th:if="${libro.urlImmagini != null and !libro.urlImmagini.isEmpty()}">
+                <div class="image-gallery"
+                    th:if="${libro.percorsiImmagini != null and !libro.percorsiImmagini.isEmpty()}">
                     <div class="main-image">
-                        <img th:src="${libro.urlImmagini[0]}" alt="Copertina libro" class="book-cover" />
+                        <img th:src="${libro.percorsiImmagini[0]}" alt="Copertina libro" class="book-cover" />
                     </div>
-                    <div class="thumbnail-gallery" th:if="${#lists.size(libro.urlImmagini) > 1}">
-                        <img th:each="url, iterStat : ${libro.urlImmagini}" th:src="${url}"
-                            th:alt="'Immagine ' + ${iterStat.count}" class="thumbnail"
-                            th:classappend="${iterStat.index == 0} ? 'active' : ''" />
+                    <div class="thumbnail-gallery" th:if="${#lists.size(libro.percorsiImmagini) > 1}">
+                        <img th:each="percorsi, iterStat : ${libro.percorsiImmagini}" th:if="${iterStat.index > 0}"
+                            th:src="${percorsi}" th:alt="'Immagine ' + ${iterStat.count}" class="thumbnail"
+                            th:classappend="${iterStat.index == 1} ? 'active' : ''" />
                     </div>
                 </div>
 
-                <div class="no-image" th:unless="${libro.urlImmagini != null and !libro.urlImmagini.isEmpty()}">
+
+                <div class="no-image"
+                    th:unless="${libro.percorsiImmagini != null and !libro.percorsiImmagini.isEmpty()}">
                     <img src="/images/noImage.png" alt="Nessuna immagine disponibile" class="book-cover placeholder" />
                 </div>
             </div>

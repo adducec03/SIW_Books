@@ -47,7 +47,7 @@ public class AuthConfiguration {
                                 "/libro", "/libro/**", "/oauth2/**",
                                 "/css/**.css", "/images/**", "/js/**", "/favicon.ico", "/logo.png", "/wallpaper.png", "/libro.png", "autori.png", "/recensioni.png",
                                 "/github_icon_light.png", "/instagram_icon_light.png", "/linkedin_icon_light.png", "/recensioni2.png",
-                                "/libri/salvati", "/libri/piu-votati","/fragments/**")
+                                "/libri/salvati", "/libri/piu-votati","/fragments/**","/uploads/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")

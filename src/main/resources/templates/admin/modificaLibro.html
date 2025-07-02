@@ -9,7 +9,8 @@
 <body>
     <h1>Modifica libro</h1>
 
-    <form th:action="@{/admin/libro/{id}(id=${libro.id})}" th:object="${libro}" method="post">
+    <form th:action="@{/admin/libro/{id}(id=${libro.id})}" th:object="${libro}" method="post"
+        enctype="multipart/form-data">
 
         <label for="titolo">Titolo:</label>
         <input type="text" id="titolo" th:field="*{titolo}" required /><br />
@@ -25,8 +26,8 @@
 
         <h3>Immagini esistenti</h3>
         <ul>
-            <li th:each="url, iterStat : ${libro.urlImmagini}">
-                <img th:src="${url}" style="height: 100px;" />
+            <li th:each="url, iterStat : ${libro.percorsiImmagini}">
+                <img th:src="@{${url}}" style="height: 100px;" />
                 <input type="hidden" th:name="existingImages" th:value="${url}" />
                 <label>
                     Rimuovi:
@@ -35,13 +36,11 @@
             </li>
         </ul>
 
-        <h3>Nuove immagini (URL)</h3>
-        <input type="text" name="newImages" />
-        <input type="text" name="newImages" />
+        <label for="immagini">Aggiungi immagini:</label>
+        <input type="file" name="immagini" multiple />
         <!-- puoi aggiungere JS per aggiungerne dinamicamente -->
 
-
-
+        
         <button type="submit">Salva</button>
     </form>
 </body>

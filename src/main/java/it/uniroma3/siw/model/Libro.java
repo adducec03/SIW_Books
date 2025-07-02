@@ -3,11 +3,13 @@ package it.uniroma3.siw.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
@@ -32,7 +34,9 @@ public class Libro {
     private String descrizione;
 
     @ElementCollection
-    private List<String> urlImmagini = new ArrayList<>();
+    @CollectionTable(name = "immagini_libro", joinColumns = @JoinColumn(name = "libro_id"))
+    @Column(name = "path_immagine")
+    private List<String> percorsiImmagini = new ArrayList<>();
     @ManyToMany
     private List<Autore> autori = new ArrayList<>();
     @OneToMany(mappedBy = "libro")
@@ -98,12 +102,12 @@ public class Libro {
         this.anno = anno;
     }
 
-    public List<String> getUrlImmagini() {
-        return urlImmagini;
+    public List<String> getPercorsiImmagini() {
+        return percorsiImmagini;
     }
 
-    public void setUrlImmagini(List<String> urlImmagini) {
-        this.urlImmagini = urlImmagini;
+    public void setPercorsiImmagini(List<String> percorsiImmagini) {
+        this.percorsiImmagini = percorsiImmagini;
     }
 
     public List<Autore> getAutori() {

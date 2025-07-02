@@ -1,10 +1,15 @@
 package it.uniroma3.siw.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Libro;
@@ -48,7 +54,8 @@ public class AdminLibroController {
 
     // Dettagli libro per admin
     @GetMapping("/libro/{id}")
-    public String adminDettaglioLibro(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+    public String adminDettaglioLibro(@PathVariable("id") Long id, Model model,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Libro libro = this.libroService.getLibroById(id);
         model.addAttribute("libro", libroService.getLibroById(id));
         List<Recensione> recensioni = recensioneService.findByLibroOrderByDataCreazioneDesc(libro);
@@ -87,25 +94,23 @@ public class AdminLibroController {
             @ModelAttribute("libro") Libro libro,
             @RequestParam(name = "existingImages", required = false) List<String> existingImages,
             @RequestParam(name = "removeIndexes", required = false) List<Integer> removeIndexes,
-            @RequestParam(name = "newImages", required = false) List<String> newImages) {
+            @RequestParam(name = "immagini", required = false) List<MultipartFile> nuoveImmagini) throws IOException {
 
-        // 1. Carica il libro originale
         Libro libroEsistente = libroService.getLibroById(id);
         if (libroEsistente == null)
-            return "redirect:/admin/libri"; // gestione fallback
+            return "redirect:/admin/libri";
 
-        // 2. Aggiorna i campi base
-        libroEsistente.setId(libro.getId());
-        libroEsistente.setAutori(libro.getAutori());
+        // aggiorna dati base
         libroEsistente.setTitolo(libro.getTitolo());
         libroEsistente.setAnno(libro.getAnno());
         libroEsistente.setDescrizione(libro.getDescrizione());
+        libroEsistente.setAutori(libro.getAutori());
 
-        // 3. Gestione immagini
+        // immagini esistenti
         List<String> immagini = existingImages != null ? new ArrayList<>(existingImages) : new ArrayList<>();
 
+        // rimozione immagini
         if (removeIndexes != null) {
-            // Ordina desc per evitare problemi con rimozione per indice
             removeIndexes.sort(Collections.reverseOrder());
             for (Integer i : removeIndexes) {
                 if (i >= 0 && i < immagini.size()) {
@@ -114,19 +119,37 @@ public class AdminLibroController {
             }
         }
 
-        if (newImages != null) {
-            for (String url : newImages) {
-                if (url != null && !url.trim().isEmpty()) {
-                    immagini.add(url.trim());
+        // Caricamento nuove immagini
+        if (nuoveImmagini != null && !nuoveImmagini.isEmpty()) {
+            String uploadDir = System.getProperty("user.dir") + "/uploads/copertine"; // cartella relativa alla directory del progetto
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                try {
+                    Files.createDirectories(uploadPath);
+                } catch (IOException e) {
+                    throw new RuntimeException("Impossibile creare la cartella di upload: " + uploadPath, e);
+                }
+            }
+
+            for (MultipartFile file : nuoveImmagini) {
+                if (!file.isEmpty()) {
+                    String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+                    Path filePath = uploadPath.resolve(fileName);
+
+                    try {
+                        file.transferTo(filePath.toFile()); // salva nel file system
+                        immagini.add("/uploads/copertine/" + fileName); // path da usare nella visualizzazione
+                    } catch (IOException e) {
+                        throw new RuntimeException("Errore nel salvataggio del file: " + fileName, e);
+                    }
                 }
             }
         }
 
-        libroEsistente.setUrlImmagini(immagini);
+        libroEsistente.setPercorsiImmagini(immagini);
 
-        // 4. Salva
         libroService.save(libroEsistente);
-
         return "redirect:/admin/libro/" + id;
     }
 

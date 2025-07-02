@@ -17,9 +17,9 @@
                 <div class="book-card" th:each="libro : ${libri}">
                     <a th:href="@{'/libro/' + ${libro.id}}" class="book-link">
                         <div class="book-cover">
-                            <img th:if="${not #lists.isEmpty(libro.urlImmagini)}" th:src="${libro.urlImmagini[0]}"
+                            <img th:if="${not #lists.isEmpty(libro.percorsiImmagini)}" th:src="${libro.percorsiImmagini[0]}"
                                 th:alt="'Copertina di ' + ${libro.titolo}" />
-                            <img th:unless="${not #lists.isEmpty(libro.urlImmagini)}" th:src="@{/images/noImage.png}"
+                            <img th:unless="${not #lists.isEmpty(libro.percorsiImmagini)}" th:src="@{/images/noImage.png}"
                                 alt="Copertina non disponibile" />
                             <div class="book-overlay">
                                 <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">

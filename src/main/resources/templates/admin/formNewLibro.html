@@ -40,8 +40,15 @@
                 placeholder="Inserisci una breve descrizione del libro..."></textarea>
             <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"></span>
         </div>
-        
-        <div id="immagini-container">
+
+        <form method="post" enctype="multipart/form-data" th:action="@{/libro}">
+            ...
+            <input type="file" name="immagini" multiple />
+            ...
+        </form>
+
+
+        <!--<div id="immagini-container">
             <label>URL immagine:</label>
             <input type="url" name="urlImmagini" />
         </div>
@@ -56,7 +63,7 @@
                 container.appendChild(document.createElement('br'));
                 container.appendChild(input);
             }
-        </script>
+        </script>-->
 
 
         <!-- Se vuoi visualizzare gli autori -->

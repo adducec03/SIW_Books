@@ -1,10 +1,15 @@
 package it.uniroma3.siw.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.uniroma3.siw.model.Credentials;
@@ -73,24 +79,42 @@ public class LibroController {
     }
 
     @PostMapping("/libro")
-    public String newLibro(@Valid @ModelAttribute("libro") Libro libro, BindingResult bindingResult, Model model,
+    public String newLibro(@Valid @ModelAttribute("libro") Libro libro,
+            BindingResult bindingResult,
+            @RequestParam("immagini") List<MultipartFile> immagini,
+            Model model,
             @AuthenticationPrincipal UserDetails userDetails) {
-
-        if (bindingResult.hasErrors()) { // sono emersi errori nel binding
+        if (bindingResult.hasErrors()) {
             model.addAttribute("autori", autoreService.getAllAutori());
             return "formNewLibro.html";
-        } else { // NON sono emersi errori nel binding
-            this.libroService.save(libro);
-            model.addAttribute("libro", libro);
+        }
 
-            if (userDetails != null) {
-                Credentials credentials = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
-                if ("ADMIN".equals(credentials.getRuolo())) {
-                    return "redirect:/admin/libro/" + libro.getId();
+        String uploadDir = "uploads/";
+
+        for (MultipartFile file : immagini) {
+            if (!file.isEmpty()) {
+                try {
+                    String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+                    Path path = Paths.get(uploadDir + fileName);
+                    Files.createDirectories(path.getParent());
+                    Files.write(path, file.getBytes());
+                    libro.getPercorsiImmagini().add("/uploads/" + fileName);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-            return "redirect:libro/" + libro.getId();
         }
+
+        this.libroService.save(libro);
+
+        if (userDetails != null) {
+            Credentials credentials = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
+            if ("ADMIN".equals(credentials.getRuolo())) {
+                return "redirect:/admin/libro/" + libro.getId();
+            }
+        }
+
+        return "redirect:/libro/" + libro.getId();
     }
 
     @GetMapping("/formSearchLibri")
