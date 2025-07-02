@@ -10,8 +10,7 @@
     <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
     <h1>Aggiungi un libro</h1>
 
-
-    <form th:action="@{/libro}" method="POST" th:object="${libro}">
+    <form th:action="@{/libro}" method="POST" th:object="${libro}" enctype="multipart/form-data">
         <div th:if="${#fields.hasGlobalErrors()}">
             <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
         </div>
@@ -41,40 +40,24 @@
             <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"></span>
         </div>
 
-        <form method="post" enctype="multipart/form-data" th:action="@{/libro}">
-            ...
+
+
+
+        <div>
+            <label>Aggiungi immagini:</label>
             <input type="file" name="immagini" multiple />
-            ...
-        </form>
-
-
-        <!--<div id="immagini-container">
-            <label>URL immagine:</label>
-            <input type="url" name="urlImmagini" />
         </div>
-        <button type="button" onclick="aggiungiCampo()">Aggiungi immagine</button>
 
-        <script>
-            function aggiungiCampo() {
-                const container = document.getElementById('immagini-container');
-                const input = document.createElement('input');
-                input.type = 'url';
-                input.name = 'urlImmagini'; // Spring li mapperà in una lista
-                container.appendChild(document.createElement('br'));
-                container.appendChild(input);
-            }
-        </script>-->
-
-
-        <!-- Se vuoi visualizzare gli autori -->
-        <div th:if="${autori != null}">
-            <label>Autori:</label>
-            <select th:field="*{autori}" multiple>
+        <div>
+            <label for="autori">Seleziona Autori:</label><br>
+            <select id="autori" name="autori" multiple size="5">
                 <option th:each="autore : ${autori}" th:value="${autore.id}"
                     th:text="${autore.nome + ' ' + autore.cognome}">
                 </option>
             </select>
         </div>
+
+
 
         <div>
             <button type="submit">Conferma</button>

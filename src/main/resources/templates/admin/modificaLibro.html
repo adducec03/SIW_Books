@@ -24,6 +24,15 @@
             <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"></span>
         </div>
 
+        <div>
+            <label>Autori:</label>
+            <select th:field="*{autori}" multiple>
+                <option th:each="autore : ${autori}" th:value="${autore.id}"
+                    th:text="${autore.nome + ' ' + autore.cognome}">
+                </option>
+            </select>
+        </div>
+
         <h3>Immagini esistenti</h3>
         <ul>
             <li th:each="url, iterStat : ${libro.percorsiImmagini}">
@@ -40,7 +49,7 @@
         <input type="file" name="immagini" multiple />
         <!-- puoi aggiungere JS per aggiungerne dinamicamente -->
 
-        
+
         <button type="submit">Salva</button>
     </form>
 </body>

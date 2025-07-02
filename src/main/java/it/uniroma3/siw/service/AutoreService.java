@@ -14,11 +14,11 @@ public class AutoreService {
     private AutoreRepository autoreRepository;
 
     public Autore getAutoreById(Long id) {
-        return autoreRepository.findById(id).get();
+        return autoreRepository.findById(id).orElse(null);
     }
 
-    public Iterable<Autore> getAllAutori() {
-        return autoreRepository.findAll();
+    public List<Autore> getAllAutori() {
+        return (List<Autore>) autoreRepository.findAll();
     }
 
     public void save(Autore autore) {

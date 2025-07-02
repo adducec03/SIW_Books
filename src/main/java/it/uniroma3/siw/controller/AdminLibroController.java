@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Libro;
 import it.uniroma3.siw.model.Recensione;
+import it.uniroma3.siw.service.AutoreService;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.LibroService;
 import it.uniroma3.siw.service.RecensioneService;
@@ -44,6 +45,9 @@ public class AdminLibroController {
 
     @Autowired
     private RecensioneService recensioneService;
+
+    @Autowired
+    private AutoreService autoreService;
 
     // Lista libri per admin
     @GetMapping("/libri")
@@ -71,6 +75,7 @@ public class AdminLibroController {
     @GetMapping("/formNewLibro")
     public String formNuovoLibro(Model model) {
         model.addAttribute("libro", new Libro());
+        model.addAttribute("autori", autoreService.getAllAutori());
         return "admin/formNewLibro";
     }
 
@@ -79,7 +84,8 @@ public class AdminLibroController {
     public String formModificaLibro(@PathVariable("id") Long id, Model model) {
         Libro libro = libroService.getLibroById(id);
         model.addAttribute("libro", libro);
-        return "admin/modificaLibro";
+        model.addAttribute("autori", autoreService.getAllAutori());
+        return "admin/modificaLibro.html";
     }
 
     // Salvataggio (new o modificato)
@@ -106,6 +112,7 @@ public class AdminLibroController {
         libroEsistente.setDescrizione(libro.getDescrizione());
         libroEsistente.setAutori(libro.getAutori());
 
+        // GESTIONE AGGIUNT/RIMOZIONE AUTORI
         // immagini esistenti
         List<String> immagini = existingImages != null ? new ArrayList<>(existingImages) : new ArrayList<>();
 
@@ -121,7 +128,8 @@ public class AdminLibroController {
 
         // Caricamento nuove immagini
         if (nuoveImmagini != null && !nuoveImmagini.isEmpty()) {
-            String uploadDir = System.getProperty("user.dir") + "/uploads/copertine"; // cartella relativa alla directory del progetto
+            String uploadDir = System.getProperty("user.dir") + "/uploads/copertine"; // cartella relativa alla
+                                                                                      // directory del progetto
             Path uploadPath = Paths.get(uploadDir);
 
             if (!Files.exists(uploadPath)) {
@@ -148,6 +156,8 @@ public class AdminLibroController {
         }
 
         libroEsistente.setPercorsiImmagini(immagini);
+
+        libroEsistente.setAutori(libro.getAutori());
 
         libroService.save(libroEsistente);
         return "redirect:/admin/libro/" + id;

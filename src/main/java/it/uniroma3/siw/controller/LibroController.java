@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.uniroma3.siw.model.Autore;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Libro;
 import it.uniroma3.siw.model.Recensione;
@@ -39,6 +41,7 @@ import jakarta.validation.Valid;
 
 @Controller
 public class LibroController {
+
 
     @Autowired
     LibroService libroService;
@@ -56,34 +59,52 @@ public class LibroController {
     CredentialsService credentialsService;
 
     @GetMapping("/libro/{id}")
-    public String getLibro(@PathVariable("id") Long id, Model model, Principal principal) {
+    public String getLibro(@PathVariable("id") Long id, Model model, Principal principal,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Libro libro = this.libroService.getLibroById(id);
         model.addAttribute("libro", libro);
         List<Recensione> recensioni = recensioneService.findByLibroOrderByDataCreazioneDesc(libro);
         model.addAttribute("recensioni", recensioni);
-        if (principal != null) {
-            Credentials cred = credentialsService.getCredentials(principal.getName()).orElse(null);
-            if (cred != null)
-                model.addAttribute("utente", cred.getUtente());
+        model.addAttribute("nomeUtente", userDetails);
+
+        if (principal instanceof OAuth2AuthenticationToken token) {
+            // Estrai attributi da GitHub o Google
+            Map<String, Object> attributes = token.getPrincipal().getAttributes();
+            String username = (String) attributes.get("login"); // GitHub
+            if (username == null) {
+                username = (String) attributes.get("email"); // Google
+            }
+
+            Optional<Credentials> optional = credentialsService.getCredentials(username);
+            if (optional.isPresent()) {
+                model.addAttribute("nomeUtente", optional.get().getUtente().getNome());
+            } else {
+                model.addAttribute("nomeUtente", username); // fallback
+            }
+
+        } else if (principal != null) {
+            // Login classico con username
+            String username = principal.getName();
+            Optional<Credentials> optional = credentialsService.getCredentials(username);
+            if (optional.isPresent()) {
+                model.addAttribute("nomeUtente", optional.get().getUtente().getNome());
+            } else {
+                model.addAttribute("nomeUtente", username); // fallback
+            }
         }
         return "libro.html";
 
     }
 
-    @GetMapping("/formNewLibro")
-    public String formNewLibro(Model model) {
-        model.addAttribute("libro", new Libro());
-        model.addAttribute("autori", autoreService.getAllAutori());
-
-        return "formNewLibro.html";
-    }
 
     @PostMapping("/libro")
     public String newLibro(@Valid @ModelAttribute("libro") Libro libro,
             BindingResult bindingResult,
             @RequestParam("immagini") List<MultipartFile> immagini,
+            @RequestParam("autori") List<Long> idAutori,
             Model model,
             @AuthenticationPrincipal UserDetails userDetails) {
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("autori", autoreService.getAllAutori());
             return "formNewLibro.html";
@@ -105,16 +126,19 @@ public class LibroController {
             }
         }
 
-        this.libroService.save(libro);
-
-        if (userDetails != null) {
-            Credentials credentials = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
-            if ("ADMIN".equals(credentials.getRuolo())) {
-                return "redirect:/admin/libro/" + libro.getId();
+        // Associa autori
+        List<Autore> autoriSelezionati = new ArrayList<>();
+        for (Long id : idAutori) {
+            Autore autore = autoreService.getAutoreById(id);
+            if (autore != null) {
+                autoriSelezionati.add(autore);
             }
         }
+        libro.setAutori(autoriSelezionati);
 
-        return "redirect:/libro/" + libro.getId();
+        libroService.save(libro);
+
+        return "redirect:/admin/libro/" + libro.getId();
     }
 
     @GetMapping("/formSearchLibri")
