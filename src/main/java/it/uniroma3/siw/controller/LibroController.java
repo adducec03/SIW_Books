@@ -110,7 +110,7 @@ public class LibroController {
             return "formNewLibro.html";
         }
 
-        String uploadDir = "uploads/";
+        String uploadDir = "uploads/copertine";
 
         for (MultipartFile file : immagini) {
             if (!file.isEmpty()) {
@@ -119,7 +119,7 @@ public class LibroController {
                     Path path = Paths.get(uploadDir + fileName);
                     Files.createDirectories(path.getParent());
                     Files.write(path, file.getBytes());
-                    libro.getPercorsiImmagini().add("/uploads/" + fileName);
+                    libro.getPercorsiImmagini().add("/uploads/copertine/" + fileName);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

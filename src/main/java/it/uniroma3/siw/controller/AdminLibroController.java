@@ -214,7 +214,7 @@ public class AdminLibroController {
         if (libro != null) {
             libroService.deleteById(id);
         }
-        return "redirect:/admin/libri";
+        return "redirect:/libri";
     }
 
     @PostMapping("/recensione/{id}/delete")
@@ -224,7 +224,7 @@ public class AdminLibroController {
             Long idLibro = recensione.getLibro().getId();
             recensioneService.delete(recensione);
             redirectAttributes.addFlashAttribute("success", "Recensione eliminata con successo!");
-            return "redirect:/admin/libro/" + idLibro;
+            return "redirect:/libro/" + idLibro;
         }
         return "redirect:/";
     }

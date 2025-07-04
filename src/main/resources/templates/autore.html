@@ -9,7 +9,7 @@
 <body>
     <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
     <div th:if="${autore}">
-        <img th:src="@{${autore.urlImmagine}}" width="10%" alt="Immagine dell'autore">
+        <img th:src="${autore.percorsoImmagine}" alt="Immagine autore" class="author-cover" />
         <h1 th:text="${autore.nome} + ' ' + ${autore.cognome}">Nome Cognome</h1>
         <div>
             Data di nascita: <span th:text="${#temporals.format(autore.dataNascita, 'dd/MM/yyyy')}">1/1/1900</span>
@@ -25,5 +25,7 @@
     </div>
     <div th:unless="${autore}">Non esiste</div>
 </body>
+
+
 
 </html>

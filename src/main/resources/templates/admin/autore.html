@@ -9,7 +9,7 @@
 <body>
     <div><a href="/"><img src="/logo.png" width="10%" /></a></div>
     <div th:if="${autore}">
-        <img th:src="@{${autore.urlImmagine}}" width="10%" alt="Immagine dell'autore">
+        <img th:src="${autore.percorsoImmagine}" alt="Immagine autore" class="author-cover" />
         <h1 th:text="${autore.nome} + ' ' + ${autore.cognome}">Nome Cognome</h1>
         <div>
             Data di nascita: <span th:text="${#temporals.format(autore.dataNascita, 'dd/MM/yyyy')}">1/1/1900</span>
@@ -23,6 +23,10 @@
             <p th:text="${autore.descrizione}">Testo della descrizione</p>
         </div>
         <div><a th:href="@{'/admin/autore/' + ${autore.id} + '/modifica'}">Modifica Autore</a></div>
+        <form th:action="@{'/admin/autore/' + ${autore.id} + '/elimina'}" method="post"
+            onsubmit="return confirm('Sei sicuro di voler eliminare questo autore? Verranno eliminati anche i suoi libri.')">
+            <button type="submit">Elimina</button>
+        </form>
     </div>
     <div th:unless="${autore}">Non esiste</div>
 </body>

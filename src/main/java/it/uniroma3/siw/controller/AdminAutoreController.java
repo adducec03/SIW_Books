@@ -5,12 +5,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Autore;
 import it.uniroma3.siw.service.AutoreService;
 import jakarta.validation.Valid;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin/autore")
@@ -49,9 +55,9 @@ public class AdminAutoreController {
             @RequestParam String nazionalita,
             @RequestParam String dataNascita,
             @RequestParam(required = false) String dataMorte,
-            @RequestParam(required = false) String urlImmagine,
             @RequestParam(required = false) String descrizione,
-            Model model) {
+            @RequestParam(name = "immagine", required = false) MultipartFile nuovaImmagine,
+            Model model) throws IOException {
 
         Autore autore = autoreService.getAutoreById(id);
         if (autore == null) {
@@ -71,13 +77,42 @@ public class AdminAutoreController {
             }
         }
 
+        // Caricamento nuova immagine
+        if (nuovaImmagine != null && !nuovaImmagine.isEmpty()) {
+            String uploadDir = System.getProperty("user.dir") + "/uploads/autori/"; // cartella relativa alla directory
+                                                                                    // del progetto
+            Path uploadPath = Paths.get(uploadDir);
+
+            // creazione cartella se non esiste
+            if (!Files.exists(uploadPath)) {
+                try {
+                    Files.createDirectories(uploadPath);
+                } catch (IOException e) {
+                    throw new RuntimeException("Impossibile creare la cartella di upload: " + uploadPath, e);
+                }
+            }
+
+            if (!nuovaImmagine.isEmpty()) {
+                System.out.println("prova");
+                String fileName = UUID.randomUUID() + "_" + nuovaImmagine.getOriginalFilename();
+                Path filePath = uploadPath.resolve(fileName);
+
+                try {
+                    nuovaImmagine.transferTo(filePath.toFile()); // salva nel file system
+                    autore.setPercorsoImmagine("/uploads/autori/" + fileName);// path da usare nella visualizzazione
+                } catch (IOException e) {
+                    throw new RuntimeException("Errore nel salvataggio del file: " + fileName, e);
+                }
+            }
+
+        }
+
         // Aggiornamento autore
         autore.setNome(nome);
         autore.setCognome(cognome);
         autore.setNazionalita(nazionalita);
         autore.setDataNascita(nascita);
         autore.setDataMorte(morte);
-        autore.setUrlImmagine(urlImmagine);
         autore.setDescrizione(descrizione);
 
         autoreService.save(autore);
@@ -105,6 +140,18 @@ public class AdminAutoreController {
         }
 
         autoreService.save(autore);
-        return "redirect:/admin/autori";
+        return "redirect:/admin/autore" + autore.getId();
     }
+
+    @PostMapping("/{id}/elimina")
+    public String eliminaAutore(@PathVariable Long id) {
+        Autore autore = autoreService.getAutoreById(id);
+
+        if (autore != null) {
+            autoreService.eliminaAutoreECascadeLibri(autore);
+        }
+
+        return "redirect:/autori";
+    }
+
 }

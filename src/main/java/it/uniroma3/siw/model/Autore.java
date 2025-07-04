@@ -23,7 +23,7 @@ public class Autore {
     private LocalDate dataMorte;
     @NotBlank
     private String nazionalita;
-    private String urlImmagine;
+    private String percorsoImmagine;
     @Column(columnDefinition = "TEXT")
     private String descrizione;
 
@@ -85,12 +85,12 @@ public class Autore {
         this.nazionalita = nazionalita;
     }
 
-    public String getUrlImmagine() {
-        return urlImmagine;
+    public String getPercorsoImmagine() {
+        return percorsoImmagine;
     }
 
-    public void setUrlImmagine(String urlImmagine) {
-        this.urlImmagine = urlImmagine;
+    public void setPercorsoImmagine(String urlImmagine) {
+        this.percorsoImmagine = urlImmagine;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class Autore {
         result = prime * result + ((dataNascita == null) ? 0 : dataNascita.hashCode());
         result = prime * result + ((dataMorte == null) ? 0 : dataMorte.hashCode());
         result = prime * result + ((nazionalita == null) ? 0 : nazionalita.hashCode());
-        result = prime * result + ((urlImmagine == null) ? 0 : urlImmagine.hashCode());
+        result = prime * result + ((percorsoImmagine == null) ? 0 : percorsoImmagine.hashCode());
         return result;
     }
 
@@ -140,10 +140,10 @@ public class Autore {
                 return false;
         } else if (!nazionalita.equals(other.nazionalita))
             return false;
-        if (urlImmagine == null) {
-            if (other.urlImmagine != null)
+        if (percorsoImmagine == null) {
+            if (other.percorsoImmagine != null)
                 return false;
-        } else if (!urlImmagine.equals(other.urlImmagine))
+        } else if (!percorsoImmagine.equals(other.percorsoImmagine))
             return false;
         return true;
     }

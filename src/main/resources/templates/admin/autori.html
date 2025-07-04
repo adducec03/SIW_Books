@@ -11,18 +11,29 @@
 
     <h1>Autori</h1>
 
-    <a th:href="@{/admin/formNewAutore}">Aggiungi Autore</a>
+    <form th:action="@{/autori}" method="get">
+        <input type="text" name="nome" placeholder="Nome" />
+        <input type="text" name="nazionalita" placeholder="Nazionalità" />
+        <button type="submit">Cerca</button>
+        <a th:href="@{/autori}" style="margin-left: 1em;">
+            <button type="button">Elimina filtri</button>
+        </a>
+    </form>
 
     <div th:if="${autori.isEmpty()}">Non ci sono autori nel sistema</div>
 
-    <ul>
-        <li th:each="autore : ${autori}">
-            <a th:href="@{'/admin/autore/' + ${autore.id}}">
-                <span th:text="${autore.nome} + ' ' + ${autore.cognome}">Tizio Caio</span>
-                <span th:text="' (' + ${autore.nazionalita} + ')'">Italiana</span>
-            </a>
-        </li>
-    </ul>
+    <div th:if="${autori != null}">
+        <ul>
+            <li th:each="autore : ${autori}">
+                <a th:href="@{'/admin/autore/' + ${autore.id}}">
+                    <img th:src="${autore.percorsoImmagine}" alt="Immagine autore" class="author-cover" />
+                    <span th:text="${autore.nome} + ' ' + ${autore.cognome}">Tizio Caio</span>
+                    <span th:text="' (' + ${autore.nazionalita} + ')'">Italiana</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
 
     <div><a th:href="@{/admin/autore/formNewAutore}">Aggiungi Autore</a></div>
 </body>

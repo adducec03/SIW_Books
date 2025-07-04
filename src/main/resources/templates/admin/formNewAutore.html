@@ -11,7 +11,7 @@
     <h1>Aggiungi un autore</h1>
 
 
-    <form th:action="@{/autore}" method="POST" th:object="${autore}">
+    <form th:action="@{/autore}" method="POST" th:object="${autore}" enctype="multipart/form-data">
         <div th:if="${#fields.hasGlobalErrors()}">
             <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
         </div>
@@ -65,12 +65,22 @@
             <span th:if="${#fields.hasErrors('nazionalita')}" th:errors="*{nazionalita}"></span>
         </div>
 
-        <div id="immagini-container">
-            <label>URL immagine:</label>
-            <input type="url" name="urlImmagine" />
+        <div class="form-group">
+            <label for="immagini" class="form-label">Immagine autore</label>
+            <div class="file-input-container">
+                <input type="file" id="immagine" name="immagine" accept="image/*" class="file-input">
+                <label for="immagine" class="file-input-label">
+                    <span class="file-icon">📷</span>
+                    Seleziona un immagine
+                </label>
+            </div>
+            <small style="color: var(--secondary-color); font-size: 0.875rem; margin-top: 0.25rem; display: block;">
+                Formati supportati: JPG, PNG, GIF. Massimo 5MB per immagine.
+            </small>
         </div>
-
         <div>
+
+
             <label>Descrizione:</label>
             <textarea th:field="*{descrizione}" rows="6" cols="50"></textarea>
             <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"></span>
@@ -81,6 +91,14 @@
             <button type="submit">Conferma</button>
         </div>
     </form>
+
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function (e) {
+            const fileInput = document.getElementById("immagine");
+            console.log("File selezionato:", fileInput.files[0]);
+        });
+    </script>
 </body>
 
 </html>
