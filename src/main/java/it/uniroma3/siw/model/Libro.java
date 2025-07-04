@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
@@ -39,6 +40,7 @@ public class Libro {
     @Column(name = "path_immagine")
     private List<String> percorsiImmagini = new ArrayList<>();
     @ManyToMany
+    @JoinTable(name = "libro_autore", joinColumns = @JoinColumn(name = "libro_id"), inverseJoinColumns = @JoinColumn(name = "autore_id"))
     private List<Autore> autori = new ArrayList<>();
     @OneToMany(mappedBy = "libro", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Recensione> recensioni = new ArrayList<>();
