@@ -422,6 +422,11 @@ body {
     transition: fill 0.3s;
 }
 
+.btn-delete{
+    background:var(--dark-brown);
+    color: var(--cream);
+}
+
 /* Description */
 .book-description {
     background: var(--light-gray);

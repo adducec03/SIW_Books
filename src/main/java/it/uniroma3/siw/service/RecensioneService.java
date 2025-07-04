@@ -41,6 +41,14 @@ public class RecensioneService {
 
     }
 
+    public Recensione findById(Long id){
+        return recensioneRepository.findById(id).orElse(null);
+    }
+
+    public void delete(Recensione recensione){
+        recensioneRepository.delete(recensione);
+    }
+
     public List<Recensione> findByLibroOrderByDataCreazioneDesc(Libro libro) {
         return recensioneRepository.findByLibroOrderByDataCreazioneDesc(libro);
     }

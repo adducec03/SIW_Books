@@ -51,7 +51,7 @@ public class AuthConfiguration {
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/libro/*/unsave", "/libro/*/salva").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/libro/*/unsave", "/libro/*/salva", "/recensione/*/delete").authenticated()
                         .requestMatchers("/areaPersonale/**").authenticated()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())

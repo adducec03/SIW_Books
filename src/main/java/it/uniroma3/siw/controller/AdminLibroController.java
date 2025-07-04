@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Libro;
@@ -205,5 +206,26 @@ public class AdminLibroController {
         model.addAttribute("libri", libri);
         model.addAttribute("medieVoti", medieVoti);
         model.addAttribute("stelle", stelle);
+    }
+
+    @PostMapping("/libro/{id}/delete")
+    public String deleteLibro(@PathVariable Long id) {
+        Libro libro = libroService.getLibroById(id);
+        if (libro != null) {
+            libroService.deleteById(id);
+        }
+        return "redirect:/admin/libri";
+    }
+
+    @PostMapping("/recensione/{id}/delete")
+    public String eliminaRecensione(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Recensione recensione = recensioneService.findById(id);
+        if (recensione != null) {
+            Long idLibro = recensione.getLibro().getId();
+            recensioneService.delete(recensione);
+            redirectAttributes.addFlashAttribute("success", "Recensione eliminata con successo!");
+            return "redirect:/admin/libro/" + idLibro;
+        }
+        return "redirect:/";
     }
 }

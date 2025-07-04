@@ -107,6 +107,11 @@
                             </button>
                         </form>
 
+                        <form th:action="@{/admin/libro/{id}/delete(id=${libro.id})}" method="post"
+                            onsubmit="return confirm('Sei sicuro di voler eliminare questo libro?');">
+                            <button type="submit" class="btn btn-delete">Elimina</button>
+                        </form>
+
                         <!-- Mostra solo una scritta se è già salvato -->
                         <div class="already-saved" th:if="${utente != null and utente.libriSalvati.contains(libro)}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" width="18"
@@ -155,6 +160,7 @@
                             <span class="rating-number" th:text="${recensione.voto}">0</span>
                         </div>
                     </div>
+                    
 
                     <p class="review-description" th:text="${recensione.descrizione}">Descrizione</p>
 
@@ -162,6 +168,11 @@
                         <div class="review-author">
                             <strong
                                 th:text="${recensione.utente.nome} + ' ' + ${recensione.utente.cognome}">Utente</strong>
+                        </div>
+                        <div>
+                            <form th:action="@{'/admin/recensione/' + ${recensione.id} + '/delete'}" method="post">
+                                <button type="submit" class="btn btn-delete-review">Elimina</button>
+                            </form>
                         </div>
                         <div class="review-date">
                             <span th:text="${#temporals.format(recensione.dataCreazione, 'dd/MM/yyyy HH:mm')}"></span>

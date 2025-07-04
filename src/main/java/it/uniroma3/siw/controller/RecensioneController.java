@@ -74,6 +74,10 @@ public class RecensioneController {
 
         recensioneService.salva(recensione,utente);
 
+        if(credentials.getRuolo().equals("ADMIN")){
+            return "redirect:/admin/libro/" + recensione.getLibro().getId();
+        }
+
         return "redirect:/libro/" + recensione.getLibro().getId();
     }
 }
