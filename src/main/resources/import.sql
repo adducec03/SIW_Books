@@ -95,3 +95,9 @@ INSERT INTO utente (id, nome, cognome, email, numero_telefonico) VALUES (100, 'A
 
 -- CREDENZIALI (username=admin, password=admin)
 INSERT INTO credentials (id, username, password, ruolo, utente_id, provider) VALUES (100,'admin','$2a$10$KTUov316ZwY0tZ7a21Cix.stNhLIRDaN4lbdG2d0PO1M9XjxAYmBy','ADMIN',100, 'form');
+
+
+--altri utenti
+-- mariorossi
+-- lucaverdi
+-- antonioneri
