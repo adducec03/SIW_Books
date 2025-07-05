@@ -46,7 +46,7 @@ cd SIW_Books
 ---
 
 
-## Casi d'uso
+## 📄 Casi d'uso
 
 **Caso d’uso UC1: Inserimento nuovo Libro - Attore primario: un’Amministratore** 
 1. Un Ammistratore vuole inserire un nuovo libro con i relativi dati.
