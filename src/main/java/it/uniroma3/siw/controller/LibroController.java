@@ -42,7 +42,6 @@ import jakarta.validation.Valid;
 @Controller
 public class LibroController {
 
-
     @Autowired
     LibroService libroService;
 
@@ -61,41 +60,38 @@ public class LibroController {
     @GetMapping("/libro/{id}")
     public String getLibro(@PathVariable("id") Long id, Model model, Principal principal,
             @AuthenticationPrincipal UserDetails userDetails) {
+
         Libro libro = this.libroService.getLibroById(id);
         model.addAttribute("libro", libro);
         List<Recensione> recensioni = recensioneService.findByLibroOrderByDataCreazioneDesc(libro);
         model.addAttribute("recensioni", recensioni);
-        model.addAttribute("nomeUtente", userDetails);
 
-        if (principal instanceof OAuth2AuthenticationToken token) {
-            // Estrai attributi da GitHub o Google
+        if (userDetails != null) {
+            Optional<Credentials> optional = credentialsService.getCredentials(userDetails.getUsername());
+            if (optional.isPresent()) {
+                Credentials credentials = optional.get();
+                model.addAttribute("nomeUtente", credentials.getUtente().getNome());
+                model.addAttribute("utente", credentials.getUtente());
+            }
+        } else if (principal instanceof OAuth2AuthenticationToken token) {
             Map<String, Object> attributes = token.getPrincipal().getAttributes();
-            String username = (String) attributes.get("login"); // GitHub
+            String username = (String) attributes.get("login");
             if (username == null) {
-                username = (String) attributes.get("email"); // Google
+                username = (String) attributes.get("email");
             }
 
             Optional<Credentials> optional = credentialsService.getCredentials(username);
             if (optional.isPresent()) {
-                model.addAttribute("nomeUtente", optional.get().getUtente().getNome());
+                Credentials credentials = optional.get();
+                model.addAttribute("nomeUtente", credentials.getUtente().getNome());
+                model.addAttribute("utente", credentials.getUtente());
             } else {
-                model.addAttribute("nomeUtente", username); // fallback
-            }
-
-        } else if (principal != null) {
-            // Login classico con username
-            String username = principal.getName();
-            Optional<Credentials> optional = credentialsService.getCredentials(username);
-            if (optional.isPresent()) {
-                model.addAttribute("nomeUtente", optional.get().getUtente().getNome());
-            } else {
-                model.addAttribute("nomeUtente", username); // fallback
+                model.addAttribute("nomeUtente", username);
             }
         }
+
         return "libro.html";
-
     }
-
 
     @PostMapping("/libro")
     public String newLibro(@Valid @ModelAttribute("libro") Libro libro,
