@@ -109,6 +109,7 @@ public class AdminLibroController {
 
         // aggiorna dati base
         libroEsistente.setTitolo(libro.getTitolo());
+        libroEsistente.setGenere(libro.getGenere());
         libroEsistente.setAnno(libro.getAnno());
         libroEsistente.setDescrizione(libro.getDescrizione());
         libroEsistente.setAutori(libro.getAutori());
