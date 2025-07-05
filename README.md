@@ -40,6 +40,7 @@ SIW Books è un applicazione web sviluppata per la gestione e consultazione di l
 ```bash
 git clone https://github.com/adducec03/SIW_Books.git
 cd SIW_Books
+/usr/bin/env /Library/Java/JavaVirtualMachines/jdk-23.jdk/Contents/Home/bin/java @/var/folders/20/448h2f1933x4jpn5p3l2lb7c0000gn/T/cp_cxkkbgct5v6z79wr6xm2mz6yl.argfile it.uniroma3.siw.SiwBooksApplication
 ```
 
 ---
