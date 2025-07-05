@@ -45,6 +45,11 @@ cd SIW_Books
 
 ---
 
+## 📊 Modello di Dominio
+![Modello di Dominio](/others/modello_di_dominio.png)
+
+---
+
 
 ## 📄 Casi d'uso
 
