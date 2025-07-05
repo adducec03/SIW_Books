@@ -29,6 +29,7 @@ body {
 
 /* NAVBAR */
 .navbar {
+    font-size: medium !important;
     background: var(--white);
     border-bottom: 1px solid var(--border-color);
     box-shadow: 0 2px 4px var(--shadow);

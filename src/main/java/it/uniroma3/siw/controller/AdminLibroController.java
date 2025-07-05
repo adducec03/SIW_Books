@@ -51,11 +51,13 @@ public class AdminLibroController {
     private AutoreService autoreService;
 
     // Lista libri per admin
-    /*@GetMapping("/libri")
-    public String adminLibri(Model model) {
-        model.addAttribute("libri", libroService.getAllLibri());
-        return "admin/libri";
-    }*/
+    /*
+     * @GetMapping("/libri")
+     * public String adminLibri(Model model) {
+     * model.addAttribute("libri", libroService.getAllLibri());
+     * return "admin/libri";
+     * }
+     */
 
     // Dettagli libro per admin
     @GetMapping("/libro/{id}")
@@ -69,6 +71,8 @@ public class AdminLibroController {
             Credentials cred = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
             model.addAttribute("utente", cred.getUtente());
         }
+        Double media = libroService.calcolaMediaVoti(libro);
+        model.addAttribute("mediaVoto", media);
         return "admin/libro";
     }
 
@@ -215,7 +219,7 @@ public class AdminLibroController {
         if (libro != null) {
             libroService.deleteById(id);
         }
-        return "redirect:/libri";
+        return "redirect:/admin/libri";
     }
 
     @PostMapping("/recensione/{id}/delete")
@@ -225,7 +229,7 @@ public class AdminLibroController {
             Long idLibro = recensione.getLibro().getId();
             recensioneService.delete(recensione);
             redirectAttributes.addFlashAttribute("success", "Recensione eliminata con successo!");
-            return "redirect:/libro/" + idLibro;
+            return "redirect:/admin/libro/" + idLibro;
         }
         return "redirect:/";
     }
