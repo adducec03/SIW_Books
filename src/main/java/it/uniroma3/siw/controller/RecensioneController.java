@@ -2,6 +2,9 @@ package it.uniroma3.siw.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +13,8 @@ import it.uniroma3.siw.model.*;
 import it.uniroma3.siw.service.*;
 
 import java.security.Principal;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class RecensioneController {
@@ -49,19 +54,41 @@ public class RecensioneController {
 
         recensione.setLibro(libroService.getLibroById(id));
         recensione.setUtente(utente);
-        recensioneService.salva(recensione,utente);
+        recensioneService.salva(recensione, utente);
 
         return "redirect:/libro/" + id + "/recensioni";
     }
 
     @GetMapping("/recensioni/nuova")
-    public String mostraFormRecensione(@RequestParam("libroId") Long libroId, Model model, Principal principal) {
+    public String mostraFormRecensione(@RequestParam("libroId") Long libroId, Model model, Principal principal,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Libro libro = libroService.getLibroById(libroId);
         Recensione recensione = new Recensione();
         recensione.setLibro(libro);
-        
-        Credentials credentials = credentialsService.getCredentials(principal.getName()).orElseThrow(() -> new RuntimeException("Credenziali non trovate"));
-        recensione.setUtente(credentials.getUtente());
+
+        if (userDetails != null) {
+            Optional<Credentials> optional = credentialsService.getCredentials(userDetails.getUsername());
+            if (optional.isPresent()) {
+                Credentials credentials = optional.get();
+                model.addAttribute("nomeUtente", credentials.getUtente().getNome());
+                model.addAttribute("utente", credentials.getUtente());
+            }
+        } else if (principal instanceof OAuth2AuthenticationToken token) {
+            Map<String, Object> attributes = token.getPrincipal().getAttributes();
+            String username = (String) attributes.get("login");
+            if (username == null) {
+                username = (String) attributes.get("email");
+            }
+
+            Optional<Credentials> optional = credentialsService.getCredentials(username);
+            if (optional.isPresent()) {
+                Credentials credentials = optional.get();
+                model.addAttribute("nomeUtente", credentials.getUtente().getNome());
+                model.addAttribute("utente", credentials.getUtente());
+            } else {
+                model.addAttribute("nomeUtente", username);
+            }
+        }
 
         model.addAttribute("recensione", recensione);
         return "formNewRecensione";
@@ -69,12 +96,13 @@ public class RecensioneController {
 
     @PostMapping("/recensioni")
     public String salvaRecensione(@ModelAttribute("recensione") Recensione recensione, Principal principal) {
-        Credentials credentials = credentialsService.getCredentials(principal.getName()).orElseThrow(() -> new RuntimeException("Credenziali non trovate"));
-        Utente utente= credentials.getUtente();
+        Credentials credentials = credentialsService.getCredentials(principal.getName())
+                .orElseThrow(() -> new RuntimeException("Credenziali non trovate"));
+        Utente utente = credentials.getUtente();
 
-        recensioneService.salva(recensione,utente);
+        recensioneService.salva(recensione, utente);
 
-        if(credentials.getRuolo().equals("ADMIN")){
+        if (credentials.getRuolo().equals("ADMIN")) {
             return "redirect:/admin/libro/" + recensione.getLibro().getId();
         }
 

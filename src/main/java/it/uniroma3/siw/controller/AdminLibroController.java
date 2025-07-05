@@ -219,7 +219,7 @@ public class AdminLibroController {
         if (libro != null) {
             libroService.deleteById(id);
         }
-        return "redirect:/admin/libri";
+        return "redirect:/libri";
     }
 
     @PostMapping("/recensione/{id}/delete")

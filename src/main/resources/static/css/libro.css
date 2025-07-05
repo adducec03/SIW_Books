@@ -282,6 +282,7 @@ body {
     color: var(--dark-brown);
     margin-bottom: 0.5rem;
     line-height: 1.2;
+    font-family: 'EB Garamond', serif;
 }
 
 .book-meta {
@@ -472,7 +473,7 @@ button {
 .book-description {
     background: var(--light-gray);
     padding: 1.5rem;
-    border-radius: 15px;
+    border-radius: 25px;
     border-left: 4px solid var(--dark-red);
 }
 

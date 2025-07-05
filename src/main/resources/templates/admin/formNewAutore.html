@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/formNewAutore.css?version=3" />
+    <link rel="stylesheet" href="/css/formNewLibroAndAutore.css?version=3" />
     <title>Nuovo Autore - SIW Books</title>
 
 </head>
@@ -13,65 +12,86 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="header-container">
-            <a href="/" class="logo-link">
-                <span>SIW Books</span>
+        <div class="header-content">
+            <a href="/" class="logo-container">
+                <span class="brand-text">SIW Books</span>
             </a>
+            <nav>
+                <a href="/autori" class="nav-link">Torna agli autori</a>
+            </nav>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="main-content">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">Nuovo Autore</h1>
-            <p class="page-subtitle">Aggiungi un nuovo autore alla biblioteca</p>
-        </div>
+    <main class="main-container">
 
-        <!-- Form Container -->
         <div class="form-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Nuovo Autore</h1>
+                <p class="page-subtitle">Aggiungi un nuovo autore alla biblioteca</p>
+            </div>
+
+            <!-- Form Container -->
+
 
             <form th:action="@{/autore}" method="POST" th:object="${autore}" enctype="multipart/form-data">
                 <!-- Nome -->
-                <div class="form-group">
-                    <label class="form-label" for="nome">Nome *</label>
-                    <input type="text" id="nome" th:field="*{nome}" class="form-input" placeholder="Inserisci il nome" required />
-                    <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message"></span>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="nome">Nome *</label>
+                        <input type="text" id="nome" th:field="*{nome}" class="form-input"
+                            placeholder="Inserisci il nome" required />
+                        <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message"></span>
+                    </div>
+
+                    <!-- Cognome -->
+                    <div class="form-group">
+                        <label class="form-label" for="cognome">Cognome *</label>
+                        <input type="text" id="cognome" th:field="*{cognome}" class="form-input"
+                            placeholder="Inserisci il cognome" required />
+                        <span th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}"
+                            class="error-message"></span>
+                    </div>
+
+                    <!-- Data di nascita -->
+                    <div class="form-group">
+                        <label class="form-label" for="dataNascita">Data di nascita *</label>
+                        <input type="date" id="dataNascita" th:field="*{dataNascita}" class="form-input" required />
+                        <span th:if="${#fields.hasErrors('dataNascita')}" th:errors="*{dataNascita}"
+                            class="error-message"></span>
+                    </div>
+
+                    <!-- Data di morte -->
+                    <div id="dataMorteContainer" class="form-group">
+                        <label class="form-label" for="dataMorte">Data di morte</label>
+                        <input type="date" id="dataMorte" th:field="*{dataMorte}" class="form-input" />
+                        <span th:if="${#fields.hasErrors('dataMorte')}" th:errors="*{dataMorte}"
+                            class="error-message"></span>
+                    </div>
                 </div>
 
-                <!-- Cognome -->
-                <div class="form-group">
-                    <label class="form-label" for="cognome">Cognome *</label>
-                    <input type="text" id="cognome" th:field="*{cognome}" class="form-input" placeholder="Inserisci il cognome" required />
-                    <span th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}" class="error-message"></span>
+
+                <div class="form-row">
+                    <!-- Checkbox autore in vita -->
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="inVitaCheckbox" class="checkbox-input"
+                            onchange="toggleDataMorte()" />
+                        <label for="inVitaCheckbox" class="checkbox-label">Autore ancora in vita</label>
+                    </div>
                 </div>
 
-                <!-- Data di nascita -->
-                <div class="form-group">
-                    <label class="form-label" for="dataNascita">Data di nascita *</label>
-                    <input type="date" id="dataNascita" th:field="*{dataNascita}" class="form-input" required />
-                    <span th:if="${#fields.hasErrors('dataNascita')}" th:errors="*{dataNascita}" class="error-message"></span>
-                </div>
 
-                <!-- Checkbox autore in vita -->
-                <div class="checkbox-container">
-                    <input type="checkbox" id="inVitaCheckbox" class="checkbox-input" onchange="toggleDataMorte()" />
-                    <label for="inVitaCheckbox" class="checkbox-label">✨ Autore ancora in vita</label>
-                </div>
-
-                <!-- Data di morte -->
-                <div id="dataMorteContainer" class="form-group">
-                    <label class="form-label" for="dataMorte">Data di morte</label>
-                    <input type="date" id="dataMorte" th:field="*{dataMorte}" class="form-input" />
-                    <span th:if="${#fields.hasErrors('dataMorte')}" th:errors="*{dataMorte}" class="error-message"></span>
-                </div>
 
                 <!-- Nazionalità -->
                 <div class="form-group">
                     <label class="form-label" for="nazionalita">Nazionalità *</label>
-                    <input type="text" id="nazionalita" th:field="*{nazionalita}" class="form-input" placeholder="Es. Italiana" required />
-                    <span th:if="${#fields.hasErrors('nazionalita')}" th:errors="*{nazionalita}" class="error-message"></span>
+                    <input type="text" id="nazionalita" th:field="*{nazionalita}" class="form-input"
+                        placeholder="Es. Italiana" required />
+                    <span th:if="${#fields.hasErrors('nazionalita')}" th:errors="*{nazionalita}"
+                        class="error-message"></span>
                 </div>
+
 
                 <!-- Immagine autore -->
                 <div class="form-group">
@@ -91,19 +111,23 @@
                 <!-- Descrizione -->
                 <div class="form-group">
                     <label class="form-label" for="descrizione">Biografia</label>
-                    <textarea id="descrizione" th:field="*{descrizione}" class="form-input form-textarea" placeholder="Scrivi una breve biografia dell'autore..."></textarea>
-                    <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}" class="error-message"></span>
+                    <textarea id="descrizione" th:field="*{descrizione}" class="form-input form-textarea"
+                        placeholder="Scrivi una breve biografia dell'autore..."></textarea>
+                    <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"
+                        class="error-message"></span>
                 </div>
 
                 <!-- Form Actions -->
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        ✅ Conferma
-                    </button>
+                    
                     <a href="/autori" class="btn btn-secondary">
-                        ❌ Annulla
+                        Annulla
                     </a>
+                    <button type="submit" class="btn btn-primary">
+                        Aggiungi autore
+                    </button>
                 </div>
+
             </form>
         </div>
     </main>
@@ -129,7 +153,7 @@
         });
 
         // Initialize page
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Se necessario, nasconde inizialmente il campo data morte se checkbox è già selezionato
             toggleDataMorte();
         });

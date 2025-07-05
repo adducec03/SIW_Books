@@ -2,203 +2,384 @@
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SIW Books - Home</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIW Books - La tua biblioteca digitale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/css/index.css?version=3" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
 
-    <link rel="stylesheet" href="css/index.css?version=2" />
+  
 </head>
 
 <body>
+  <!-- Initial Navbar -->
+  <nav class="navbar initial" id="initialNavbar">
+    <div class="navbar-content">
+      <a href="/" class="navbar-logo">SIW<br>Books</a>
 
-    <nav class="navbar sticky-navbar hidden-navbar">
-        <div class="navbar-section left">
-            <span id="navbar-logo">
-                SIW<br>Books
-            </span>
+      <div class="navbar-nav">
+        <a href="#libri">Libri</a>
+        <a href="#autori">Autori</a>
+      </div>
+
+      <div class="navbar-auth">
+        <span th:if="${not #authorization.expression('isAuthenticated()')}">
+          <a href="/login">Login</a>
+          <a href="/register" class="btn-register">Register</a>
+        </span>
+        <div th:if="${nomeUtente != null}">
+          <div class="profile-dropdown">
+            <div class="profile-icon" id="profileToggle">
+              <!-- Icona utente -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="28" height="28" viewBox="0 0 24 24"
+                stroke-width="1" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+
+              <span>Ciao, <span th:text="${nomeUtente}">Utente</span></span>
+            </div>
+            <div class="profile-menu" id="profileDropdown">
+              <a th:href="@{/areaPersonale}">
+                <!-- Icona impostazioni -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="20" height="20" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor" class="size-6"
+                  style="vertical-align: middle; margin-right: 8px;">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                </svg>
+
+
+                Area Personale
+              </a>
+
+              <a th:href="@{/logout}">
+                <!-- Icona logout -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 8px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+                </svg>
+                Logout
+              </a>
+            </div>
+          </div>
         </div>
-
-        <div class="navbar-section center">
-            <a href="/libri">Libri</a>
-            <a href="/autori">Autori</a>
-        </div>
-
-        <div class="navbar-section right">
-            <span th:if="${not #authorization.expression('isAuthenticated()')}">
-                <a href="/login">Login</a>
-                <a href="/register" class="button-register">Register</a>
-            </span>
-            <span th:if="${nomeUtente != null}">
-                Ciao, <span th:text="${nomeUtente}"></span> | <a th:href="@{/logout}">Logout</a>
-            </span>
-        </div>
-    </nav>
-
-    <nav class="navbar initial-navbar">
-        <div class="navbar-section left">
-            <span id="navbar-logo">
-                SIW<br>Books
-            </span>
-        </div>
-
-        <div class="navbar-section center">
-            <a href="/libri">Libri</a>
-            <a href="/autori">Autori</a>
-        </div>
-
-        <div class="navbar-section right">
-            <span th:if="${not #authorization.expression('isAuthenticated()')}">
-                <a href="/login">Login</a>
-                <a href="/register" class="button-register">Register</a>
-            </span>
-            <span th:if="${nomeUtente != null}">
-                <a th:href="@{/areaPersonale}">Area Personale</a>
-                Ciao, <span th:text="${nomeUtente}"></span> | <a th:href="@{/logout}">Logout</a>
-            </span>
-        </div>
-    </nav>
-
-
-
-
-    <div id="main-page">
-
-
-
-        <h1>SIW Books</h1>
-        <h2>La tua biblioteca digitale</h2>
-        <p>SIW Books è la tua biblioteca digitale: scopri libri,
-            conosci gli autori e condividi le tue recensioni
-            con altri lettori.</p>
-        <div>
-            <a href="#libri" class="button-scopri">Scopri di più ↗︎</a>
-        </div>
-
+      </div>
     </div>
+    </div>
+    </div>
+  </nav>
 
-    <div id="content">
-        <section id="libri">
-            <div class="libri-testo">
-                <h2>Libri</h2>
-                <p>
-                    Scopri centinaia di libri da leggere, dai grandi classici ai bestseller contemporanei.
-                    Esplora trame avvincenti, generi diversi e recensioni autentiche per trovare la tua prossima lettura
-                    preferita.
-                    Salva i titoli che ami, confronta valutazioni e tieni traccia dei tuoi progressi.
-                </p>
-                <a href="/libri" class="button-libri">Scopri nuovi libri ↗︎</a>
+
+
+
+  <!-- Sticky Navbar -->
+  <nav class="navbar" id="stickyNavbar">
+    <div class="navbar-content">
+      <a href="/" class="navbar-logo">SIW<br>Books</a>
+
+      <div class="navbar-nav">
+        <a href="/libri">Libri</a>
+        <a href="/autori">Autori</a>
+      </div>
+
+      <div class="navbar-auth">
+        <span th:if="${not #authorization.expression('isAuthenticated()')}">
+          <a href="/login">Login</a>
+          <a href="/register" class="btn-register">Register</a>
+        </span>
+        <div th:if="${nomeUtente != null}">
+          <div class="profile-dropdown">
+            <div class="profile-icon" id="profileToggle">
+              <!-- Icona utente -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="28" height="28" viewBox="0 0 24 24"
+                stroke-width="1" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+
+              <span>Ciao, <span th:text="${nomeUtente}">Utente</span></span>
             </div>
-            <div class="libri-immagine">
-                <img src="/images/libro.png" alt="Libro aperto" />
+            <div class="profile-menu" id="profileDropdown">
+              <a th:href="@{/areaPersonale}">
+                <!-- Icona impostazioni -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="20" height="20" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor" class="size-6"
+                  style="vertical-align: middle; margin-right: 8px;">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                </svg>
+
+
+                Area Personale
+              </a>
+
+              <a th:href="@{/logout}">
+                <!-- Icona logout -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 8px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+                </svg>
+                Logout
+              </a>
             </div>
-        </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </nav>
 
-        <section id="recensioni-home">
-            <div class="recensioni-testo">
-                <h2>Recensioni</h2>
-                <p>
-                    Leggi opinioni autentiche e dettagliate sui libri che ami o che stai per scoprire.
-                    Confronta valutazioni, scopri nuovi punti di vista e contribuisci con le tue recensioni
-                    per aiutare altri lettori a scegliere la loro prossima lettura.
-                </p>
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <img src="/images/wallpaper.png" alt="Background" class="bg-image" />
+    <div class="hero-content">
+      <h1>SIW Books</h1>
+      <h2>La tua biblioteca digitale</h2>
+      <p>SIW Books è la tua biblioteca digitale: scopri libri, conosci gli autori e condividi le tue recensioni con
+        altri lettori.</p>
+      <a href="#libri" class="btn-hero">
+        Scopri di più
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Libri Section -->
+  <section class="section" id="libri">
+    <div class="container">
+      <div class="section-content">
+        <div class="section-text">
+          <h2>Libri</h2>
+          <p>Scopri centinaia di libri da leggere, dai grandi classici ai bestseller contemporanei. Esplora trame
+            avvincenti, generi diversi e recensioni autentiche per trovare la tua prossima lettura preferita.</p>
+          <a href="/libri" class="btn-section">
+            Scopri nuovi libri
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+        <div class="section-image">
+          <img src="/images/libro.png" alt="Libro aperto" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recensioni Section -->
+  <section class="section recensioni-section">
+    <div class="container">
+      <div class="recensioni-content">
+        <div class="section-text">
+          <h2 style="color: #ffe6a7;">Recensioni</h2>
+          <p style="color: rgba(255, 230, 167, 0.9);">Leggi opinioni autentiche e dettagliate sui libri che ami o che
+            stai per scoprire. Confronta valutazioni, scopri nuovi punti di vista e contribuisci con le tue recensioni.
+          </p>
+        </div>
+
+        <div class="slider-container">
+          <div class="recensioni-slider">
+            <div class="card-recensione active" th:each="recensione, iterStat : ${recensioniRecenti}"
+              th:classappend="${iterStat.index == 0} ? ' active' : ''">
+              <h3 th:text="${recensione.utente.nome}">Nome Utente</h3>
+              <h4 th:text="${recensione.libro.titolo}">Titolo Libro</h4>
+              <p th:text="${#strings.abbreviate(recensione.descrizione, 160)}">Descrizione recensione...</p>
             </div>
+          </div>
 
-            <div class="recensioni-slider-wrapper">
-                <button id="prevBtn" class="slider-btn">‹</button>
+          <div class="slider-controls" style="display: none;">
+            <button class="slider-btn prev-btn" id="prevBtn">‹</button>
+            <button class="slider-btn next-btn" id="nextBtn">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-                <div class="recensioni-slider">
-                    <div class="card-recensione" th:each="recensione, iterStat : ${recensioniRecenti}"
-                        th:classappend="${iterStat.index == 0} ? ' active' : ''">
-                        <h2 th:text="${recensione.utente.nome}"></h2>
-                        <h3 th:text="${recensione.libro.titolo}"></h3>
-                        <p class="descrizione" th:text="${#strings.abbreviate(recensione.descrizione, 160)}"></p>
-                    </div>
-                </div>
+  <!-- Autori Section -->
+  <section class="section", id="autori">
+    <div class="container">
+      <div class="section-content">
+        <div class="section-image">
+          <img src="/images/autori.png" alt="Autori" />
+        </div>
+        <div class="section-text">
+          <h2>Autori</h2>
+          <p>Esplora il mondo degli autori che stanno dietro ai tuoi libri preferiti. Scopri biografie, bibliografie,
+            curiosità e approfondimenti sui più grandi scrittori di ieri e di oggi.</p>
+          <a href="/autori" class="btn-section">
+            Scopri nuovi autori
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-                <button id="nextBtn" class="slider-btn">›</button>
-            </div>
-        </section>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span style="font-family: 'EB Garamond', serif; font-size: 1.5rem; font-weight: 300;">SIW Books</span>
+      </div>
+
+      <div class="social-icons">
+        <a href="https://github.com/adducec03" target="_blank" rel="noopener">
+          <img src="/images/github_icon_light.png" alt="GitHub">
+        </a>
+        <a href="https://www.instagram.com/adducec/" target="_blank" rel="noopener">
+          <img src="/images/instagram_icon_light.png" alt="Instagram">
+        </a>
+        <a href="https://www.linkedin.com/in/carmine-adduce-b82704342/" target="_blank" rel="noopener">
+          <img src="/images/linkedin_icon_light.png" alt="LinkedIn">
+        </a>
+      </div>
+
+      <div class="footer-text">
+        <p><strong>SIW Books &copy; 2025</strong></p>
+        <p>Progetto di Sistemi Informativi su Web - Università degli Studi Roma Tre</p>
+        <p>Copyright © 2025 Carmine Adduce</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll behavior
+    window.addEventListener('scroll', function () {
+      const stickyNavbar = document.getElementById('stickyNavbar');
+      const initialNavbar = document.getElementById('initialNavbar');
+      const hero = document.getElementById('hero');
+
+      const triggerHeight = hero.offsetHeight * 0.8;
+
+      if (window.scrollY > triggerHeight) {
+        stickyNavbar.classList.add('visible');
+        initialNavbar.style.opacity = '0';
+      } else {
+        stickyNavbar.classList.remove('visible');
+        initialNavbar.style.opacity = '1';
+      }
+    });
+
+    // DOM Ready logic
+    document.addEventListener("DOMContentLoaded", function () {
+      // === Reviews slider ===
+      const cards = document.querySelectorAll(".card-recensione");
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const sliderControls = document.querySelector(".slider-controls");
+
+      if (cards.length > 1 && sliderControls) {
+        sliderControls.style.display = 'block';
+      }
+
+      let current = 0;
+
+      function showCard(index) {
+        cards.forEach((card, i) => {
+          card.classList.toggle("active", i === index);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", () => {
+          current = (current + 1) % cards.length;
+          showCard(current);
+        });
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener("click", () => {
+          current = (current - 1 + cards.length) % cards.length;
+          showCard(current);
+        });
+      }
+
+      if (cards.length > 1) {
+        setInterval(() => {
+          current = (current + 1) % cards.length;
+          showCard(current);
+        }, 5000);
+      }
+
+      const bgImage = document.querySelector('.bg-image');
+      if (bgImage) {
+        if (bgImage.complete) {
+          // L'immagine era già in cache
+          bgImage.classList.add('loaded');
+        } else {
+          bgImage.addEventListener('load', () => {
+            bgImage.classList.add('loaded');
+          });
+        }
+      }
+
+      showCard(current);
+
+      // === Profile dropdown ===
+      const toggle = document.getElementById('profileToggle');
+      const dropdown = document.getElementById('profileDropdown');
+
+      if (toggle && dropdown) {
+        toggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function () {
+          dropdown.classList.remove('show');
+        });
+      }
+
+      const bgimage = document.querySelector('.bg-image');
+      const body = document.querySelector('body');
+
+      function showPage() {
+        body.classList.add('page-loaded');
+      }
+
+      if (bgimage) {
+        if (bgimage.complete) {
+          setTimeout(showPage, 100); // ritardo per transizione anche se l'immagine è in cache
+        } else {
+          bgimage.addEventListener('load', () => {
+            setTimeout(showPage, 100); // transizione dopo il caricamento effettivo
+          });
+        }
+      } else {
+        // Nessuna immagine, mostra comunque
+        showPage();
+      }
 
 
-        <section id="autori">
-            <div class="autori-immagine">
-                <img src="/images/autori.png" alt="Autori" style="width: 130%;" />
-            </div>
-            <div class="autori-testo">
-                <h2>Autori</h2>
-                <p>
-                    Esplora il mondo degli autori che stanno dietro ai tuoi libri preferiti. Scopri biografie,
-                    bibliografie,
-                    curiosità e approfondimenti sui più grandi scrittori di ieri e di oggi. Segui i tuoi autori
-                    preferiti e
-                    resta aggiornato sulle loro ultime pubblicazioni.
-                </p>
-                <a href="/autori" class="button-autori">Scopri nuovi autori ↗︎</a>
-            </div>
 
-        </section>
-
-        <footer id="footer">
-            <div class="icons">
-                <a href="https://github.com/adducec03" target="_blank" rel="noopener">
-                    <img src="/images/github_icon_light.png" alt="GitHub">
-                </a>
-                <a href="https://www.instagram.com/adducec/" target="_blank" rel="noopener">
-                    <img src="/images/instagram_icon_light.png" alt="Instagram">
-                </a>
-                <a href="https://www.linkedin.com/in/carmine-adduce-b82704342/" target="_blank" rel="noopener">
-                    <img src="/images/linkedin_icon_light.png" alt="LinkedIn">
-                </a>
-            </div>
-            <div class="footer-text">
-                <p>SIW Books &copy; 2025</p>
-                <p>Progetto di Sistemi Informativi su Web - Università degli Studi Roma Tre</p>
-                <p>Copyright © 2025 Carmine Adduce</p>
-            </div>
-        </footer>
-
-        <script>
-            window.addEventListener('scroll', function () {
-                const stickyNavbar = document.querySelector('.sticky-navbar');
-                const mainPage = document.getElementById('main-page');
-
-                // Altezza della sezione main meno 15% della viewport height
-                const triggerHeight = mainPage.offsetHeight - (window.innerHeight * 0.20);
-
-                if (window.scrollY > triggerHeight) {
-                    stickyNavbar.classList.add('visible');
-                } else {
-                    stickyNavbar.classList.remove('visible');
-                }
+      // === Smooth scroll ===
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
             });
-            document.addEventListener("DOMContentLoaded", function () {
-                const cards = document.querySelectorAll(".card-recensione");
-                const nextBtn = document.getElementById("nextBtn");
-                const prevBtn = document.getElementById("prevBtn");
-
-                let current = 0;
-
-                function showCard(index) {
-                    cards.forEach((card, i) => {
-                        card.classList.toggle("active", i === index);
-                    });
-                }
-
-                nextBtn.addEventListener("click", () => {
-                    current = (current + 1) % cards.length;
-                    showCard(current);
-                });
-
-                prevBtn.addEventListener("click", () => {
-                    current = (current - 1 + cards.length) % cards.length;
-                    showCard(current);
-                });
-
-                showCard(current); // inizializza
-            });
-        </script>
+          }
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>

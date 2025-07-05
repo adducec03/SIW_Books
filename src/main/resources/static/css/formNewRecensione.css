@@ -1,3 +1,19 @@
+        :root {
+            --cream: #ffe6a7;
+            --darker-cream: #f5cc50;
+            --dark-brown: #432818;
+            --medium-brown: #99582a;
+            --dark-red: #6f1d1b;
+            --darker-red: #5a1716;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --border-color: rgba(67, 40, 24, 0.1);
+            --shadow-dark: rgba(0, 0, 0, 0.2);
+        }
+
+
+
         * {
             margin: 0;
             padding: 0;
@@ -6,70 +22,166 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #ffe6a7;
-            color: #432818;
             line-height: 1.6;
+            color: var(--dark-brown);
+            background: linear-gradient(135deg, var(--cream), var(--medium-brown));
             min-height: 100vh;
         }
 
-        .header {
-            background-color: #432818;
-            padding: 1rem 0;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(67, 40, 24, 0.1);
+        /* Header */
+        .navbar {
+            font-size: medium !important;
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .header-container {
-            max-width: 1200px;
+        .navbar-content {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
+            padding: 1rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            gap: 2rem;
         }
 
-        .brand {
+        .navbar-brand .logo {
             display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .brand-link {
-            color: #ffe6a7;
+            align-items: left;
+            gap: 0.5rem;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            font-size: 1.5rem;
-            transition: opacity 0.2s ease;
-        }
-
-        .brand-link:hover {
-            opacity: 0.8;
-        }
-
-        .brand-icon {
-            width: 32px;
-            height: 32px;
-        }
-
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1;
-        }
-
-        .brand-main {
+            color: var(--accent-color);
+            font-family: 'EB Garamond', serif;
             font-size: 1.5rem;
             font-weight: 700;
         }
 
-        .brand-sub {
-            font-size: 0.875rem;
-            font-weight: 400;
-            opacity: 0.8;
+        .navbar-brand {
+            justify-self: start;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            justify-self: center;
+        }
+
+        .navbar-nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            position: relative;
+
+        }
+
+        .active-page {
+            background: linear-gradient(135deg, var(--cream), var(--darker-cream));
+            border-radius: 0.5rem;
+            color: var(--dark-red) !important;
+        }
+
+        .navbar-nav a:hover {
+            color: var(--dark-red);
+            background: linear-gradient(135deg, var(--cream), var(--darker-cream));
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .navbar-auth {
+            justify-self: end;
+            gap: 1rem;
+            align-items: center;
+            align-self: left;
+        }
+
+        .not-auth {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            /* distanza tra i bottoni */
+        }
+
+        .navbar-auth a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #333;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .profile-icon:hover {
+            background-color: #f0f0f0;
+        }
+
+        .profile-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 110%;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            min-width: 180px;
+            padding: 8px 0;
+        }
+
+        .profile-menu a {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        .profile-menu a:hover {
+            background-color: #f8f8f8;
+        }
+
+        .btn-register {
+            background: linear-gradient(90deg, var(--dark-red), var(--darker-red));
+            color: var(--white) !important;
+            font-weight: 600;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px var(--shadow);
+        }
+
+        .logout-btn:hover {
+            color: var(--accent-color);
         }
 
         .container {
@@ -88,7 +200,6 @@
             font-size: 2.5rem;
             font-weight: 700;
             color: #432818;
-            margin-bottom: 1rem;
         }
 
         .page-subtitle {
@@ -103,6 +214,8 @@
             padding: 3rem;
             box-shadow: 0 10px 30px rgba(67, 40, 24, 0.1);
             border: 2px solid rgba(153, 88, 42, 0.1);
+            margin-top: 3rem;
+            margin-bottom: 3rem;
         }
 
         .form-group {
@@ -164,7 +277,7 @@
 
         .star:hover,
         .star.active {
-            color: #99582a;
+            color: rgb(255, 217, 0);
             transform: scale(1.1);
         }
 

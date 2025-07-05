@@ -17,31 +17,80 @@
 
 <body>
     <!-- Header -->
-    <header class="header">
-        <div class="header-container">
-            <div class="brand">
-                <a href="/" class="brand-link">
-                    <svg class="brand-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                            d="M12 2L2 7V17C2 18.1 2.9 19 4 19H20C21.1 19 22 18.1 22 17V7L12 2ZM12 4.84L19 8.31V17H5V8.31L12 4.84Z" />
-                    </svg>
-                    <span class="brand-text">
-                        <span class="brand-main">SIW</span>
-                        <span class="brand-sub">Books</span>
-                    </span>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <a href="/" class="logo">
+                    SIW Books
                 </a>
             </div>
+
+            <div class="navbar-nav">
+                <a href="/">Home</a>
+                <a href="/libri" class="active-page">
+                    Libri
+                </a>
+                <a href="/autori">Autori</a>
+            </div>
+
+            <div class="navbar-auth">
+                <span class="not-auth" sec:authorize="!isAuthenticated()">
+                    <a href="/login">Login</a>
+                    <a href="/register" class="btn-register">Register</a>
+                </span>
+                <div sec:authorize="isAuthenticated()">
+                    <div class="profile-dropdown">
+                        <div class="profile-icon" id="profileToggle">
+                            <!-- Icona utente -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="28" height="28"
+                                viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+
+                            <span>Ciao, <span th:text="${nomeUtente}">Utente</span></span>
+                        </div>
+                        <div class="profile-menu" id="profileDropdown">
+                            <a th:href="@{/areaPersonale}">
+                                <!-- Icona impostazioni -->
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="20" height="20"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"
+                                    style="vertical-align: middle; margin-right: 8px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                                </svg>
+
+
+                                Area Personale
+                            </a>
+
+                            <a th:href="@{/logout}">
+                                <!-- Icona logout -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24"
+                                    style="vertical-align: middle; margin-right: 8px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+                                </svg>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </header>
+    </nav>
 
     <!-- Main Content -->
     <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">Scrivi una Recensione</h1>
-            <p class="page-subtitle">Condividi la tua opinione su questo libro</p>
-        </div>
+
 
         <div class="form-container">
+
+            <div class="page-header">
+                <h1 class="page-title">Scrivi una Recensione</h1>
+                <p class="page-subtitle">Condividi la tua opinione su questo libro</p>
+            </div>
             <form th:action="@{/recensioni}" th:object="${recensione}" method="post" id="reviewForm">
                 <input type="hidden" th:field="*{libro.id}" />
                 <input type="hidden" id="votoInput" th:field="*{voto}" />
@@ -131,7 +180,7 @@
                 if (rating === 0) {
                     ratingText.textContent = 'Seleziona una valutazione';
                 } else {
-                    ratingText.textContent = `${rating} stelle - ${ratingMessages[rating]}`;
+                    ratingText.textContent = ratingMessages[rating];
                 }
             }
 

@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aggiungi Nuovo Libro - SIW Books</title>
-    <link rel="stylesheet" href="/css/formNewLibro.css?version=3" />
+    <link rel="stylesheet" href="/css/formNewLibroAndAutore.css?version=3" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    
+
 </head>
 
 <body>
@@ -29,12 +29,13 @@
 
     <!-- Main Content -->
     <main class="main-container">
-        <div class="page-header">
-            <h1 class="page-title">Aggiungi Nuovo Libro</h1>
-            <p class="page-subtitle">Inserisci i dettagli del libro nel sistema</p>
-        </div>
+
 
         <div class="form-container">
+            <div class="page-header">
+                <h1 class="page-title">Aggiungi Nuovo Libro</h1>
+                <p class="page-subtitle">Inserisci i dettagli del libro nel sistema</p>
+            </div>
             <!-- Global Errors -->
             <!--<div th:if="${#fields.hasGlobalErrors()}" class="global-errors">
                 <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore globale</p>
