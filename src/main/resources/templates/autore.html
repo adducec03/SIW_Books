@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
 
@@ -6,23 +5,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/autore.css?version=3" />
+
     <title>Dettagli Autore - SIW Books</title>
+
 </head>
 
 <body>
     <!-- Header -->
-    <header class="header">
-        <div class="header-container">s
-            <a href="/" class="logo-link">
-                <span>SIW Books</span>
-            </a>
-            <nav class="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/libri" class="nav-link">Catalogo</a>
-                <a href="/autori" class="nav-link">Autori</a>
-            </nav>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <a href="/" class="logo">
+                    SIW Books
+                </a>
+            </div>
+
+            <div class="navbar-nav">
+                <a href="/">Home</a>
+                <a href="/libri">
+                    Libri
+                </a>
+                <a href="/autori" class="active-page">Autori</a>
+            </div>
+
+            <div class="navbar-auth">
+                <span class="not-auth" sec:authorize="!isAuthenticated()">
+                    <a href="/login">Login</a>
+                    <a href="/register" class="btn-register">Register</a>
+                </span>
+                <div sec:authorize="isAuthenticated()">
+                    <div class="profile-dropdown">
+                        <div class="profile-icon" id="profileToggle">
+                            <!-- Icona utente -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="28" height="28"
+                                viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+
+                            <span>Ciao, <span th:text="${utente.nome}">Utente</span></span>
+                        </div>
+                        <div class="profile-menu" id="profileDropdown">
+                            <a th:href="@{/areaPersonale}">
+                                <!-- Icona impostazioni -->
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="20" height="20"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"
+                                    style="vertical-align: middle; margin-right: 8px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                                </svg>
+
+
+                                Area Personale
+                            </a>
+
+                            <a th:href="@{/logout}">
+                                <!-- Icona logout -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24"
+                                    style="vertical-align: middle; margin-right: 8px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+                                </svg>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </header>
+    </nav>
+
 
     <!-- Main Content -->
     <main class="main-content">
@@ -31,46 +84,75 @@
             <div class="author-hero">
                 <div class="author-image-container">
                     <img th:if="${autore.percorsoImmagine != null and !autore.percorsoImmagine.isEmpty()}"
-                         th:src="${autore.percorsoImmagine}" 
-                         th:alt="'Foto di ' + ${autore.nome} + ' ' + ${autore.cognome}"
-                         class="author-image" />
+                        th:src="${autore.percorsoImmagine}"
+                        th:alt="'Foto di ' + ${autore.nome} + ' ' + ${autore.cognome}" class="author-image" />
                     <div th:unless="${autore.percorsoImmagine != null and !autore.percorsoImmagine.isEmpty()}"
-                         class="author-placeholder"
-                         th:text="${autore.nome.substring(0,1) + autore.cognome.substring(0,1)}">
+                        class="author-placeholder"
+                        th:text="${autore.nome.substring(0,1) + autore.cognome.substring(0,1)}">
                         AB
                     </div>
                 </div>
 
                 <div class="author-info">
                     <h1 class="author-name" th:text="${autore.nome} + ' ' + ${autore.cognome}">Nome Cognome</h1>
-                    
+
                     <div class="author-meta">
-                        <div class="meta-item">
-                            <div class="meta-icon">🎂</div>
-                            <span class="meta-label">Data di nascita:</span>
-                            <span class="meta-value" th:text="${#temporals.format(autore.dataNascita, 'dd/MM/yyyy')}">1/1/1900</span>
-                        </div>
-                        
-                        <div th:if="${autore.dataMorte != null}" class="meta-item">
-                            <div class="meta-icon">⚰️</div>
-                            <span class="meta-label">Data di morte:</span>
-                            <span class="meta-value" th:text="${#temporals.format(autore.dataMorte, 'dd/MM/yyyy')}">1/1/1900</span>
-                        </div>
-                        
-                        <div class="meta-item">
-                            <div class="meta-icon">🌍</div>
-                            <span class="meta-label">Nazionalità:</span>
-                            <span class="meta-value" th:text="${autore.nazionalita}">Italiano</span>
+                        <div class="meta-row">
+                            <div class="meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
+                                    style="margin-top: -3px;">
+                                    <g id="feBirthdayCake0" fill="none" fill-rule="evenodd" stroke="none"
+                                        stroke-width="1">
+                                        <g id="feBirthdayCake1" fill="currentColor" fill-rule="nonzero">
+                                            <path id="feBirthdayCake2"
+                                                d="M17 10a4 4 0 0 1 4 4v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5a4 4 0 0 1 4-4V7h2v3h2V7h2v3h2V7h2v3ZM7 12a2 2 0 0 0-2 2v1h14v-1a2 2 0 0 0-2-2H7Zm-2 5v2h14v-2H5ZM7 4a1 1 0 0 0 1-1a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V4Zm4 0a1 1 0 0 0 1-1a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V4Zm4 0a1 1 0 0 0 1-1a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V4Z" />
+                                        </g>
+                                    </g>
+                                </svg>
+                                <span class="meta-label">Data di nascita:</span>
+                                <span class="meta-value"
+                                    th:text="${#temporals.format(autore.dataNascita, 'dd/MM/yyyy')}">1/1/1900</span>
+                            </div>
+
+                            <div th:if="${autore.dataMorte != null}" class="meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
+                                    style="margin-top: -3px;">
+                                    <path fill="currentColor" d="M10.5 2h3v6H19v3h-5.5v11h-3V11H5V8h5.5V2Z" />
+                                </svg>
+                                <span class="meta-label">Data di morte:</span>
+                                <span class="meta-value"
+                                    th:text="${#temporals.format(autore.dataMorte, 'dd/MM/yyyy')}">1/1/1900</span>
+                            </div>
+
+                            <div class="meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
+                                    style="margin-top: -3px;">
+                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2">
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m.6-3h16.8M3.6 15h16.8" />
+                                        <path d="M11.5 3a17 17 0 0 0 0 18m1-18a17 17 0 0 1 0 18" />
+                                    </g>
+                                </svg>
+                                <span class="meta-label">Nazionalità:</span>
+                                <span class="meta-value" th:text="${autore.nazionalita}">Italiano</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
+
             </div>
         </div>
 
         <!-- Biography Section -->
-        <div th:if="${autore != null and autore.descrizione != null and !autore.descrizione.isEmpty()}" class="biography-section">
+        <div th:if="${autore != null and autore.descrizione != null and !autore.descrizione.isEmpty()}"
+            class="biography-section">
             <h2 class="biography-title">
-                📖 Biografia
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 21 21">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        d="M18.5 6.59c-1.333-.726-2.667-1.09-4-1.09s-2.667.364-4 1.09v9.91c1.333-.667 2.667-1 4-1s2.667.333 4 1zm-8 0c-1.333-.726-2.667-1.09-4-1.09s-2.667.364-4 1.09v9.91c1.333-.667 2.667-1 4-1s2.667.333 4 1z" />
+                </svg> Biografia
             </h2>
             <p class="biography-text" th:text="${autore.descrizione}">Testo della descrizione</p>
         </div>
@@ -88,6 +170,24 @@
             </a>
         </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('profileToggle');
+            const dropdown = document.getElementById('profileDropdown');
+
+            if (toggle && dropdown) {
+                toggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+                });
+
+                document.addEventListener('click', function () {
+                    dropdown.style.display = 'none';
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

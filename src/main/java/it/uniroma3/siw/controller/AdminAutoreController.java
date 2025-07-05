@@ -1,6 +1,8 @@
 package it.uniroma3.siw.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Autore;
+import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.service.AutoreService;
+import it.uniroma3.siw.service.CredentialsService;
 import jakarta.validation.Valid;
 
 import java.io.IOException;
@@ -25,12 +29,19 @@ public class AdminAutoreController {
     @Autowired
     private AutoreService autoreService;
 
+    @Autowired
+    private CredentialsService credentialsService;
+
     // Mostra dettaglio autore
     @GetMapping("/{id}")
-    public String getAutore(@PathVariable("id") Long id, Model model) {
+    public String getAutore(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Autore autore = autoreService.getAutoreById(id);
         if (autore == null) {
             return "redirect:/admin/autori";
+        }
+        if (userDetails != null) {
+            Credentials cred = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
+            model.addAttribute("utente", cred.getUtente());
         }
         model.addAttribute("autore", autore);
         return "admin/autore";

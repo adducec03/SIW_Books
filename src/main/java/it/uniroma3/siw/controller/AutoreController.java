@@ -51,8 +51,27 @@ public class AutoreController {
     }
 
     @GetMapping("/autore/{id}")
-    public String getAutore(@PathVariable("id") Long id, Model model) {
+    public String getAutore(@PathVariable("id") Long id, Model model,
+            @AuthenticationPrincipal UserDetails userDetails, Principal principal) {
+
         model.addAttribute("autore", this.autoreService.getAutoreById(id));
+        if (principal instanceof OAuth2AuthenticationToken oauthToken) {
+            Map<String, Object> attributes = oauthToken.getPrincipal().getAttributes();
+
+            String username = (String) attributes.get("login"); // GitHub
+            if (username == null) {
+                username = (String) attributes.get("email"); // Google
+            }
+
+            Optional<Credentials> optionalCred = credentialsService.getCredentials(username);
+            if (optionalCred.isPresent()) {
+                model.addAttribute("utente", optionalCred.get().getUtente());
+            }
+        } else if (userDetails != null) {
+            Credentials cred = credentialsService.getCredentials(userDetails.getUsername()).orElse(null);
+            model.addAttribute("utente", cred.getUtente());
+        }
+
         return "autore.html";
     }
 
