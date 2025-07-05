@@ -51,11 +51,11 @@ public class AdminLibroController {
     private AutoreService autoreService;
 
     // Lista libri per admin
-    @GetMapping("/libri")
+    /*@GetMapping("/libri")
     public String adminLibri(Model model) {
         model.addAttribute("libri", libroService.getAllLibri());
         return "admin/libri";
-    }
+    }*/
 
     // Dettagli libro per admin
     @GetMapping("/libro/{id}")
