@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifica Libro - SIW Books</title>
-    <link rel="stylesheet" href="/css/modificaLibro.css?version=3" />
+    <link rel="stylesheet" href="/css/modificaLibroAndAutore.css?version=3" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,7 +17,6 @@
     <header class="header">
         <div class="header-content">
             <a href="/" class="logo-container">
-                <img src="/logo.png" alt="SIW Books Logo" class="logo">
                 <span class="brand-text">SIW Books</span>
             </a>
             <nav>
@@ -41,14 +40,14 @@
                     <div class="form-group">
                         <label for="titolo" class="form-label">Titolo *</label>
                         <input type="text" id="titolo" th:field="*{titolo}" class="form-input" 
-                               placeholder="Inserisci il titolo del libro" required>
+                               placeholder="Inserisci il titolo del libro">
                         <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" class="field-error"></span>
                     </div>
 
                     <div class="form-group">
                         <label for="anno" class="form-label">Anno di Pubblicazione *</label>
                         <input type="number" id="anno" th:field="*{anno}" class="form-input" 
-                               placeholder="es. 2023" min="1" max="2024" required>
+                               placeholder="es. 2023" min="1" max="2024">
                         <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="field-error"></span>
                     </div>
 
@@ -62,7 +61,7 @@
 
                 <!-- Description -->
                 <div class="form-group">
-                    <label for="descrizione" class="form-label">Descrizione</label>
+                    <label for="descrizione" class="form-label">Trama</label>
                     <textarea id="descrizione" th:field="*{descrizione}" class="form-input form-textarea"
                               placeholder="Inserisci una breve descrizione del libro, trama o riassunto..."></textarea>
                     <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}" class="field-error"></span>
@@ -71,7 +70,7 @@
                 <!-- Authors Selection -->
                 <div class="form-group">
                     <label for="autori" class="form-label">Seleziona Autori *</label>
-                    <select id="autori" th:field="*{autori}" multiple size="5" class="form-input form-select" required>
+                    <select id="autori" th:field="*{autori}" multiple size="5" class="form-input form-select">
                         <option th:each="autore : ${autori}" th:value="${autore.id}"
                                 th:text="${autore.nome + ' ' + autore.cognome}">
                             Autore Nome
@@ -126,7 +125,7 @@
 
                 <!-- Form Actions -->
                 <div class="form-actions">
-                    <a href="/admin/libri" class="btn btn-secondary">Annulla</a>
+                    <a href="/libri" class="btn btn-secondary">Annulla</a>
                     <button type="submit" class="btn btn-primary">
                         💾 Salva Modifiche
                     </button>

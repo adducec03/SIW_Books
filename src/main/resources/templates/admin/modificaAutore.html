@@ -1,161 +1,129 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/modificaAutore.css?version=3" />
+    <link rel="stylesheet" href="/css/modificaLibroAndAutore.css?version=3" />
     <title>Modifica Autore - SIW Books</title>
-    
+
 </head>
 
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="header-container">
-            <a href="/" class="logo-link">
-                <span>SIW Books</span>
+        <div class="header-content">
+            <a href="/" class="logo-container">
+                <span class="brand-text">SIW Books</span>
             </a>
-            <nav class="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/libri" class="nav-link">Catalogo</a>
-                <a href="/autori" class="nav-link">Autori</a>
+            <nav>
+                <a href="/libri" class="nav-link">Torna gli Autori</a>
             </nav>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="main-content">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">Modifica Autore</h1>
-            <p class="page-subtitle">Aggiorna le informazioni dell'autore</p>
-        </div>
+    <main class="main-container">
+
 
         <!-- Form Container -->
         <div class="form-container">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Modifica Autore</h1>
+                <p class="page-subtitle">Aggiorna le informazioni dell'autore</p>
+            </div>
+
             <!-- Error Message -->
             <div th:if="${dataError}" class="error-message">
                 <p th:text="${dataError}">Errore nel salvataggio dei dati</p>
             </div>
 
             <!-- Form -->
-            <form th:action="@{'/admin/autore/' + ${autore.id} + '/modifica'}" method="post" th:object="${autore}" enctype="multipart/form-data" class="form">
-                
+            <form th:action="@{'/admin/autore/' + ${autore.id} + '/modifica'}" method="post" th:object="${autore}"
+                enctype="multipart/form-data" class="form">
+
                 <!-- Nome e Cognome -->
                 <div class="form-row">
                     <div class="form-group">
                         <label for="nome" class="form-label required">
-                            👤 Nome
+                            Nome
                         </label>
-                        <input type="text" 
-                               id="nome" 
-                               name="nome" 
-                               th:value="${autore.nome}" 
-                               class="form-input" 
-                               placeholder="Inserisci il nome"
-                               required />
+                        <input type="text" id="nome" name="nome" th:value="${autore.nome}" class="form-input"
+                            placeholder="Inserisci il nome" />
                     </div>
 
                     <div class="form-group">
                         <label for="cognome" class="form-label">
-                            👤 Cognome
+                            Cognome
                         </label>
-                        <input type="text" 
-                               id="cognome" 
-                               name="cognome" 
-                               th:value="${autore.cognome}" 
-                               class="form-input" 
-                               placeholder="Inserisci il cognome" />
+                        <input type="text" id="cognome" name="cognome" th:value="${autore.cognome}" class="form-input"
+                            placeholder="Inserisci il cognome" />
+                    </div>
+                </div>
+
+
+                <!-- Date -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dataNascita" class="form-label required">
+                            Data di nascita
+                        </label>
+                        <input type="date" id="dataNascita" name="dataNascita" th:value="${autore.dataNascita}"
+                            class="form-input" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dataMorte" class="form-label">
+                            Data di morte (facoltativa)
+                        </label>
+                        <input type="date" id="dataMorte" name="dataMorte" th:value="${autore.dataMorte}"
+                            class="form-input" />
                     </div>
                 </div>
 
                 <!-- Nazionalità -->
                 <div class="form-group">
                     <label for="nazionalita" class="form-label required">
-                        🌍 Nazionalità
+                        Nazionalità
                     </label>
-                    <input type="text" 
-                           id="nazionalita" 
-                           name="nazionalita" 
-                           th:value="${autore.nazionalita}" 
-                           class="form-input" 
-                           placeholder="Es. Italiana, Francese, Americana"
-                           required />
-                </div>
-
-                <!-- Date -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="dataNascita" class="form-label required">
-                            🎂 Data di nascita
-                        </label>
-                        <input type="date" 
-                               id="dataNascita" 
-                               name="dataNascita" 
-                               th:value="${autore.dataNascita}" 
-                               class="form-input" 
-                               required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="dataMorte" class="form-label">
-                            ⚰️ Data di morte (facoltativa)
-                        </label>
-                        <input type="date" 
-                               id="dataMorte" 
-                               name="dataMorte" 
-                               th:value="${autore.dataMorte}" 
-                               class="form-input" />
-                    </div>
+                    <input type="text" id="nazionalita" name="nazionalita" th:value="${autore.nazionalita}"
+                        class="form-input" placeholder="Es. Italiana, Francese, Americana" />
                 </div>
 
                 <!-- Immagine -->
                 <div class="form-group">
                     <label for="immagine" class="form-label">
-                        📷 Immagine autore
+                        Immagine autore
                     </label>
                     <div class="file-input-container">
-                        <input type="file" 
-                               id="immagine" 
-                               name="immagine" 
-                               accept="image/*" 
-                               class="file-input">
+                        <input type="file" id="immagine" name="immagine" accept="image/*" class="file-input">
                         <label for="immagine" class="file-input-label">
                             <span class="file-icon">📷</span>
                             Seleziona un'immagine
                         </label>
                     </div>
                     <div class="file-help-text">
-                        Formati supportati: JPG, PNG, GIF. Massimo 5MB per immagine.
+                        Formati supportati: JPG, PNG, JPEG. Massimo 5MB per immagine.
                     </div>
                 </div>
 
                 <!-- Descrizione -->
-                <div class="form-group full-width">
-                    <label for="descrizione" class="form-label">
-                        📖 Biografia
-                    </label>
-                    <textarea id="descrizione"
-                              name="descrizione"
-                              th:field="*{descrizione}"
-                              class="form-textarea"
-                              placeholder="Scrivi una breve biografia dell'autore..."
-                              rows="6"></textarea>
-                    <span th:if="${#fields.hasErrors('descrizione')}" 
-                          th:errors="*{descrizione}" 
-                          class="error-message"></span>
+                <div class="form-group">
+                    <label for="descrizione" class="form-label">Biografia</label>
+                    <textarea id="descrizione" th:field="*{descrizione}" class="form-input form-textarea"
+                        placeholder="Inserisci una breve descrizione del libro, trama o riassunto..."></textarea>
+                    <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"
+                        class="field-error"></span>
                 </div>
 
                 <!-- Action Buttons -->
                 <div class="form-actions">
+                    <a href="/autori" class="btn btn-secondary">Annulla</a>
                     <button type="submit" class="btn btn-primary">
-                        💾 Salva modifiche
+                        💾 Salva Modifiche
                     </button>
-                    <a th:href="@{'/admin/autore/' + ${autore.id}}" class="btn btn-secondary">
-                        ❌ Annulla
-                    </a>
                 </div>
             </form>
         </div>

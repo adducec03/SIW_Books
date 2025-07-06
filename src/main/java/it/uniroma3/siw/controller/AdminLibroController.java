@@ -96,14 +96,28 @@ public class AdminLibroController {
     @PostMapping("/libro/{id}")
     public String aggiornaLibro(@PathVariable Long id, 
             @Valid @ModelAttribute("libro") Libro libro,
+            BindingResult bindingResult,
             @RequestParam(name = "existingImages", required = false) List<String> existingImages,
             @RequestParam(name = "removeIndexes", required = false) List<Integer> removeIndexes,
             @RequestParam(name = "immagini", required = false) List<MultipartFile> nuoveImmagini,
-            BindingResult bindingResult, Model model) throws IOException {
+            @RequestParam(name = "autori", required = false) List<Long> idAutori,
+            Model model) throws IOException {
 
         Libro libroEsistente = libroService.getLibroById(id);
         if (libroEsistente == null)
             return "redirect:/admin/libri";
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("autori", autoreService.getAllAutori());
+            return "admin/formNewLibro";
+        }
+
+        if (idAutori == null || idAutori.isEmpty()) {
+            bindingResult.reject("libro.autori.obbligatori", "È necessario selezionare almeno un autore.");
+            model.addAttribute("autoriError", "Seleziona almeno un autore.");
+            model.addAttribute("autori", autoreService.getAllAutori());
+            return "admin/formNewLibro";
+        }
 
         // aggiorna dati base
         libroEsistente.setTitolo(libro.getTitolo());
