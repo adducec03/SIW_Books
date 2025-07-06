@@ -20,13 +20,14 @@ public class Utente {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     private Long id;
-    @NotBlank
+    @NotBlank(message="{utente.nome.notblank}")
     @Column(nullable = false)
     private String nome;
-    @NotBlank
+    @NotBlank(message="{utente.cognome.notblank}")
     @Column(nullable = false)
     private String cognome;
     private Integer numeroTelefonico;
+    @NotBlank(message="{utente.email.notblank}")
     @Column(nullable = false, unique = true)
     private String email;
 

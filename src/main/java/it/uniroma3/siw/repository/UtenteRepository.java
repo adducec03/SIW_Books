@@ -10,4 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface UtenteRepository extends CrudRepository<Utente, Long> {
 
     public Optional<Utente> findByEmail(String email);
+
+    public boolean existsByEmailAndIdNot(String email, Long id);
+
 }

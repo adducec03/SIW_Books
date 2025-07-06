@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Credentials {
@@ -15,10 +16,10 @@ public class Credentials {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     private Long id;
-
+    @NotBlank (message="{credentials.username.notblank}")
     @Column(unique = true, nullable = false)
     private String username;
-
+    @NotBlank (message="{credentials.password.notblank}")
     @Column(nullable = false)
     private String password;
 

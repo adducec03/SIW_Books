@@ -40,4 +40,8 @@ public class UtenteService {
         this.utenteRepository.save(utente);
     }
 
+    public boolean emailGiaInUsoDaAltri(String email, Long utenteId) {
+    return utenteRepository.existsByEmailAndIdNot(email, utenteId);
+}
+
 }
