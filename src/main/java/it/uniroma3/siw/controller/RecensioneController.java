@@ -7,10 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import it.uniroma3.siw.model.*;
 import it.uniroma3.siw.service.*;
+import jakarta.validation.Valid;
 
 import java.security.Principal;
 import java.util.Map;
@@ -39,18 +41,46 @@ public class RecensioneController {
 
     @PostMapping("/libro/{id}/recensioni")
     @PreAuthorize("isAuthenticated()")
-    public String aggiungiRecensione(@PathVariable("id") Long id,
-            @ModelAttribute("recensione") Recensione recensione,
-            Principal principal) {
+    public String aggiungiRecensione(@Valid @ModelAttribute("recensione") Recensione recensione,
+            BindingResult bindingResult,
+            @PathVariable("id") Long id,
+            Principal principal,
+            @AuthenticationPrincipal UserDetails userDetails,
+            Model model) {
 
-        // Prende lo username dell’utente loggato
-        String username = principal.getName();
+        // Recupera informazioni utente loggato (sia standard che OAuth2)
+        String nomeUtente = null;
+        Utente utente = null;
 
-        // Recupera le credenziali e poi l’utente associato
-        Credentials credentials = this.credentialsService.getCredentials(username)
-                .orElseThrow(() -> new RuntimeException("Credenziali non trovate"));
+        if (userDetails != null) {
+            Optional<Credentials> optional = credentialsService.getCredentials(userDetails.getUsername());
+            if (optional.isPresent()) {
+                utente = optional.get().getUtente();
+                nomeUtente = utente.getNome();
+            }
+        } else if (principal instanceof OAuth2AuthenticationToken token) {
+            Map<String, Object> attributes = token.getPrincipal().getAttributes();
+            String username = (String) attributes.get("login");
+            if (username == null)
+                username = (String) attributes.get("email");
 
-        Utente utente = credentials.getUtente();
+            Optional<Credentials> optional = credentialsService.getCredentials(username);
+            if (optional.isPresent()) {
+                utente = optional.get().getUtente();
+                nomeUtente = utente.getNome();
+            } else {
+                nomeUtente = username;
+            }
+        }
+
+        // Inserisce l'utente e il nome nel model per ricaricare correttamente la navbar
+        model.addAttribute("nomeUtente", nomeUtente);
+        model.addAttribute("utente", utente);
+        model.addAttribute("libro", libroService.getLibroById(id)); // importante se la view lo usa
+
+        if (bindingResult.hasErrors()) {
+            return "formNewRecensione";
+        }
 
         recensione.setLibro(libroService.getLibroById(id));
         recensione.setUtente(utente);
@@ -95,10 +125,42 @@ public class RecensioneController {
     }
 
     @PostMapping("/recensioni")
-    public String salvaRecensione(@ModelAttribute("recensione") Recensione recensione, Principal principal) {
+    public String salvaRecensione(@Valid @ModelAttribute("recensione") Recensione recensione,
+            BindingResult bindingResult, Principal principal, @AuthenticationPrincipal UserDetails userDetails,
+            Model model) {
         Credentials credentials = credentialsService.getCredentials(principal.getName())
                 .orElseThrow(() -> new RuntimeException("Credenziali non trovate"));
-        Utente utente = credentials.getUtente();
+
+        String nomeUtente = null;
+        Utente utente = null;
+
+        if (userDetails != null) {
+            Optional<Credentials> optional = credentialsService.getCredentials(userDetails.getUsername());
+            if (optional.isPresent()) {
+                utente = optional.get().getUtente();
+                nomeUtente = utente.getNome();
+            }
+        } else if (principal instanceof OAuth2AuthenticationToken token) {
+            Map<String, Object> attributes = token.getPrincipal().getAttributes();
+            String username = (String) attributes.get("login");
+            if (username == null)
+                username = (String) attributes.get("email");
+
+            Optional<Credentials> optional = credentialsService.getCredentials(username);
+            if (optional.isPresent()) {
+                utente = optional.get().getUtente();
+                nomeUtente = utente.getNome();
+            } else {
+                nomeUtente = username;
+            }
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("nomeUtente", nomeUtente);
+            model.addAttribute("utente", utente);
+            model.addAttribute("libro", recensione.getLibro());
+            return "formNewRecensione"; // torna al form con gli errori
+        }
 
         recensioneService.salva(recensione, utente);
 
