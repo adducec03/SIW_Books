@@ -1,3 +1,19 @@
+:root {
+    --cream: #ffe6a7;
+    --darker-cream: #f5cc50;
+    --dark-brown: #432818;
+    --medium-brown: #99582a;
+    --dark-red: #6f1d1b;
+    --darker-red: #5a1716;
+    --white: #ffffff;
+    --light-gray: #f5f5f5;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --border-color: rgba(67, 40, 24, 0.1);
+    --shadow-dark: rgba(0, 0, 0, 0.2);
+}
+
+
+
 * {
     margin: 0;
     padding: 0;
@@ -5,10 +21,11 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #ffe6a7, #f5c58d, #f9bfa6);
-    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
     line-height: 1.6;
+    color: var(--dark-brown);
+    background: linear-gradient(135deg, var(--cream), var(--medium-brown));
+    min-height: 100vh;
 }
 
 .header {
@@ -18,18 +35,38 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+.navbar {
+    font-size: medium !important;
+    background: var(--white);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.header h1 {
+.navbar-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+}
+
+.navbar-brand .logo {
+    display: flex;
+    align-items: left;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--accent-color);
+    font-family: 'EB Garamond', serif;
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: 700;
+}
+
+.navbar-brand {
+    justify-self: start;
 }
 
 .icon,
@@ -56,8 +93,11 @@ body {
 }
 
 .page-title {
+    background: #f5f5f5;
     text-align: center;
     margin-bottom: 2rem;
+    border-radius: 25px;
+    padding: 2rem;
 }
 
 .page-title h2 {

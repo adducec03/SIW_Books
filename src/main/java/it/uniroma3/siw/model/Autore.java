@@ -6,8 +6,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Autore {
@@ -15,19 +15,29 @@ public class Autore {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     private Long id;
-    @NotBlank
+    @NotBlank(message = "{autore.nome.notblank}")
     private String nome;
+    @NotBlank(message = "{autore.cognome.notblank}")
     private String cognome;
-    @NotNull
     private LocalDate dataNascita;
     private LocalDate dataMorte;
-    @NotBlank
+    @NotBlank(message = "{autore.nazionalita.notblank}")
     private String nazionalita;
     private String percorsoImmagine;
     @Column(columnDefinition = "TEXT")
     private String descrizione;
+    @Transient
+    private boolean inVita;
 
     // ----------------------------METODI-----------------------------//
+
+    public boolean isInVita() {
+        return inVita;
+    }
+
+    public void setInVita(boolean inVita) {
+        this.inVita = inVita;
+    }
 
     public String getDescrizione() {
         return descrizione;

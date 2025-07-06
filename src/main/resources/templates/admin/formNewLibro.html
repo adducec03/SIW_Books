@@ -37,24 +37,24 @@
                 <p class="page-subtitle">Inserisci i dettagli del libro nel sistema</p>
             </div>
             <!-- Global Errors -->
-            <!--<div th:if="${#fields.hasGlobalErrors()}" class="global-errors">
-                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore globale</p>
-            </div>-->
+
 
             <form th:action="@{/libro}" method="POST" th:object="${libro}" enctype="multipart/form-data">
+
+
                 <!-- Title and Year Row -->
                 <div class="form-row">
                     <div class="form-group">
                         <label for="titolo" class="form-label">Titolo *</label>
                         <input type="text" id="titolo" th:field="*{titolo}" class="form-input"
-                            placeholder="Inserisci il titolo del libro" required>
+                            placeholder="Inserisci il titolo del libro">
                         <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" class="field-error"></span>
                     </div>
 
                     <div class="form-group">
                         <label for="anno" class="form-label">Anno di Pubblicazione *</label>
                         <input type="number" id="anno" th:field="*{anno}" class="form-input" placeholder="es. 2023"
-                            min="1" max="2024" required>
+                            min="1" max="2024">
                         <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="field-error"></span>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="form-group">
                     <label for="genere" class="form-label">Genere *</label>
                     <input type="text" id="genere" th:field="*{genere}" class="form-input"
-                        placeholder="es. Fantasy, Romanzo, Giallo, Biografia" required>
+                        placeholder="es. Fantasy, Romanzo, Giallo, Biografia">
                     <span th:if="${#fields.hasErrors('genere')}" th:errors="*{genere}" class="field-error"></span>
                 </div>
 
@@ -79,7 +79,7 @@
                 <!-- Authors Selection -->
                 <div class="form-group">
                     <label for="autori" class="form-label">Seleziona Autori *</label>
-                    <select id="autori" name="autori" multiple size="5" class="form-input form-select" required>
+                    <select id="autori" name="autori" multiple size="5" class="form-input form-select">
                         <option th:each="autore : ${autori}" th:value="${autore.id}"
                             th:text="${autore.nome + ' ' + autore.cognome}">
                             Autore Nome
@@ -89,6 +89,7 @@
                         style="color: var(--secondary-color); font-size: 0.875rem; margin-top: 0.25rem; display: block;">
                         Tieni premuto Ctrl (o Cmd su Mac) per selezionare più autori
                     </small>
+                    <div class="field-error" th:if="${autoriError != null}" th:text="${autoriError}"></div>
                 </div>
 
                 <!-- Image Upload -->

@@ -15,9 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,10 +43,6 @@ public class AutoreController {
     @Autowired
     private AutoreValidator autoreValidator;
 
-    @InitBinder("autore")
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(autoreValidator);
-    }
 
     @GetMapping("/autore/{id}")
     public String getAutore(@PathVariable("id") Long id, Model model,
@@ -131,8 +125,10 @@ public class AutoreController {
             Model model,
             @AuthenticationPrincipal UserDetails userDetails) {
 
+        autoreValidator.validate(autore, bindingResult);
+
         if (bindingResult.hasErrors()) {
-            return "formNewAutore.html";
+            return "admin/formNewAutore";
         }
 
         String uploadDir = "uploads/autori";

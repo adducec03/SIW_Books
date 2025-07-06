@@ -16,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ import it.uniroma3.siw.service.AutoreService;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.LibroService;
 import it.uniroma3.siw.service.RecensioneService;
+import jakarta.validation.Valid;
 
 // AdminLibroController.java
 @Controller
@@ -49,15 +51,6 @@ public class AdminLibroController {
 
     @Autowired
     private AutoreService autoreService;
-
-    // Lista libri per admin
-    /*
-     * @GetMapping("/libri")
-     * public String adminLibri(Model model) {
-     * model.addAttribute("libri", libroService.getAllLibri());
-     * return "admin/libri";
-     * }
-     */
 
     // Dettagli libro per admin
     @GetMapping("/libro/{id}")
@@ -101,11 +94,12 @@ public class AdminLibroController {
     }
 
     @PostMapping("/libro/{id}")
-    public String aggiornaLibro(@PathVariable Long id,
-            @ModelAttribute("libro") Libro libro,
+    public String aggiornaLibro(@PathVariable Long id, 
+            @Valid @ModelAttribute("libro") Libro libro,
             @RequestParam(name = "existingImages", required = false) List<String> existingImages,
             @RequestParam(name = "removeIndexes", required = false) List<Integer> removeIndexes,
-            @RequestParam(name = "immagini", required = false) List<MultipartFile> nuoveImmagini) throws IOException {
+            @RequestParam(name = "immagini", required = false) List<MultipartFile> nuoveImmagini,
+            BindingResult bindingResult, Model model) throws IOException {
 
         Libro libroEsistente = libroService.getLibroById(id);
         if (libroEsistente == null)

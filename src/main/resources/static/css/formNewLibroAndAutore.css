@@ -27,6 +27,27 @@ body {
     min-height: 100vh;
 }
 
+/*errori*/
+.form-errors {
+    background-color: #ffe0e0;
+    border: 1px solid #cc0000;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    color: #990000;
+    font-weight: 500;
+}
+
+.form-errors ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.form-errors li {
+    list-style: disc;
+    margin-bottom: 0.3rem;
+}
+
 /* Header */
 .header {
     background: linear-gradient(135deg, var(--white) 0%, rgba(255, 237, 196, 0.9) 100%);

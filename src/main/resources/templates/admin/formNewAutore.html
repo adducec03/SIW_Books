@@ -41,25 +41,25 @@
                     <div class="form-group">
                         <label class="form-label" for="nome">Nome *</label>
                         <input type="text" id="nome" th:field="*{nome}" class="form-input"
-                            placeholder="Inserisci il nome" required />
-                        <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message"></span>
+                            placeholder="Inserisci il nome" />
+                        <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="field-error"></span>
                     </div>
 
                     <!-- Cognome -->
                     <div class="form-group">
                         <label class="form-label" for="cognome">Cognome *</label>
                         <input type="text" id="cognome" th:field="*{cognome}" class="form-input"
-                            placeholder="Inserisci il cognome" required />
+                            placeholder="Inserisci il cognome" />
                         <span th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}"
-                            class="error-message"></span>
+                            class="field-error"></span>
                     </div>
 
                     <!-- Data di nascita -->
                     <div class="form-group">
                         <label class="form-label" for="dataNascita">Data di nascita *</label>
-                        <input type="date" id="dataNascita" th:field="*{dataNascita}" class="form-input" required />
+                        <input type="date" id="dataNascita" th:field="*{dataNascita}" class="form-input" />
                         <span th:if="${#fields.hasErrors('dataNascita')}" th:errors="*{dataNascita}"
-                            class="error-message"></span>
+                            class="field-error"></span>
                     </div>
 
                     <!-- Data di morte -->
@@ -67,7 +67,7 @@
                         <label class="form-label" for="dataMorte">Data di morte</label>
                         <input type="date" id="dataMorte" th:field="*{dataMorte}" class="form-input" />
                         <span th:if="${#fields.hasErrors('dataMorte')}" th:errors="*{dataMorte}"
-                            class="error-message"></span>
+                            class="field-error"></span>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                 <div class="form-row">
                     <!-- Checkbox autore in vita -->
                     <div class="checkbox-container">
-                        <input type="checkbox" id="inVitaCheckbox" class="checkbox-input"
+                        <input type="checkbox" id="inVitaCheckbox" th:field="*{inVita}" class="checkbox-input"
                             onchange="toggleDataMorte()" />
                         <label for="inVitaCheckbox" class="checkbox-label">Autore ancora in vita</label>
                     </div>
@@ -87,9 +87,9 @@
                 <div class="form-group">
                     <label class="form-label" for="nazionalita">Nazionalità *</label>
                     <input type="text" id="nazionalita" th:field="*{nazionalita}" class="form-input"
-                        placeholder="Es. Italiana" required />
+                        placeholder="Es. Italiana" />
                     <span th:if="${#fields.hasErrors('nazionalita')}" th:errors="*{nazionalita}"
-                        class="error-message"></span>
+                        class="field-error"></span>
                 </div>
 
 
@@ -119,7 +119,7 @@
 
                 <!-- Form Actions -->
                 <div class="form-actions">
-                    
+
                     <a href="/autori" class="btn btn-secondary">
                         Annulla
                     </a>

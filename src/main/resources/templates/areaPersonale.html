@@ -3,20 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Area Personale - Libreria Digitale</title>
+    <title>Area Personale - SIW Books</title>
     <link rel="stylesheet" href="/css/areaPersonale.css" />
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h1>Libreria Digitale</h1>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <a href="/" class="logo">
+                    SIW Books
+                </a>
+            </div>
         </div>
-    </header>
+    </nav>
 
     <!-- Main Content -->
     <main class="container">
@@ -24,17 +24,25 @@
         <div class="page-title">
             <h2>Area Personale</h2>
             <p>Gestisci i tuoi libri e recensioni</p>
-        </div>
 
-        <!-- Modifica Dati Button -->
-        <div class="modify-btn-container">
-            <a href="/areaPersonale/modifica" class="btn-modify">
-                <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                Modifica i tuoi dati
-            </a>
+            <div class="user-info">
+                <p><strong>Nome:</strong> <span th:text="${utente.nome}">Mario</span></p>
+                <p><strong>Cognome:</strong> <span th:text="${utente.cognome}">Rossi</span></p>
+                <p><strong>Email:</strong> <span th:text="${utente.email}">mario.rossi@example.com</span></p>
+                <p><strong>Telefono:</strong> <span th:text="${utente.numeroTelefonico}">1234567890</span></p>
+            </div>
+
+
+            <!-- Modifica Dati Button -->
+            <div class="modify-btn-container">
+                <a href="/areaPersonale/modifica" class="btn-modify">
+                    <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Modifica i tuoi dati
+                </a>
+            </div>
         </div>
 
         <!-- Content Grid -->
@@ -107,13 +115,15 @@
                         <div class="review-item" th:each="recensione : ${recensioni}">
                             <div class="review-header">
                                 <div class="review-title" th:text="${recensione.libro.titolo}">Titolo del libro</div>
-                                <div class="review-rating">
-                                    <div class="stars">
-                                        <span th:each="i : ${#numbers.sequence(1, recensione.voto)}">★</span>
-                                        <span th:each="i : ${#numbers.sequence(recensione.voto + 1, 5)}"
-                                            style="color: #d1d5db;">★</span>
-                                    </div>
-                                    <span class="rating-text" th:text="${recensione.voto + ' stelle'}">5 stelle</span>
+                                <div class="review-rating" style="margin-top: 0.5rem; margin-bottom: -0.5rem;">
+                                    <div class="review-title2" th:text="${recensione.titolo}" style="font-weight: bold;">Titolo recensione</div>
+                
+                                        <div class="stars">
+                                            <span th:each="i : ${#numbers.sequence(1, recensione.voto)}">★</span>
+                                            <span th:each="i : ${#numbers.sequence(recensione.voto + 1, 5)}"
+                                                style="color: #d1d5db;">★</span>
+                                        </div>
+                                    
                                 </div>
                             </div>
                             <p class="review-text" th:text="${recensione.descrizione}">Testo della recensione...</p>
@@ -132,19 +142,6 @@
             </div>
         </div>
     </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>Libreria Digitale</span>
-            </div>
-            <p>© 2024 Libreria Digitale. Tutti i diritti riservati.</p>
-        </div>
-    </footer>
 </body>
 
 </html>

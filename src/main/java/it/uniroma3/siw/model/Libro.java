@@ -25,12 +25,13 @@ public class Libro {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     private Long id;
-    @NotBlank
+    @NotBlank(message = "{libro.titolo.notblank}")
     private String titolo;
     @NotNull
     @Min(0)
-    @Max(2023)
+    @Max(2025)
     private Integer anno;
+    @NotBlank
     private String genere;
     @Column(columnDefinition = "TEXT")
     private String descrizione;
@@ -41,6 +42,7 @@ public class Libro {
     private List<String> percorsiImmagini = new ArrayList<>();
     @ManyToMany
     @JoinTable(name = "libro_autore", joinColumns = @JoinColumn(name = "libro_id"), inverseJoinColumns = @JoinColumn(name = "autore_id"))
+    
     private List<Autore> autori = new ArrayList<>();
     @OneToMany(mappedBy = "libro", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Recensione> recensioni = new ArrayList<>();

@@ -97,13 +97,20 @@ public class LibroController {
     public String newLibro(@Valid @ModelAttribute("libro") Libro libro,
             BindingResult bindingResult,
             @RequestParam("immagini") List<MultipartFile> immagini,
-            @RequestParam("autori") List<Long> idAutori,
+            @RequestParam(name = "autori", required = false) List<Long> idAutori,
             Model model,
             @AuthenticationPrincipal UserDetails userDetails) {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("autori", autoreService.getAllAutori());
-            return "formNewLibro.html";
+            return "admin/formNewLibro";
+        }
+
+        if (idAutori == null || idAutori.isEmpty()) {
+            bindingResult.reject("libro.autori.obbligatori", "È necessario selezionare almeno un autore.");
+            model.addAttribute("autoriError", "Seleziona almeno un autore.");
+            model.addAttribute("autori", autoreService.getAllAutori());
+            return "admin/formNewLibro";
         }
 
         String uploadDir = "uploads/copertine";
