@@ -98,14 +98,14 @@
                 <div class="form-group">
                     <label for="titolo" class="form-label">Titolo della Recensione</label>
                     <input type="text" id="titolo" th:field="*{titolo}" class="form-input"
-                        placeholder="Inserisci un titolo per la tua recensione..." required />
+                        placeholder="Inserisci un titolo per la tua recensione..." />
                     <div th:if="${#fields.hasErrors('titolo')}" class="error-message" th:errors="*{titolo}"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="descrizione" class="form-label">La tua Recensione</label>
                     <textarea id="descrizione" th:field="*{descrizione}" class="form-input form-textarea"
-                        placeholder="Scrivi qui la tua recensione dettagliata del libro..." required></textarea>
+                        placeholder="Scrivi qui la tua recensione dettagliata del libro..."></textarea>
                     <div th:if="${#fields.hasErrors('descrizione')}" class="error-message" th:errors="*{descrizione}">
                     </div>
                 </div>
@@ -121,6 +121,7 @@
                             <span class="star" data-rating="5">★</span>
                         </div>
                         <div class="rating-text" id="ratingText">Seleziona una valutazione</div>
+                        <div th:if="${#fields.hasErrors('voto')}" class="error-message" th:errors="*{voto}"></div>
                     </div>
                 </div>
 
@@ -184,13 +185,6 @@
                 }
             }
 
-            // Form validation
-            form.addEventListener('submit', function (e) {
-                if (currentRating === 0) {
-                    e.preventDefault();
-                    alert('Per favore seleziona una valutazione con le stelle prima di inviare la recensione.');
-                }
-            });
         });
     </script>
 </body>

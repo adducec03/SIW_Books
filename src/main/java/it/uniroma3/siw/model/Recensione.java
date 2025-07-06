@@ -1,11 +1,17 @@
 package it.uniroma3.siw.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"utente_id", "libro_id"})
+        @UniqueConstraint(columnNames = { "utente_id", "libro_id" })
 })
 public class Recensione {
 
@@ -13,11 +19,17 @@ public class Recensione {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "{recensione.titolo.notblank}")
     private String titolo;
 
+    @NotBlank(message = "{recensione.descrizione.notblank}")
+    @Size(max = 1000, message = "{recensione.descrizione.size}")
     @Column(length = 1000)
     private String descrizione;
 
+    @NotNull(message = "{recensione.voto.notnull}")
+    @Min(value = 1, message = "Il voto minimo è 1.")
+    @Max(value = 5, message = "Il voto massimo è 5.")
     private Integer voto; // da 1 a 5, ad esempio
 
     private LocalDateTime dataCreazione;

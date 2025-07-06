@@ -127,6 +127,7 @@ public class LibroService {
             return 0.0; // Imposta a zero per i libri senza recensioni
         }
         return recensioni.stream()
+                .filter(r -> r.getVoto() != null)
                 .mapToDouble(Recensione::getVoto)
                 .average()
                 .orElse(0.0);
