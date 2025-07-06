@@ -149,6 +149,47 @@
             box-shadow: 0 0 0 3px rgba(153, 88, 42, 0.1);
         }
 
+        .checkbox-container {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-input {
+            width: 24px;
+            height: 24px;
+            accent-color: green;
+            /* Colore quando selezionato */
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            appearance: none;
+            background-color: var(--white);
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            margin-top: -3px;
+        }
+
+        .checkbox-input:checked {
+            background-color: green;
+        }
+
+        .checkbox-input:checked::after {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 8px;
+            width: 4px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .hidden {
+            display: none;
+        }
+
         .form-textarea {
             resize: vertical;
             min-height: 120px;

@@ -35,68 +35,70 @@
                 <p class="page-subtitle">Aggiorna le informazioni dell'autore</p>
             </div>
 
-            <!-- Error Message -->
-            <div th:if="${dataError}" class="error-message">
-                <p th:text="${dataError}">Errore nel salvataggio dei dati</p>
-            </div>
-
             <!-- Form -->
             <form th:action="@{'/admin/autore/' + ${autore.id} + '/modifica'}" method="post" th:object="${autore}"
                 enctype="multipart/form-data" class="form">
-
-                <!-- Nome e Cognome -->
+                <!-- Nome -->
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="nome" class="form-label required">
-                            Nome
-                        </label>
-                        <input type="text" id="nome" name="nome" th:value="${autore.nome}" class="form-input"
+                        <label class="form-label" for="nome">Nome *</label>
+                        <input type="text" id="nome" th:field="*{nome}" class="form-input"
                             placeholder="Inserisci il nome" />
+                        <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="field-error"></span>
                     </div>
 
+                    <!-- Cognome -->
                     <div class="form-group">
-                        <label for="cognome" class="form-label">
-                            Cognome
-                        </label>
-                        <input type="text" id="cognome" name="cognome" th:value="${autore.cognome}" class="form-input"
+                        <label class="form-label" for="cognome">Cognome *</label>
+                        <input type="text" id="cognome" th:field="*{cognome}" class="form-input"
                             placeholder="Inserisci il cognome" />
+                        <span th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}" class="field-error"></span>
+                    </div>
+
+                    <!-- Data di nascita -->
+                    <div class="form-group">
+                        <label class="form-label" for="dataNascita">Data di nascita *</label>
+                        <input type="date" id="dataNascita" th:field="*{dataNascita}" class="form-input" />
+                        <span th:if="${#fields.hasErrors('dataNascita')}" th:errors="*{dataNascita}"
+                            class="field-error"></span>
+                    </div>
+
+                    <!-- Data di morte -->
+                    <div id="dataMorteContainer" class="form-group">
+                        <label class="form-label" for="dataMorte">Data di morte</label>
+                        <input type="date" id="dataMorte" th:field="*{dataMorte}" class="form-input" />
+                        <span th:if="${#fields.hasErrors('dataMorte')}" th:errors="*{dataMorte}"
+                            class="field-error"></span>
                     </div>
                 </div>
 
 
-                <!-- Date -->
                 <div class="form-row">
-                    <div class="form-group">
-                        <label for="dataNascita" class="form-label required">
-                            Data di nascita
-                        </label>
-                        <input type="date" id="dataNascita" name="dataNascita" th:value="${autore.dataNascita}"
-                            class="form-input" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="dataMorte" class="form-label">
-                            Data di morte (facoltativa)
-                        </label>
-                        <input type="date" id="dataMorte" name="dataMorte" th:value="${autore.dataMorte}"
-                            class="form-input" />
+                    <!-- Checkbox autore in vita -->
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="inVitaCheckbox" th:field="*{inVita}" class="checkbox-input"
+                            onchange="toggleDataMorte()" />
+                        <label for="inVitaCheckbox" class="checkbox-label">Autore ancora in vita</label>
                     </div>
                 </div>
+
+                <p th:text="'inVita: ' + ${autore.inVita}">DEBUG</p>
+
+
 
                 <!-- Nazionalità -->
                 <div class="form-group">
-                    <label for="nazionalita" class="form-label required">
-                        Nazionalità
-                    </label>
-                    <input type="text" id="nazionalita" name="nazionalita" th:value="${autore.nazionalita}"
-                        class="form-input" placeholder="Es. Italiana, Francese, Americana" />
+                    <label class="form-label" for="nazionalita">Nazionalità *</label>
+                    <input type="text" id="nazionalita" th:field="*{nazionalita}" class="form-input"
+                        placeholder="Es. Italiana" />
+                    <span th:if="${#fields.hasErrors('nazionalita')}" th:errors="*{nazionalita}"
+                        class="field-error"></span>
                 </div>
 
-                <!-- Immagine -->
+
+                <!-- Immagine autore -->
                 <div class="form-group">
-                    <label for="immagine" class="form-label">
-                        Immagine autore
-                    </label>
+                    <label class="form-label" for="immagine">Immagine autore</label>
                     <div class="file-input-container">
                         <input type="file" id="immagine" name="immagine" accept="image/*" class="file-input">
                         <label for="immagine" class="file-input-label">
@@ -104,30 +106,57 @@
                             Seleziona un'immagine
                         </label>
                     </div>
-                    <div class="file-help-text">
-                        Formati supportati: JPG, PNG, JPEG. Massimo 5MB per immagine.
-                    </div>
+                    <small class="file-info">
+                        Formati supportati: JPG, PNG, GIF. Massimo 5MB per immagine.
+                    </small>
                 </div>
 
                 <!-- Descrizione -->
                 <div class="form-group">
-                    <label for="descrizione" class="form-label">Biografia</label>
+                    <label class="form-label" for="descrizione">Biografia</label>
                     <textarea id="descrizione" th:field="*{descrizione}" class="form-input form-textarea"
-                        placeholder="Inserisci una breve descrizione del libro, trama o riassunto..."></textarea>
+                        placeholder="Scrivi una breve biografia dell'autore..."></textarea>
                     <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}"
-                        class="field-error"></span>
+                        class="error-message"></span>
                 </div>
 
-                <!-- Action Buttons -->
+                <!-- Form Actions -->
                 <div class="form-actions">
-                    <a href="/autori" class="btn btn-secondary">Annulla</a>
+
+                    <a href="/autori" class="btn btn-secondary">
+                        Annulla
+                    </a>
                     <button type="submit" class="btn btn-primary">
-                        💾 Salva Modifiche
+                        Aggiungi autore
                     </button>
                 </div>
+
             </form>
         </div>
     </main>
+    <script>
+        function toggleDataMorte() {
+            const checkbox = document.getElementById("inVitaCheckbox");
+            const dataMorteContainer = document.getElementById("dataMorteContainer");
+            const input = document.getElementById("dataMorte");
+
+            if (!checkbox || !dataMorteContainer || !input) return;
+
+            if (checkbox.checked) {
+                dataMorteContainer.classList.add("hidden");
+                input.value = ""; // cancella il valore solo se si vuole forzare
+            } else {
+                dataMorteContainer.classList.remove("hidden");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ritarda leggermente l'esecuzione per assicurarti che i valori siano pronti
+            setTimeout(() => {
+                toggleDataMorte();
+            }, 0);
+        });
+    </script>
 </body>
 
 </html>

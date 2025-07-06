@@ -13,6 +13,7 @@ import it.uniroma3.siw.model.Autore;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.service.AutoreService;
 import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.validator.AutoreValidator;
 import jakarta.validation.Valid;
 
 import java.io.IOException;
@@ -32,9 +33,13 @@ public class AdminAutoreController {
     @Autowired
     private CredentialsService credentialsService;
 
+    @Autowired
+    private AutoreValidator autoreValidator;
+
     // Mostra dettaglio autore
     @GetMapping("/{id}")
-    public String getAutore(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+    public String getAutore(@PathVariable("id") Long id, Model model,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Autore autore = autoreService.getAutoreById(id);
         if (autore == null) {
             return "redirect:/admin/autori";
@@ -54,13 +59,17 @@ public class AdminAutoreController {
         if (autore == null) {
             return "redirect:/admin/autori";
         }
+        autore.setInVita(autore.getDataMorte() == null);
         model.addAttribute("autore", autore);
         return "admin/modificaAutore";
     }
 
     // Gestione submit modifica autore
     @PostMapping("/{id}/modifica")
-    public String modificaAutore(@PathVariable("id") Long id,
+    public String modificaAutore(
+            @Valid @ModelAttribute("autore") Autore autore,
+            BindingResult bindingResult,
+            @PathVariable("id") Long id,
             @RequestParam String nome,
             @RequestParam(required = false) String cognome,
             @RequestParam String nazionalita,
@@ -70,61 +79,58 @@ public class AdminAutoreController {
             @RequestParam(name = "immagine", required = false) MultipartFile nuovaImmagine,
             Model model) throws IOException {
 
-        Autore autore = autoreService.getAutoreById(id);
         if (autore == null) {
             return "redirect:/admin/autori";
         }
 
-        // Parsing delle date
-        LocalDate nascita = LocalDate.parse(dataNascita);
+        // Parsing date
+        LocalDate nascita = null;
         LocalDate morte = null;
+
+        if (dataNascita != null && !dataNascita.isEmpty()) {
+            nascita = LocalDate.parse(dataNascita);
+            autore.setDataNascita(nascita);
+        }
+
         if (dataMorte != null && !dataMorte.trim().isEmpty()) {
             morte = LocalDate.parse(dataMorte);
-
-            if (morte.isBefore(nascita)) {
-                model.addAttribute("autore", autore);
-                model.addAttribute("dataError", "La data di morte non può essere precedente alla data di nascita.");
-                return "admin/modificaAutore";
-            }
+            autore.setDataMorte(morte);
+        } else {
+            autore.setDataMorte(null);
         }
 
-        // Caricamento nuova immagine
-        if (nuovaImmagine != null && !nuovaImmagine.isEmpty()) {
-            String uploadDir = System.getProperty("user.dir") + "/uploads/autori/"; // cartella relativa alla directory
-                                                                                    // del progetto
-            Path uploadPath = Paths.get(uploadDir);
+        // Imposta inVita dopo il parsing della data di morte
+        autore.setInVita(morte == null);
 
-            // creazione cartella se non esiste
-            if (!Files.exists(uploadPath)) {
-                try {
-                    Files.createDirectories(uploadPath);
-                } catch (IOException e) {
-                    throw new RuntimeException("Impossibile creare la cartella di upload: " + uploadPath, e);
-                }
-            }
-
-            if (!nuovaImmagine.isEmpty()) {
-                System.out.println("prova");
-                String fileName = UUID.randomUUID() + "_" + nuovaImmagine.getOriginalFilename();
-                Path filePath = uploadPath.resolve(fileName);
-
-                try {
-                    nuovaImmagine.transferTo(filePath.toFile()); // salva nel file system
-                    autore.setPercorsoImmagine("/uploads/autori/" + fileName);// path da usare nella visualizzazione
-                } catch (IOException e) {
-                    throw new RuntimeException("Errore nel salvataggio del file: " + fileName, e);
-                }
-            }
-
-        }
-
-        // Aggiornamento autore
+        // Popola gli altri campi
         autore.setNome(nome);
         autore.setCognome(cognome);
         autore.setNazionalita(nazionalita);
-        autore.setDataNascita(nascita);
-        autore.setDataMorte(morte);
         autore.setDescrizione(descrizione);
+
+        // Validazione personalizzata
+        autoreValidator.validate(autore, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("autore", autore);
+            return "admin/modificaAutore";
+        }
+
+        // Caricamento immagine
+        if (nuovaImmagine != null && !nuovaImmagine.isEmpty()) {
+            String uploadDir = System.getProperty("user.dir") + "/uploads/autori/";
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            String fileName = UUID.randomUUID() + "_" + nuovaImmagine.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+            nuovaImmagine.transferTo(filePath.toFile());
+
+            autore.setPercorsoImmagine("/uploads/autori/" + fileName);
+        }
 
         autoreService.save(autore);
         return "redirect:/admin/autore/" + id;

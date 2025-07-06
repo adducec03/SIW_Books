@@ -131,25 +131,6 @@ body {
     border: 1px solid var(--border-color);
 }
 
-/* Global Errors */
-.global-errors {
-    background: #ffebee;
-    border: 1px solid #ffcdd2;
-    border-radius: 25px;
-    padding: 1rem;
-    margin-bottom: 2rem;
-}
-
-.global-errors p {
-    color: var(--error-color);
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.global-errors p:last-child {
-    margin-bottom: 0;
-}
-
 /* Form Groups */
 .hidden {
     display: none !important;
