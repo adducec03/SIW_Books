@@ -5,7 +5,7 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: "Segoe UI", sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: #432818;
     display: flex;
     justify-content: center;
@@ -43,7 +43,7 @@ body {
     color: #ffe6a7;
     background-color: rgba(67, 40, 24, 0.8); /* colore marrone scuro semi-trasparente */
     padding: 10px 12px;
-    border-radius: 50%;
+    border-radius: 25px;
     text-decoration: none;
     z-index: 100;
     transition: background-color 0.3s ease, transform 0.3s ease;
@@ -66,7 +66,7 @@ body {
 .register-container {
     background-color: #ffe6a7;
     padding: 2.5rem;
-    border-radius: 16px;
+    border-radius: 25px;
     width: 90%;
     max-width: 450px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -102,7 +102,7 @@ body {
 .input-group input {
     padding: 0.75rem 1rem;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 25px;
     font-size: 1rem;
     transition: border 0.3s ease;
 }
@@ -121,7 +121,7 @@ button.register-btn {
     background: linear-gradient(to right, #6f1d1b, #99582a);
     color: #ffe6a7;
     font-size: 1rem;
-    border-radius: 8px;
+    border-radius: 25px;
     cursor: pointer;
     z-index: 1;
 }
@@ -159,8 +159,7 @@ button.register-btn span {
     text-decoration: none;
 }
 
-.error-msg {
-    color: red;
-    margin-bottom: 1rem;
-    text-align: center;
+.error-message {
+    color:rgb(188, 1, 1);
+    margin-top: 1rem;
 }

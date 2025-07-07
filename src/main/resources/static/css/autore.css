@@ -22,7 +22,7 @@ body {
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
     color: var(--dark-brown);
-    background: linear-gradient(135deg, var(--cream), var(--medium-brown));
+    background: linear-gradient(135deg, var(--cream),#f0cc5f);
     min-height: 100vh;
 }
 
@@ -307,7 +307,10 @@ body {
     font-size: 1.1rem;
     line-height: 1.8;
     color: #432818;
-    text-align: justify;
+    word-wrap: break-word; /* o overflow-wrap: break-word; */
+    white-space: pre-line; /* per preservare eventuali \n */
+    max-width: 100%;
+    overflow-wrap: break-word;
 }
 
 /* Action Buttons */

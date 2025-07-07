@@ -5,7 +5,7 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: "Segoe UI", sans-serif;
+    font-family: 'Inter', sans-serif;
     /*background-image: url("/images/wallpaper2.png");*/
     background-color: #432818;
     background-size: cover;
@@ -45,7 +45,7 @@ body {
     color: #ffe6a7;
     background-color: rgba(67, 40, 24, 0.8); /* colore marrone scuro semi-trasparente */
     padding: 10px 12px;
-    border-radius: 50%;
+    border-radius: 25px;
     text-decoration: none;
     z-index: 100;
     transition: background-color 0.3s ease, transform 0.3s ease;
@@ -68,7 +68,7 @@ body {
 .login-container {
     background-color: #ffe6a7;
     padding: 2.5rem;
-    border-radius: 16px;
+    border-radius: 25px;
     width: 90%;
     max-width: 400px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -103,13 +103,17 @@ body {
     color: #999;
 }
 
-
+.error-msg{
+    color:rgb(188, 1, 1);
+    margin-top:20px;
+    margin-bottom:20px;
+}
 
 .input-group input {
     width: 100%;
     padding: 0.75rem 1rem 0.75rem 2.5rem;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 25px;
     font-size: 1rem;
     transition: border 0.3s;
 }
@@ -128,7 +132,7 @@ button.login-btn {
     background: linear-gradient(to right, #6f1d1b, #99582a);
     color: #ffe6a7;
     font-size: 1rem;
-    border-radius: 8px;
+    border-radius: 25px;
     cursor: pointer;
     z-index: 1;
 }
@@ -174,7 +178,7 @@ button.login-btn span {
     color: #ffe6a7;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 25px;
     display: flex;
     justify-content: center;
     align-items: center;

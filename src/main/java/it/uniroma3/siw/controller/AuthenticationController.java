@@ -31,8 +31,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("credentials") Credentials credentials,
-            BindingResult bindingResult,
-            Model model) {
+            BindingResult bindingResult, Model model) {
 
         if (utenteService.emailExists(credentials.getUtente().getEmail())) {
             bindingResult.rejectValue("utente.email", "duplicate", "Esiste già un utente con questa email.");
@@ -53,6 +52,6 @@ public class AuthenticationController {
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "login"; // Questo deve corrispondere a login.html in /templates
+        return "login";
     }
 }

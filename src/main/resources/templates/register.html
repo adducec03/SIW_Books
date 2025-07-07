@@ -25,23 +25,23 @@
             <h2>Registrazione</h2>
 
             <form th:action="@{/register}" method="POST" th:object="${credentials}">
-                <div th:if="${#fields.hasGlobalErrors()}" class="error-msg">
-                    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
-                </div>
 
                 <div class="input-group">
                     <label>Nome</label>
-                    <input type="text" th:field="*{utente.nome}" placeholder="Nome" required />
+                    <input type="text" th:field="*{utente.nome}" placeholder="Nome" />
+                    <div th:if="${#fields.hasErrors('utente.nome')}" th:errors="*{utente.nome}" class="error-message"></div>
                 </div>
 
                 <div class="input-group">
                     <label>Cognome</label>
-                    <input type="text" th:field="*{utente.cognome}" placeholder="Cognome" required />
+                    <input type="text" th:field="*{utente.cognome}" placeholder="Cognome" />
+                    <div th:if="${#fields.hasErrors('utente.cognome')}" th:errors="*{utente.cognome}" class="error-message"></div>
                 </div>
 
                 <div class="input-group">
                     <label>Email</label>
-                    <input type="email" th:field="*{utente.email}" placeholder="Email" required />
+                    <input type="email" th:field="*{utente.email}" placeholder="Email"/>
+                    <div th:if="${#fields.hasErrors('utente.email')}" th:errors="*{utente.email}" class="error-message"></div>
                 </div>
 
                 <div class="input-group">
@@ -51,12 +51,14 @@
 
                 <div class="input-group">
                     <label>Username</label>
-                    <input type="text" th:field="*{username}" placeholder="Username" required />
+                    <input type="text" th:field="*{username}" placeholder="Username"/>
+                    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message"></div>
                 </div>
 
                 <div class="input-group">
                     <label>Password</label>
-                    <input type="password" th:field="*{password}" placeholder="Password" required />
+                    <input type="password" th:field="*{password}" placeholder="Password"/>
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></div>
                 </div>
 
                 <button type="submit" class="register-btn"><span>Registrati</span></button>
