@@ -26,14 +26,14 @@
             <p>Gestisci i tuoi libri e recensioni</p>
 
             <div class="user-info">
-                <p><strong>Nome:</strong> <span th:text="${utente.nome}">Mario</span></p>
-                <p><strong>Cognome:</strong> <span th:text="${utente.cognome}">Rossi</span></p>
-                <p><strong>Email:</strong> <span th:text="${utente.email}">mario.rossi@example.com</span></p>
-                <p><strong>Telefono:</strong> <span th:text="${utente.numeroTelefonico}">1234567890</span></p>
+                <div class="info-row"><strong>Nome:</strong> <span th:text="${utente.nome}">Mario</span></div>
+                <div class="info-row"><strong>Cognome:</strong> <span th:text="${utente.cognome}">Rossi</span></div>
+                <div class="info-row"><strong>Email:</strong> <span
+                        th:text="${utente.email}">mario.rossi@example.com</span></div>
+                <div class="info-row"><strong>Telefono:</strong> <span
+                        th:text="${utente.numeroTelefonico}">1234567890</span></div>
             </div>
 
-
-            <!-- Modifica Dati Button -->
             <div class="modify-btn-container">
                 <a href="/areaPersonale/modifica" class="btn-modify">
                     <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,14 +116,15 @@
                             <div class="review-header">
                                 <div class="review-title" th:text="${recensione.libro.titolo}">Titolo del libro</div>
                                 <div class="review-rating" style="margin-top: 0.5rem; margin-bottom: -0.5rem;">
-                                    <div class="review-title2" th:text="${recensione.titolo}" style="font-weight: bold;">Titolo recensione</div>
-                
-                                        <div class="stars">
-                                            <span th:each="i : ${#numbers.sequence(1, recensione.voto)}">★</span>
-                                            <span th:each="i : ${#numbers.sequence(recensione.voto + 1, 5)}"
-                                                style="color: #d1d5db;">★</span>
-                                        </div>
-                                    
+                                    <div class="review-title2" th:text="${recensione.titolo}"
+                                        style="font-weight: bold;">Titolo recensione</div>
+
+                                    <div class="stars">
+                                        <span th:each="i : ${#numbers.sequence(1, recensione.voto)}">★</span>
+                                        <span th:each="i : ${#numbers.sequence(recensione.voto + 1, 5)}"
+                                            style="color: #d1d5db;">★</span>
+                                    </div>
+
                                 </div>
                             </div>
                             <p class="review-text" th:text="${recensione.descrizione}">Testo della recensione...</p>

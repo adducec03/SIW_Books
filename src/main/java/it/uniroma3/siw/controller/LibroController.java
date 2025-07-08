@@ -113,7 +113,7 @@ public class LibroController {
             return "admin/formNewLibro";
         }
 
-        String uploadDir = "uploads/copertine";
+        String uploadDir = "uploads/copertine/";
 
         for (MultipartFile file : immagini) {
             if (!file.isEmpty()) {

@@ -24,7 +24,7 @@ body {
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
     color: var(--dark-brown);
-    background: linear-gradient(135deg, var(--cream), var(--medium-brown));
+    background: linear-gradient(135deg, #ffe6a7, #f5c58d, #f9bfa6);
     min-height: 100vh;
 }
 
@@ -36,8 +36,9 @@ body {
 }
 
 .navbar {
+    color: white;
     font-size: medium !important;
-    background: var(--white);
+    background: linear-gradient(90deg, #432818, #99582a, #6f1d1b) !important;
     border-bottom: 1px solid var(--border-color);
     box-shadow: 0 2px 4px var(--shadow);
     position: sticky;
@@ -62,7 +63,7 @@ body {
     color: var(--accent-color);
     font-family: 'EB Garamond', serif;
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .navbar-brand {
@@ -93,28 +94,54 @@ body {
 }
 
 .page-title {
-    background: #f5f5f5;
-    text-align: center;
-    margin-bottom: 2rem;
+    background: linear-gradient(135deg, var(--light-gray), var(--cream));
+    border: 2px solid #e0c3a3;
     border-radius: 25px;
-    padding: 2rem;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    max-width: 700px;
+    margin: 2rem auto;
+    transition: all 0.3s ease;
 }
 
 .page-title h2 {
-    font-size: 1.875rem;
+    font-family: 'EB Garamond', serif;
+    font-size: 2.2rem;
     font-weight: bold;
     color: #432818;
-    margin-bottom: 0.5rem;
 }
 
 .page-title p {
     color: #6f1d1b;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.user-info {
+    background-color: #fff;
+    border-radius: 25px;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03);
+    margin-bottom: 2rem;
+}
+
+.info-row {
+    font-size: 1rem;
+    color: #432818;
+    margin-bottom: 0.6rem;
+}
+
+.info-row strong {
+    color: #6f1d1b;
+    font-weight: 600;
+    margin-right: 0.4rem;
 }
 
 .modify-btn-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 2rem;
 }
 
 .btn-modify {
@@ -123,19 +150,26 @@ body {
     font-weight: 600;
     padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 0.75rem;
+    border-radius: 25px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .btn-modify:hover {
     background: linear-gradient(90deg, #6f1d1b, #99582a);
-    transform: scale(1.05);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.icon-md {
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke: white;
 }
 
 .content-grid {
@@ -151,8 +185,8 @@ body {
 }
 
 .section {
-    background: #ffe6a7;
-    border-radius: 1rem;
+    background: linear-gradient(135deg, var(--light-gray), var(--cream));
+    border-radius: 25px;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
@@ -183,7 +217,7 @@ body {
 
 .item {
     border: 1px solid #e0c097;
-    border-radius: 0.5rem;
+    border-radius: 25px;
     padding: 1rem;
     margin-bottom: 1rem;
     background: white;
@@ -237,7 +271,7 @@ body {
     color: #6f1d1b;
     font-size: 0.875rem;
     padding: 0.5rem;
-    border-radius: 0.5rem;
+    border-radius: 25px;
     cursor: pointer;
     transition: all 0.2s;
     display: flex;

@@ -78,17 +78,23 @@
             <div class="book-left">
                 <div class="image-gallery"
                     th:if="${libro.percorsiImmagini != null and !libro.percorsiImmagini.isEmpty()}">
+
+                    <!-- Immagine principale -->
                     <div class="main-image">
-                        <img th:src="${libro.percorsiImmagini[0]}" alt="Copertina libro" class="book-cover" />
+                        <img id="main-img" th:src="${libro.percorsiImmagini[0]}" alt="Copertina libro"
+                            class="book-cover" />
                     </div>
+
+                    <!-- Galleria di miniature -->
                     <div class="thumbnail-gallery" th:if="${#lists.size(libro.percorsiImmagini) > 1}">
                         <img th:each="percorsi, iterStat : ${libro.percorsiImmagini}" th:if="${iterStat.index > 0}"
                             th:src="${percorsi}" th:alt="'Immagine ' + ${iterStat.count}" class="thumbnail"
-                            th:classappend="${iterStat.index == 1} ? 'active' : ''" />
+                            th:classappend="${iterStat.index == 1} ? 'active' : ''" onmouseover="previewImage(this.src)"
+                            onmouseout="resetImage()" />
                     </div>
                 </div>
 
-
+                <!-- Placeholder se non ci sono immagini -->
                 <div class="no-image"
                     th:unless="${libro.percorsiImmagini != null and !libro.percorsiImmagini.isEmpty()}">
                     <img src="/images/noImage.png" alt="Nessuna immagine disponibile" class="book-cover placeholder" />
@@ -259,6 +265,21 @@
                 document.addEventListener('click', function () {
                     dropdown.style.display = 'none';
                 });
+            }
+
+            const mainImg = document.getElementById("main-img");
+            const originalSrc = mainImg?.src;
+
+            window.previewImage = function (src) {
+                if (mainImg) {
+                    mainImg.src = src;
+                }
+            }
+
+            window.resetImage = function () {
+                if (mainImg && originalSrc) {
+                    mainImg.src = originalSrc;
+                }
             }
         });
     </script>
