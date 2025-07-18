@@ -74,7 +74,7 @@ cd SIW_Books
 <br>
 
 
-**Caso d’uso UC2: Aggiornamento dati di un Autore - Attore primario: un Aminstratore**
+**Caso d’uso UC2: Aggiornamento dati di un Autore - Attore primario: un Amminstratore**
 1. L’Amministratore vuole aggiornare i dati di uno specifico Autore.
 2. L’Amministratore inserisce il proprio username e password nel form di login. Il sistema autentica l’Amministratore e mostra l’hompage.
 3. L’Amministratore clicca sulla sezione “autori”. Il sistema mostra il catalogo degli autori.
